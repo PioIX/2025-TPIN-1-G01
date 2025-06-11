@@ -1,1 +1,3 @@
 # 2025-TPIN-1-G01
+*.env
+node_modules

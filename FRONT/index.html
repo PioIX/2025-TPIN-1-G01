@@ -13,12 +13,29 @@
 
     </video> -->
     <img src="" alt="logo">
-    <button id="btn-inicio">
-        JUGAR
-    </button>
-    <button id="btn-ranking">
-        img-ranking
-    </button>
-    <script src="home.js"></script>
+    <div>
+        <button id="btn-inicio">iniciar sesion</button>
+        <button> crear cuenta</button>
+        <button id="btn-ranking">img-ranking</button>
+    </div>
+    <dialog id="modal-login">
+        <button id="btn-dms-login">aca va una cruz</button>
+        <label for="input-mail-login">correo Electronico</label>
+        <input type="text" id="input-mail-login">
+        <label for="input-contraseña-login">Contraseña</label>
+        <input type="text" id="input-contraseña-login">
+        <input type="submit">
+    </dialog>
+    <dialog id="modal-register">
+        <button id="btn-dms-register">aca va una cruz</button>
+        <label for="input-mail-register">correo Electronico</label>
+        <input type="text" id="input-mail-register">
+        <label for="input-contraseña-register">Contraseña</label>
+        <input type="text" id="input-contraseña-register">
+        <label for="input-nombre-register">Nombre Usuario</label>
+        <input type="text" id="input-nombre-register">
+        <input type="submit">
+    </dialog>
+    <script src="scripts/home.js"></script>
 </body>
 </html>
