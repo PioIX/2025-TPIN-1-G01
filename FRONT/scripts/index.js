@@ -35,7 +35,7 @@ formLogin.addEventListener("submit",(e)=>{
 })
 
 async function verificarUsuario(usuario) {
-     const response = fetch(`http://localhost:4000/verificarUsuario?correo_electronico=${usuario.email}.com&contrase%C3%B1a=${usuario.password}`,{
+     const response = fetch(`http://localhost:4000/verificarUsuario?correo_electronico=${usuario.email}&com&contrase%C3%B1a=${usuario.password}`,{
         method: "GET",
         header: {
             "Content-Type": "application/json",
