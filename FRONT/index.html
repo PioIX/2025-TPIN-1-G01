@@ -15,27 +15,41 @@
     <img src="" alt="logo">
     <div>
         <button id="btn-inicio">iniciar sesion</button>
-        <button> crear cuenta</button>
+        <button id="btn-crear-cuenta"> crear cuenta</button>
         <button id="btn-ranking">img-ranking</button>
     </div>
     <dialog id="modal-login">
-        <button id="btn-dms-login">aca va una cruz</button>
-        <label for="input-mail-login">correo Electronico</label>
-        <input type="text" id="input-mail-login">
-        <label for="input-contraseña-login">Contraseña</label>
-        <input type="text" id="input-contraseña-login">
-        <input type="submit">
+        <form id="form-login">
+            <h2>ingrese sus datos</h2>
+            <button type="button" id="btn-dms-login">×</button>
+
+            <label for="input-mail-login">Correo Electrónico</label>
+            <input type="email" id="input-mail-login"placeholder="correo@gmail.com" required>
+
+            <label for="input-contraseña-login">Contraseña</label>
+            <input type="password" id="input-contraseña-login" required>
+
+            <input type="submit" id="input-send-data-login">
+        </form>
     </dialog>
     <dialog id="modal-register">
-        <button id="btn-dms-register">aca va una cruz</button>
-        <label for="input-mail-register">correo Electronico</label>
-        <input type="text" id="input-mail-register">
-        <label for="input-contraseña-register">Contraseña</label>
-        <input type="text" id="input-contraseña-register">
-        <label for="input-nombre-register">Nombre Usuario</label>
-        <input type="text" id="input-nombre-register">
-        <input type="submit">
+        <form id="form-register">
+            <h2>ingrese sus datos</h2>
+            <button id="btn-dms-register">X</button>
+
+            <label for="input-mail-register">correo Electronico</label>
+            <input type="text" id="input-mail-register" placeholder="correo@gmail.com" required>
+
+            <label for="input-contraseña-register">Contraseña</label>
+            <input type="text" id="input-contraseña-register" required>
+
+            <label for="input-nombre-register">Nombre Usuario</label>
+            <input type="text" id="input-nombre-register" placeholder="nombreFachero" required>
+
+            <input type="submit" id="input-send-data-sign-in">
+        </form>
     </dialog>
-    <script src="scripts/home.js"></script>
+    <script src="Clases/ui.js"></script>
+    <script src="scripts/index..js"></script>
 </body>
 </html>
