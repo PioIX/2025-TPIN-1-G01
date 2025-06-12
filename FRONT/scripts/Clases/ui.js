@@ -26,7 +26,6 @@ class Ui{
     }
     closeSignInModal(){
         modalSignIn.close()
-        
     }
 }
 

@@ -1,4 +1,4 @@
-class Usuario{
+class Jugador{
     constructor(nombre,puntaje,max_puntaje){
         this.nombre = nombre 
         this.puntaje = puntaje 
