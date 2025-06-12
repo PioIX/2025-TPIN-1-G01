@@ -7,7 +7,6 @@
     "pio": "nodemon --env-file=.pio.env index.js",
     "home": "nodemon --env-file=.home.env index.js",
     "test": "nodemon index.js"
-    
   },
   "repository": {
     "type": "git",

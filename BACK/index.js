@@ -22,3 +22,27 @@ app.get('/', function(req, res){
         message: 'GET Home route working fine!'
     });
 });
+
+app.get('/traerUsuarios',async function (req,res) {
+    let respuesta;
+    respuesta = await realizarQuery("SELECT * FROM Usuarios")
+    console.log(respuesta)
+    res.send(respuesta)
+})
+//funcion prueba
+
+app.get('/verificarUsuario',async function(req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery(`SELECT * FROM Usuarios WHERE correo_electronico='${req.query.correo_electronico}' AND contraseña='${req.query.contraseña}'`)
+        if(respuesta.length!=0){
+            console.log(respuesta)
+            res.send(respuesta)
+        } else{
+            console.log(respuesta)
+            res.send("correo electronico o contraseña invalidos")
+        }
+    } catch (error) {
+        res.send(error)
+    }
+})
