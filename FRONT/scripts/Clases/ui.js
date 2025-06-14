@@ -26,8 +26,20 @@ class Ui{
     }
     closeSignInModal(){
         modalSignIn.close()
-        
     }
+    DoLogin(usuario){
+        switch (usuario.es_admin) {
+            case 0:
+                location.href = "home.html"
+                break;
+            case 1:
+                location.href = "adminPage.html"
+                break;
+            default:
+                break;
+        }
+    }
+    
 }
 
 const ui = new Ui();
