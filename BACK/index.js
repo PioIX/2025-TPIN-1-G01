@@ -35,12 +35,13 @@ app.get('/verificarUsuario',async function(req,res) {
     try {
         let respuesta;
         respuesta = await realizarQuery(`SELECT * FROM Usuarios WHERE correo_electronico='${req.query.correo_electronico}' AND contraseña='${req.query.contraseña}'`)
+        console.log(respuesta)
         if(respuesta.length!=0){
             console.log(respuesta)
-            res.send(respuesta)
+            res.json(respuesta[0])
         } else{
             console.log(respuesta)
-            res.send("correo electronico o contraseña invalidos")
+            res.send({ mensaje: "correo electrónico o contraseña incorrecta" });
         }
     } catch (error) {
         res.send(error)

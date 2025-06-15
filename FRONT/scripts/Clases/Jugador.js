@@ -4,4 +4,4 @@ class Jugador{
         this.puntaje = puntaje 
         this.max_puntaje = max_puntaje
     }
-}
+}   
