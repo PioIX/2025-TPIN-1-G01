@@ -3,23 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Inicio</title>
     <link rel="stylesheet" href="estilos/home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <video autoplay muted loop id="myVideo">
         <source src="Videos/video_home.mp4" type="video/mp4">
     </video>
-    <h1>IMPREGUNTABLES</h1>
-    <!-- <button id="btn-home">boton super fachero</button> -->
-    <!-- <video src="Videos/video_home.mp4" autoplay loop muted id="video-home">
-
-    </video> -->
-    <img src="" alt="logo">
-    <div>
-        <button id="btn-inicio">iniciar sesion</button>
-        <button id="btn-crear-cuenta"> crear cuenta</button>
-        <button id="btn-ranking">img-ranking</button>
+    <div id="contenedor-h1-logo">
+        <h1>IMPREGUNTABLES</h1>
+        <!-- <button id="btn-home">boton super fachero</button> -->
+        <img src="Imagenes/logoImpreguntables.png" alt="logo">
+    </div>
+    <div id="contenedor-botones">
+        <button id="btn-inicio">Iniciar Sesion</button>
+        <button id="btn-crear-cuenta">Crear Cuenta</button>
+        <!-- <button id="btn-ranking">img-ranking</button> -->
     </div>
     <dialog id="modal-login">
         <form id="form-login">
