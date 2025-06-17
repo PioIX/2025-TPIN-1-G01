@@ -31,7 +31,6 @@
   width: 25vw;
   align-self: center;
 }
-
 #contenedor-botones {
   /* display: flex;
   flex-direction: row; */
@@ -67,13 +66,31 @@
   }
 }
 
-dialog{
-  width: 50vw;
-  height: 30%;
-  background: #099;
-
+form{
+  flex-flow: column nowrap;
 }
 
+dialog{
+  width: 100vw;
+  height: 80%;
+  background: #8e45b7;
+  border-radius: 55px;
+}
+
+dialog h2{
+  font-family: "Baloo 2", sans-serif;
+  color: #f0f0f0;
+}
+
+dialog label{
+  font-family: "Baloo 2", sans-serif;
+  color: #f0f0f0;
+  font-size: 30px;
+}
+#input-mail-login, #input-contraseña-login, #input-contraseña-register, #input-mail-register, #input-nombre-register{
+  border: #0f0f0f 2px solid; 
+  border-radius: 100px;
+}
 dialog::backdrop{
   background: #0f0f0f8f;
 }
