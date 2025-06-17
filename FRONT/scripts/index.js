@@ -10,8 +10,6 @@ const btnRanking = document.getElementById("btn-ranking")
 
 btnLogin.addEventListener("click",()=>{
     ui.showLoginModal()
-    formLogin.style.display = "flex"
-
 })
 
 
@@ -21,7 +19,6 @@ btnCloseModal.addEventListener("click",()=>{
 
 BtnSignUp.addEventListener("click",()=>{
     ui.showSignInModal()
-    formRegister.style.display = "flex"
 }) 
 
 btnCloseSignIn.addEventListener("click",()=>{

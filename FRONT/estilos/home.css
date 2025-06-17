@@ -70,16 +70,46 @@ form{
   flex-flow: column nowrap;
 }
 
+form div{
+  display: flex;
+  flex-flow: row;
+  justify-content: space-evenly;
+}
+
 dialog{
-  width: 100vw;
-  height: 80%;
+  width:60vw;
+  height: 35vh;
+  margin: auto;
+  margin-bottom: 20%;
   background: #8e45b7;
   border-radius: 55px;
+}
+
+#input-div, #top{
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;  
+  width: 90%;
+}
+
+label{
+  width: 30%;
+  text-align: left;
+}
+
+input{
+  width: 70%;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 30px;
 }
 
 dialog h2{
   font-family: "Baloo 2", sans-serif;
   color: #f0f0f0;
+  align-self: left;
+  width: 50%;
+  height: 20px;
+  font-size: 45px;
 }
 
 dialog label{
@@ -90,6 +120,7 @@ dialog label{
 #input-mail-login, #input-contraseña-login, #input-contraseña-register, #input-mail-register, #input-nombre-register{
   border: #0f0f0f 2px solid; 
   border-radius: 100px;
+  width: 70%;
 }
 dialog::backdrop{
   background: #0f0f0f8f;
