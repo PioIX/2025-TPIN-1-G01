@@ -18,7 +18,7 @@ btnCloseModal.addEventListener("click",()=>{
 
 BtnSignUp.addEventListener("click",()=>{
     ui.showSignInModal()
-})
+}) 
 
 btnCloseSignIn.addEventListener("click",()=>{
     ui.closeSignInModal()

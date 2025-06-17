@@ -66,3 +66,14 @@
     margin-bottom: 0;
   }
 }
+
+dialog{
+  width: 50vw;
+  height: 30%;
+  background: #099;
+
+}
+
+dialog::backdrop{
+  background: #0f0f0f8f;
+}

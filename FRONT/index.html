@@ -38,25 +38,27 @@
         </form>
     </dialog>
     <dialog id="modal-register">
-        <form id="form-register">
-            <h2>ingrese sus datos</h2>
-            <button id="btn-dms-register">X</button>
+        <div>
+            <form id="form-register">
+                <h2>ingrese sus datos</h2>
+                <button id="btn-dms-register">X</button>
+            
+                <label for="input-mail-register">correo Electronico</label>
+                <input type="text" id="input-mail-register" placeholder="correo@gmail.com" required>
+                
+                <label for="input-contraseña-register">Contraseña</label>
+                <input type="text" id="input-contraseña-register" placeholder="********" required>
 
-            <label for="input-mail-register">correo Electronico</label>
-            <input type="text" id="input-mail-register" placeholder="correo@gmail.com" required>
-
-            <label for="input-contraseña-register">Contraseña</label>
-            <input type="text" id="input-contraseña-register" placeholder="********" required>
-
-            <label for="input-nombre-register">Nombre Usuario</label>
-            <input type="text" id="input-nombre-register" placeholder="nombreFachero" required>
-
-            <input type="submit" id="input-send-data-sign-in">
-        </form>
+                <label for="input-nombre-register">Nombre Usuario</label>
+                <input type="text" id="input-nombre-register" placeholder="nombreFachero" required>
+                
+                <input type="submit" id="input-send-data-sign-in">
+            </form>
+        </div>
     </dialog>
     <script src="scripts/Clases/ui.js"></script>
     <script src="scripts/Clases/Jugador.js"></script>
     <script src="scripts/Clases/Usuario.js"></script>
-    <script src="scripts/index..js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>
