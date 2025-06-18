@@ -11,29 +11,32 @@
     <h2>crea tu pregunta</h2>
     <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
     <h3>Tu Pregunta:</h3>
+    <!-- preguntar como arreglar -->
+    <input type="file" accept=".png">
     <!-- areglar text area con css -->
     <textarea name="" id="area-pregunta" resize="vertical" placeholder="escribe tu pregunta aqui...."></textarea>
     <h2>Opciones:</h2>
     <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
     <section>
-        <div>
+        <div class="contedor-pregunta">
             <input type="text">
-            <button class="correct-btn">cruz o tick png</button>
+            <button class="correct-btn">cruz</button>
         </div>
-        <div>
+        <div class="contedor-pregunta">
             <input type="text">
-            <button>cruz o tick png</button>
+            <button class="correct-btn">cruz</button>
         </div>
-        <div>
+        <div class="contedor-pregunta">
             <input type="text">
-            <button>cruz o tick png</button>
+            <button class="correct-btn">cruz</button>
         </div>
-        <div>
+        <div class="contedor-pregunta">
             <input type="text">
-            <button>cruz o tick png</button>
+            <button class="correct-btn">cruz</button>
         </div>
     </section>
-    <button>guardar pregunta</button><button>cerrame</button>
+    <button onclick="CrearPregunta()">guardar pregunta</button><button id="cerrar">cerrame</button>
+    <script src="scripts/fetch.js"></script>
     <script src="scripts/Clases/ui.js"></script>
     <script src="scripts/Clases/Pregunta.js"></script>
     <script src="scripts/adminHomePage.js"></script>

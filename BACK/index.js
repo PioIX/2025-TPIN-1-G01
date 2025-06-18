@@ -24,17 +24,25 @@ app.get('/', function(req, res){
 });
 
 app.get('/traerUsuarios',async function (req,res) {
-    let respuesta;
-    respuesta = await realizarQuery("SELECT * FROM Usuarios")
-    console.log(respuesta)
-    res.send(respuesta)
+    try {
+        let respuesta;
+        respuesta = await realizarQuery("SELECT * FROM Usuarios")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
 })
 
 app.get('/traerCategorias',async function(req,res){
-    let respuesta;
-    respuesta = await realizarQuery("SELECT * FROM Categorias")
-    console.log(respuesta)
-    res.send(respuesta)
+    try {
+        let respuesta;
+        respuesta = await realizarQuery("SELECT * FROM Categorias")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
 })
 //funcion prueba
 
