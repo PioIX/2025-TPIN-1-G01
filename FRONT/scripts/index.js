@@ -10,7 +10,6 @@ const btnRanking = document.getElementById("btn-ranking")
 
 btnLogin.addEventListener("click",()=>{
     ui.showLoginModal()
-    formLogin.style.display = "flex"
 
 })
 
@@ -21,7 +20,6 @@ btnCloseModal.addEventListener("click",()=>{
 
 BtnSignUp.addEventListener("click",()=>{
     ui.showSignInModal()
-    formRegister.style.display = "flex"
 }) 
 
 btnCloseSignIn.addEventListener("click",()=>{
@@ -64,8 +62,12 @@ async function verificarUsuario(usuario) {
     console.log(response)
     let result = await response.json()
     console.log(result)
-    ui.DoLogin(result)
-    return result
+    if(result.mensaje == "ok"){
+        ui.DoLogin(result)
+        return result
+    } else {
+        errorHandler(result.mensaje)
+    }
 }
 
 async function registrarUsuario(usuario) {
@@ -80,10 +82,24 @@ async function registrarUsuario(usuario) {
   console.log(response);
   let result = await response.json();
   console.log(result)
-  if (result.mensaje == "ok") {
-      ui.DoLogin(usuario); 
-    
-  } else {
-   alert("Algo salio mal") 
-  }
+  if (result.mensaje === "ok") {
+      ui.DoLogin(usuario);
+    } else {
+        errorHandler(result.mensaje)
+    }
+}
+
+function errorHandler(mensaje){
+    switch (mensaje){ 
+        case "El usuario ya existe":     
+            alert("ya hay un mail asociado a esa cuenta")
+        break
+        case "correo electrónico o contraseña incorrecta":
+            alert("correo electrónico o contraseña incorrecta")
+        break
+        default:
+            alert("algo salio mal")
+        break
+    }
+    return mensaje
 }

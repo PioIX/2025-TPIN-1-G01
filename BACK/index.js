@@ -39,12 +39,14 @@ app.get('/verificarUsuario', async function (req, res) {
         if (respuesta.length != 0) {
             console.log(respuesta)
             res.json(respuesta[0])
+            console.log(message.length)
         } else {
             console.log(respuesta)
             res.send({ mensaje: "correo electrónico o contraseña incorrecta" });
+            console.log(message.length)
         }
     } catch (error) {
-        res.send(error)
+        res.send({message: error})
     }
 })
 
@@ -60,5 +62,6 @@ app.post('/registrarUsuario', async function (req, res) {
         }
     } catch (error) {
         res.send(error)
+        console.log(error)
     }
 })
