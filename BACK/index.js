@@ -29,6 +29,13 @@ app.get('/traerUsuarios',async function (req,res) {
     console.log(respuesta)
     res.send(respuesta)
 })
+
+app.get('/traerCategorias',async function(req,res){
+    let respuesta;
+    respuesta = await realizarQuery("SELECT * FROM Categorias")
+    console.log(respuesta)
+    res.send(respuesta)
+})
 //funcion prueba
 
 app.get('/verificarUsuario',async function(req,res) {

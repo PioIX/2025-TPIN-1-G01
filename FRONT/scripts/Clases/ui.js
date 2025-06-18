@@ -39,6 +39,30 @@ class Ui{
                 break;
         }
     }
+    changeScreen(page){
+        switch (page) {
+            case "tabla":
+                location.href = `${page}.html`
+                break;
+            case "adminPage":
+                location.href = `${page}.html`
+                break;
+            case "ruleta":
+                location.href = `${page}.html`
+                break;
+            case "juego":
+                location.href = `${page}.html`
+                break;
+            case "home":
+                location.href = `${page}.html`
+                break;
+            case "index":
+                location.href = `${page}.html`
+                break;
+            default:
+                break;
+        }
+    }
     
 }
 
