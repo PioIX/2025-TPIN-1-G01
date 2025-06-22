@@ -37,31 +37,29 @@
                 <label for="input-contraseña-login">Contraseña</label>
                 <input type="password" id="input-contraseña-login" placeholder="********" required>
             </div>
-            <input type="submit" id="input-send-data-login">
+            <input type="submit" class="submit" id="input-send-data-login">
         </form>
     </dialog>
     <dialog id="modal-register">
-        <div>
-            <form id="form-register">
-                <div class="top">
-                    <h2>ingrese sus datos</h2>
-                    <button id="btn-dms-register">X</button>
-                </div> 
-                <div class="input-div input-mail">
-                    <label for="input-mail-register">correo Electronico</label>
-                    <input type="text" id="input-mail-register" placeholder="correo@gmail.com" required>
-                </div>
-                <div class="input-div input-password">
-                    <label for="input-contraseña-register">Contraseña</label>
-                    <input type="text" id="input-contraseña-register" placeholder="********" required>
-                </div>
-                <div class="input-div input-nombre">
-                    <label for="input-nombre-register">Nombre Usuario</label>
-                    <input type="text" id="input-nombre-register" placeholder="nombreFachero" required>
-                </div>
-                <input type="submit" id="input-send-data-sign-in">
-            </form>
-        </div>
+        <form id="form-register">
+            <div class="top">
+                <h2>ingrese sus datos</h2>
+                <button type="button" id="btn-dms-register">x</button>
+            </div> 
+            <div class="input-div input-mail">
+                <label for="input-mail-register">correo Electronico</label>
+                <input type="text" id="input-mail-register" placeholder="correo@gmail.com" required>
+            </div>
+            <div class="input-div input-password">
+                <label for="input-contraseña-register">Contraseña</label>
+                <input type="text" id="input-contraseña-register" placeholder="********" required>
+            </div>
+            <div class="input-div input-nombre">
+                <label for="input-nombre-register">Nombre Usuario</label>
+                <input type="text" id="input-nombre-register" placeholder="nombreFachero" required>
+            </div>
+            <input type="submit" class="submit" id="input-send-data-sign-in">
+        </form>
     </dialog>
     <script src="scripts/Clases/ui.js"></script>
     <script src="scripts/Clases/Jugador.js"></script>

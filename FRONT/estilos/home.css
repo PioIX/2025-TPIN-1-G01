@@ -1,3 +1,10 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+}
+
 #myVideo {
   position: fixed;
   right: 0;
@@ -66,74 +73,89 @@
   }
 }
 
-/* form{
-flex-flow: column nowrap;
-}
-
-form div{
-display: flex;
-flex-flow: row;
-justify-content: space-evenly;
-}
-
 dialog{
-width:60vw;
-height: 35vh;
-margin: auto;
-margin-bottom: 20%;
-background: #8e45b7;
-border-radius: 55px;
+  width: 65vw;
+  height: 15vw;
+  background: #8e45b7;
+  border-radius: 55px;
+  margin: auto;
 }
 
-#input-div, #top{
-display: flex;
-flex-flow: row nowrap;
-justify-content: space-around;  
-width: 90%;
-}
-
-label{
-width: 30%;
-text-align: left;
-}
-
-input{
-width: 70%;
-font-family: "Baloo 2", sans-serif;
-font-size: 30px;
-}
-
-dialog h2{
-font-family: "Baloo 2", sans-serif;
-color: #f0f0f0;
-align-self: left;
-width: 50%;
-height: 20px;
-font-size: 45px;
-}
-
-dialog label{
-font-family: "Baloo 2", sans-serif;
-color: #f0f0f0;
-font-size: 30px;
-}
-#input-mail-login, #input-contraseña-login, #input-contraseña-register, #input-mail-register, #input-nombre-register{
-border: #0f0f0f 2px solid; 
-border-radius: 100px;
-width: 70%;
-}
 dialog::backdrop{
 background: #0f0f0f8f;
-} */
-
-dialog{
-  width: 60vw;
-  height: 35vw;
 }
 
 form{
-  al;
   display: flex;
   flex-flow: column nowrap;
-  width: fit-content;
+  justify-content: space-evenly;
+  align-content: center ;
+  width: 100%;
+  height: 100%;
+}
+
+form div{
+  width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around; 
+}
+
+h2{
+  height: fit-content;
+}
+
+form button{
+  background-color: Transparent;
+  border: none;
+  align-self: flex-start;
+  cursor:pointer;
+  overflow: hidden;  
+  color: #0f0f0f;
+  font-size: 34px; 
+  margin-right: 25px;
+  font-weight: 1000;
+}
+
+.top{
+  justify-content: space-between;
+  font-family: "Baloo 2", sans-serif;
+  font-size: 22px;
+  color: #f0f0f0;
+  height: 25%;
+  width: 100%;
+} 
+.top h2{
+  margin-left: 25px;
+}
+
+.input-div{
+  width: 100%;
+  color: #f0f0f0;
+  font-family: "Baloo 2", sans-serif;
+  font-weight: 1000;
+  
+}
+
+.input-div label{
+  width: 30%;
+  height: fit-content;
+}
+
+.input-div input{
+  width: 65%;
+  height: fit-content;
+  border-radius: 98px;
+}
+
+.submit{
+  align-self: flex-end;
+  width: 20%;
+  background-color: #1dac48;
+  font-family: "Baloo 2", sans-serif;
+  border: none;
+  border-radius: 98px;
+  color: #f0f0f0;
+  font-weight: 1000;  
+  margin-right: 25px;
 }
