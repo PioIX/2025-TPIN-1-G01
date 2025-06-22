@@ -3,39 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>AdminPage</title>
+    <link rel="stylesheet" href="estilos/adminPage.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h2>categorias</h2>
-    <select name="" id="select-categoria"></select>
-    <h2>crea tu pregunta</h2>
-    <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
-    <h3>Tu Pregunta:</h3>
-    <!-- preguntar como arreglar -->
-    <input type="file" accept=".png">
-    <!-- areglar text area con css -->
-    <textarea name="" id="area-pregunta" resize="vertical" placeholder="escribe tu pregunta aqui...."></textarea>
-    <h2>Opciones:</h2>
-    <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
-    <section>
-        <div class="contedor-pregunta">
-            <input type="text">
-            <button class="correct-btn">cruz</button>
+    <main>
+        <h2>Categorias</h2>
+        <select name="" id="select-categoria"></select>
+        <h2>Crea tu Pregunta</h2>
+        <!-- <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p> -->
+        <h3>Tu Pregunta:</h3>
+        <!-- preguntar como arreglar -->
+        <div id="contenedor-file-input">
+            <input type="file" accept=".png">
+            <!-- areglar text area con css -->
+            <textarea name="" id="area-pregunta" resize="vertical" placeholder="escribe tu pregunta aqui...."></textarea>
         </div>
-        <div class="contedor-pregunta">
-            <input type="text">
-            <button class="correct-btn">cruz</button>
+        
+        <h3>Opciones:</h3>
+        <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
+        <section>
+            <div class="contedor-pregunta">
+                <input type="text">
+                <button class="correct-btn">cruz</button>
+            </div>
+            <div class="contedor-pregunta">
+                <input type="text">
+                <button class="correct-btn">cruz</button>
+            </div>
+            <div class="contedor-pregunta">
+                <input type="text">
+                <button class="correct-btn">cruz</button>
+            </div>
+            <div class="contedor-pregunta">
+                <input type="text">
+                <button class="correct-btn">cruz</button>
+            </div>
+        </section>
+        <div id="save-btns">
+            <button id="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
+            <button id="cerrar">Cerrar</button>
         </div>
-        <div class="contedor-pregunta">
-            <input type="text">
-            <button class="correct-btn">cruz</button>
-        </div>
-        <div class="contedor-pregunta">
-            <input type="text">
-            <button class="correct-btn">cruz</button>
-        </div>
-    </section>
-    <button onclick="CrearPregunta()">guardar pregunta</button><button id="cerrar">cerrame</button>
+    </main>
+
+    
     <script src="scripts/fetch.js"></script>
     <script src="scripts/Clases/ui.js"></script>
     <script src="scripts/Clases/Pregunta.js"></script>
