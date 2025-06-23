@@ -1,7 +1,7 @@
 {
   "name": "back",
   "version": "1.0.0",
-  "description": "Tarea 5 de produccion",
+  "description": "Proyecto de Preguntados",
   "main": "index.js",
   "scripts": {
     "pio": "nodemon --env-file=.pio.env index.js",
@@ -10,17 +10,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Monti-py/Produ-tarea-5.git"
+    "url": "git+https://github.com/PioIX/2025-TPIN-1-G01.git"
   },
   "keywords": [
     "ES"
   ],
-  "author": "B. Cogorno && F. Montivero",
+  "author": "B. Cogorno, F. Montivero, T. Nisenbom, I. Nieloud, T. Clur",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Monti-py/Produ-tarea-5/"
+    "url": "https://github.com/PioIX/2025-TPIN-1-G01.git"
   },
-  "homepage": "https://github.com/Monti-py/Produ-tarea-5#readme",
+  "homepage": "https://github.com/PioIX/2025-TPIN-1-G01#readme",
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
