@@ -30,9 +30,11 @@ class Ui{
     DoLogin(usuario){
         switch (usuario.es_admin) {
             case 0:
+                localStorage.setItem("usuario",JSON.stringify(usuario))
                 location.href = "home.html"
                 break;
             case 1:
+                localStorage.setItem("usuario",JSON.stringify(usuario)) 
                 location.href = "adminPage.html"
                 break;
             default:
@@ -63,7 +65,10 @@ class Ui{
                 break;
         }
     }
-    
+    recuperarUsuario(){
+        const usuario = JSON.parse(localStorage.getItem("usuario"))
+        return usuario
+    }
 }
 
 const ui = new Ui();
