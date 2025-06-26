@@ -62,3 +62,21 @@ app.get('/verificarUsuario',async function(req,res) {
         res.send(error)
     }
 })
+
+app.get('/usuarioLogeado',async function(req,res){
+    try {
+        let respuesta;
+        respuesta = await realizarQuery(`SELECT * FROM Usuarios WHERE esta_logeado=true`)
+        console.log(respuesta)
+        res.json(respuesta[0])
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.post('/InOut',async function(req,res){
+    respuesta = req.body.esta_logeado ? 
+    await realizarQuery(`UPDATE Usuarios SET esta_logeado=false WHERE id=${req.body.id}`) : 
+    await realizarQuery(`UPDATE Usuarios SET esta_logeado=true WHERE id=${req.body.id}`)
+    res.send(respuesta)
+})

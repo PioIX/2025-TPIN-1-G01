@@ -30,11 +30,9 @@ class Ui{
     DoLogin(usuario){
         switch (usuario.es_admin) {
             case 0:
-                localStorage.setItem("usuario",JSON.stringify(usuario))
                 location.href = "home.html"
                 break;
             case 1:
-                localStorage.setItem("usuario",JSON.stringify(usuario)) 
                 location.href = "adminPage.html"
                 break;
             default:
@@ -42,32 +40,7 @@ class Ui{
         }
     }
     changeScreen(page){
-        switch (page) {
-            case "tabla":
-                location.href = `${page}.html`
-                break;
-            case "adminPage":
-                location.href = `${page}.html`
-                break;
-            case "ruleta":
-                location.href = `${page}.html`
-                break;
-            case "juego":
-                location.href = `${page}.html`
-                break;
-            case "home":
-                location.href = `${page}.html`
-                break;
-            case "index":
-                location.href = `${page}.html`
-                break;
-            default:
-                break;
-        }
-    }
-    recuperarUsuario(){
-        const usuario = JSON.parse(localStorage.getItem("usuario"))
-        return usuario
+        location.href = `${page}.html`;
     }
 }
 
