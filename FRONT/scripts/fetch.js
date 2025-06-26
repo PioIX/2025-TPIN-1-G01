@@ -1,4 +1,3 @@
-let usuario = null
 async function traerCategorias() {
     const response = await fetch(`http://localhost:4000/traerCategorias`,{
         method: "GET",

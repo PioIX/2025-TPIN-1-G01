@@ -75,8 +75,12 @@ app.get('/usuarioLogeado',async function(req,res){
 })
 
 app.post('/InOut',async function(req,res){
-    respuesta = req.body.esta_logeado ? 
-    await realizarQuery(`UPDATE Usuarios SET esta_logeado=false WHERE id=${req.body.id}`) : 
-    await realizarQuery(`UPDATE Usuarios SET esta_logeado=true WHERE id=${req.body.id}`)
-    res.send(respuesta)
+    let usuario = req.body
+    // respuesta = req.body.esta_logeado ? await realizarQuery(`UPDATE Usuarios SET esta_logeado=false WHERE id=${req.body.id}`) : await realizarQuery(`UPDATE Usuarios SET esta_logeado=true WHERE id=${req.body.id}`)
+    if(req.body.esta_logeado){
+        respuesta = await realizarQuery(`UPDATE Usuarios SET esta_logeado=false WHERE id=${req.body.id}`)
+    } else {
+        respuesta = await realizarQuery(`UPDATE Usuarios SET esta_logeado=true WHERE id=${req.body.id}`)
+    }
+    res.send({respuesta:"me ejecuto"})
 })
