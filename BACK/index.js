@@ -74,7 +74,7 @@ app.get('/usuarioLogeado',async function(req,res){
     }
 })
 
-app.post('/InOut',async function(req,res){
+app.put('/InOut',async function(req,res){
     if(req.body.esta_logeado == true){
         respuesta = await realizarQuery(`UPDATE Usuarios SET esta_logeado=false WHERE id=${req.body.id}`)
         console.log("me deslogueo")
