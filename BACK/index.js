@@ -74,7 +74,7 @@ app.post('/registrarUsuario', async function (req, res) {
             res.send({ mensaje: "El usuario ya existe" });
         } else {
             let respuesta;
-            respuesta = await realizarQuery(`INSERT INTO Usuarios(correo_electronico,contraseña,nombre,es_admin) VALUES ('${req.body.correo_electronico}','${req.body.contraseña}','${req.body.nombre}',0)`)
+            respuesta = await realizarQuery(`INSERT INTO Usuarios(correo_electronico,contraseña,nombre,es_admin,esta_logeado) VALUES ('${req.body.correo_electronico}','${req.body.contraseña}','${req.body.nombre}',${req.body.es_admin},${req.body.esta_logeado})`)
             res.send({mensaje : "ok"})
         }
     } catch (error) {
