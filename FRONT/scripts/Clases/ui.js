@@ -28,6 +28,8 @@ class Ui{
         modalSignIn.close()
     }
     DoLogin(usuario){
+        console.log(usuario)
+        console.log(usuario.es_admin)
         switch (usuario.es_admin) {
             case 0:
                 location.href = "home.html"
