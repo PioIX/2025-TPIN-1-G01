@@ -38,6 +38,7 @@ formLogin.addEventListener("submit",(e)=>{
     formLogin.reset()
 })
 
+
 formRegister.addEventListener("submit",(e)=>{
     e.preventDefault()
     modalSignIn.close()

@@ -23,11 +23,28 @@ app.get('/', function (req, res) {
     });
 });
 
-app.get('/traerUsuarios', async function (req, res) {
-    let respuesta;
-    respuesta = await realizarQuery("SELECT * FROM Usuarios")
-    console.log(respuesta)
-    res.send(respuesta)
+
+app.get('/traerUsuarios',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery("SELECT * FROM Usuarios")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.get('/traerCategorias',async function(req,res){
+    try {
+        let respuesta;
+        respuesta = await realizarQuery("SELECT * FROM Categorias")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+
 })
 //funcion prueba
 
@@ -64,4 +81,26 @@ app.post('/registrarUsuario', async function (req, res) {
         res.send(error)
         console.log(error)
     }
+})
+
+app.get('/usuarioLogeado',async function(req,res){
+    try {
+        let respuesta;
+        respuesta = await realizarQuery(`SELECT * FROM Usuarios WHERE esta_logeado=true`)
+        console.log(respuesta)
+        res.json(respuesta[0])
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.put('/InOut',async function(req,res){
+    if(req.body.esta_logeado == true){
+        respuesta = await realizarQuery(`UPDATE Usuarios SET esta_logeado=false WHERE id=${req.body.id}`)
+        console.log("me deslogueo")
+    } else {
+        respuesta = await realizarQuery(`UPDATE Usuarios SET esta_logeado=true WHERE id=${req.body.id}`)
+        console.log("me logeo")
+        }
+    res.send({respuesta:"me ejecuto"})
 })

@@ -41,7 +41,9 @@ class Ui{
                 break;
         }
     }
-    
+    changeScreen(page){
+        location.href = `${page}.html`;
+    }
 }
 
 const ui = new Ui();
