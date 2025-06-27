@@ -54,6 +54,25 @@ async function InOut(datos) {
     return result
 }
 
+async function registrarUsuario(usuario) {
+  const response = await fetch("http://localhost:4000/registrarUsuario", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(usuario),
+  });
+
+  console.log(response);
+  let result = await response.json();
+  console.log(result)
+  if (result.mensaje === "ok") {
+      InOut(usuario)
+    } else {
+        errorHandler(result.mensaje)
+    }
+    ui.DoLogin(usuario);
+}
 
 
 
