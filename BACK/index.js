@@ -67,6 +67,16 @@ app.get('/verificarUsuario', async function (req, res) {
     }
 })
 
+app.get('/buscarUsuarioXNombre',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery (`SELECT * FROM Usuarios WHERE nombre ="${req.query.nombre}"`)
+        res.json(respuesta[0])
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.post('/registrarUsuario', async function (req, res) {
     try {
         const usuarioExiste = await realizarQuery(`SELECT * FROM Usuarios WHERE correo_electronico='${req.body.correo_electronico}'`)
@@ -95,6 +105,7 @@ app.get('/usuarioLogeado',async function(req,res){
 })
 
 app.put('/InOut',async function(req,res){
+    console.log(req.body)
     if(req.body.esta_logeado == true){
         respuesta = await realizarQuery(`UPDATE Usuarios SET esta_logeado=false WHERE id=${req.body.id}`)
         console.log("me deslogueo")

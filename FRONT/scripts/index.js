@@ -43,7 +43,7 @@ formRegister.addEventListener("submit",(e)=>{
     e.preventDefault()
     modalSignIn.close()
     const u = new Usuario(ui.getNameSignIn(),ui.getPasswordSignIn(),ui.getMailSignIn())
-    console.log(u.email)
+    console.log(u.correo_electronico)
     registrarUsuario(u)
     formRegister.reset()
 })
