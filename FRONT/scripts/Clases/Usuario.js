@@ -4,6 +4,6 @@ class Usuario{
         this.contraseña = contraseña 
         this.correo_electronico = correo_electronico
         this.es_admin = 0 
-        this.esta_logeado = true
+        this.esta_logeado = false
     }
 }
