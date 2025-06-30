@@ -44,9 +44,7 @@ app.get('/traerCategorias',async function(req,res){
     } catch (error) {
         res.send(error)
     }
-
 })
-//funcion prueba
 
 app.get('/verificarUsuario', async function (req, res) {
     try {
@@ -114,4 +112,43 @@ app.put('/InOut',async function(req,res){
         console.log("me logeo")
         }
     res.send({respuesta:"me ejecuto"})
+})
+
+function normalizarTexto(texto) {
+  return texto
+    .toLowerCase()
+    .normalize('NFD')                   
+    .replace(/[\u0300-\u036f]/g, '')    
+    .replace(/\s+/g, ' ')               
+    .trim();                             
+}
+
+app.post('/crearPregunta', async function (req, res) {
+  try {
+    const texto = req.body.contenido
+    const textoNormalizado = normalizarTexto(texto);
+
+    const preguntas = await realizarQuery('SELECT contenido FROM Preguntas');
+
+    for (let i = 0; i < preguntas.length; i++) {
+      const textoExistenteNormalizado = normalizarTexto(preguntas[i].texto);
+      if (textoExistenteNormalizado === textoNormalizado) {
+        return res.status(409).send('Ya existe una pregunta similar');
+      }
+    }
+
+    await realizarQuery('INSERT INTO Preguntas (id_categoria,puntaje,contenido,respuesta,imagen) VALUES')
+    res.send('Pregunta creada con éxito');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al crear la pregunta');
+  }
+});
+
+app.post('/crearOpciones',async function(req,res){
+    try {
+        
+    } catch (error) {
+        
+    }
 })

@@ -1,10 +1,23 @@
 const btns = document.querySelectorAll(".correct-btn")
-const pregunta = document.getElementById("area-pregunta")
+const areaPregunta = document.getElementById("area-pregunta")
 const selector = document.getElementById("select-categoria")
 const contenedores = document.querySelectorAll(".contedor-pregunta")
+const input = document.getElementById('imgInput');
+let base64Imagen = null;
 llenarSelect()
-console.log(contenedores[0].firstElementChild)
 
+input.addEventListener('change', () => {
+    const file = input.files[0];
+    if (!file) {
+        base64Imagen = null; 
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(event) {
+        base64Imagen = event.target.result; 
+    };
+    reader.readAsDataURL(file);
+});
 
 async function llenarSelect() {
     let categorias = await traerCategorias()
@@ -12,7 +25,7 @@ async function llenarSelect() {
     for(let i = 0;i<categorias.length;i++){
         selector.innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
-    
+
 }
 
 btns.forEach(btn => {
@@ -22,7 +35,10 @@ btns.forEach(btn => {
 });
 
 function CrearPregunta(){
-    if(pregunta.value === "" ){
+    let img = (base64Imagen === null) ? null : base64Imagen;
+    const puntajes = [100, 200, 300, 400, 500];
+    const numeroAleatorio = opciones[Math.floor(Math.random() * opciones.length)];
+    if(areaPregunta.value === "" ){
         console.log("te falta la pregunta crack")
     }
     else{
@@ -30,6 +46,12 @@ function CrearPregunta(){
             if(contenedores[x].firstElementChild.value == "" || contenedores[x].lastElementChild.innerText == "")
             console.log("te falta completar una opcion")
         }
-    }       
+    }
+    const id_categoria = selector.value
+    const contenido = areaPregunta.value
+    const puntaje = numeroAleatorio
+    const respuesta = null
+    const Question = new Pregunta(id_categoria,puntaje,contenido,respuesta,img)
+    mandarPregunta(Question)
 }
 

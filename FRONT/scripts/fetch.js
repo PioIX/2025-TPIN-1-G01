@@ -85,5 +85,15 @@ async function registrarUsuario(usuario) {
     }
 }
 
+async function mandarPregunta(pregunta) {
+        const response = await fetch("http://localhost:4000/crearPregunta", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pregunta),
+    });
 
-
+    const result = await response.json();
+    console.log(result)
+}
