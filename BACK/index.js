@@ -125,7 +125,8 @@ function normalizarTexto(texto) {
 
 app.post('/crearPregunta', async function (req, res) {
   try {
-    const texto = req.body.contenido
+    console.log(req.body)
+    const texto = req.body.pregunta.contenido
     const textoNormalizado = normalizarTexto(texto);
 
     const preguntas = await realizarQuery('SELECT contenido FROM Preguntas');
@@ -136,7 +137,7 @@ app.post('/crearPregunta', async function (req, res) {
         return res.status(409).send('Ya existe una pregunta similar');
       }
     }
-
+    //llenar values
     await realizarQuery('INSERT INTO Preguntas (id_categoria,puntaje,contenido,respuesta,imagen) VALUES')
     res.send('Pregunta creada con éxito');
   } catch (error) {
