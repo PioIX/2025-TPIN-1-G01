@@ -58,6 +58,7 @@
   border-radius: 5px;
   border: none;
   width: fit-content;
+  padding: 10px;
   height: 10vh;
   color: #fff;
 }
@@ -75,8 +76,9 @@
 
 dialog{
   width: 65vw;
-  height: 15vw;
-  background: #8e45b7;
+  height: fit-content;
+  padding: 20px;
+  background: #fea314;
   border-radius: 55px;
   margin: auto;
 }
@@ -103,6 +105,7 @@ form div{
 
 h2{
   height: fit-content;
+  text-transform: capitalize;
 }
 
 form button{
@@ -124,6 +127,8 @@ form button{
   color: #f0f0f0;
   height: 25%;
   width: 100%;
+  margin-bottom: 20px;
+
 } 
 .top h2{
   margin-left: 25px;
@@ -131,6 +136,8 @@ form button{
 
 .input-div{
   width: 100%;
+  height: fit-content;
+  padding: 5px;
   color: #f0f0f0;
   font-family: "Baloo 2", sans-serif;
   font-weight: 1000;
@@ -145,6 +152,7 @@ form button{
 .input-div input{
   width: 65%;
   height: fit-content;
+  padding: 5PX;
   border-radius: 98px;
 }
 
@@ -154,8 +162,11 @@ form button{
   background-color: #1dac48;
   font-family: "Baloo 2", sans-serif;
   border: none;
-  border-radius: 98px;
+  padding: 5px;
+  border-radius: 85px;
   color: #f0f0f0;
-  font-weight: 1000;  
+  font-weight: 1000; 
+  margin-top: 10px; 
   margin-right: 25px;
+
 }
