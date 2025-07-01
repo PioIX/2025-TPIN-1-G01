@@ -85,5 +85,40 @@ async function registrarUsuario(usuario) {
     }
 }
 
+async function recuperarUltimaPregunta() {
+    const response = await fetch("http://localhost:4000/traerUltimaPregunta",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
+async function mandarPregunta(pregunta) {
+    console.log(pregunta)
+    const response = await fetch("http://localhost:4000/crearPregunta", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pregunta),
+    });
 
+    const result = await response.json();
+    console.log(result)
+}
 
+async function mandarOpciones(opcion) {
+    const response = await fetch("http://localhost:4000/crearOpciones", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(opcion),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}

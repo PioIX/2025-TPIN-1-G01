@@ -44,9 +44,7 @@ app.get('/traerCategorias',async function(req,res){
     } catch (error) {
         res.send(error)
     }
-
 })
-//funcion prueba
 
 app.get('/verificarUsuario', async function (req, res) {
     try {
@@ -56,11 +54,9 @@ app.get('/verificarUsuario', async function (req, res) {
         if (respuesta.length != 0) {
             console.log(respuesta)
             res.json(respuesta[0])
-            console.log(message.length)
         } else {
             console.log(respuesta)
             res.send({ mensaje: "correo electrónico o contraseña incorrecta" });
-            console.log(message.length)
         }
     } catch (error) {
         res.send({message: error})
@@ -114,4 +110,59 @@ app.put('/InOut',async function(req,res){
         console.log("me logeo")
         }
     res.send({respuesta:"me ejecuto"})
+})
+
+app.get('/traerUltimaPregunta',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery (`SELECT * FROM Preguntas ORDER BY  id desc limit 1`)
+        res.json(respuesta[0]||null)
+    } catch (error) {
+        res.send(error)
+    }
+})
+function normalizarTexto(texto) {
+  if (typeof texto !== 'string') return '';
+  return texto
+    .toLowerCase()
+    .normalize('NFD')                   
+    .replace(/[\u0300-\u036f]/g, '')    
+    .replace(/\s+/g, ' ')               
+    .trim();                             
+}
+
+app.post('/crearPregunta', async function (req, res) {
+  try {
+    console.log(req.bodyimagen)
+    const texto = req.body.contenido
+    const textoNormalizado = normalizarTexto(texto);
+
+    const preguntas = await realizarQuery('SELECT contenido FROM Preguntas');
+
+    for (let i = 0; i < preguntas.length; i++) {
+      const textoExistenteNormalizado = normalizarTexto(preguntas[i].contenido);
+      if (textoExistenteNormalizado === textoNormalizado) {
+        return res.status(409).send('Ya existe una pregunta similar');
+      }
+    }
+    if(req.body.imagen==undefined){
+        await realizarQuery(`INSERT INTO Preguntas (id_categoria,contenido,imagen) VALUES (${req.body.id_categoria},"${req.body.contenido}",NULL)`)
+        res.send({message:'Pregunta creada con éxito'});
+    } else {
+        await realizarQuery(`INSERT INTO Preguntas (id_categoria,contenido,imagen) VALUES (${req.body.id_categoria},"${req.body.contenido}","${req.body.imagen}")`)
+        res.send({message:'Pregunta creada con éxito'});
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error al crear la pregunta');
+  }
+});
+
+app.post('/crearOpciones',async function(req,res){
+    try {
+        await realizarQuery(`INSERT INTO Opciones(opcion,id_pregunta,is_rta) VALUES ("${req.body.opcion}", ${req.body.id_pregunta},${req.body.isRta})`)
+        res.send({message:"ok"})
+    } catch (error) {
+        res.send(error)
+    }
 })

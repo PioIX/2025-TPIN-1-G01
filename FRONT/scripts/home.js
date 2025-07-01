@@ -1,5 +1,6 @@
 const btnTabla = document.getElementById("btn-table")
 const btnJugar = document.getElementById("btn-jugar")
+const btnCerrar = document.getElementById("btn-cerrar")
 const texto = document.getElementById("texto")
 async function iniciarPagina() {
     let usuario = await usuarioLog()
@@ -11,9 +12,8 @@ async function iniciarPagina() {
         ui.changeScreen("ruleta")
     })
 }
-async function cerrarSesion(){
-    let usuario = await usuarioLog()
-    InOut(usuario)
-    ui.changeScreen("index")
-}
+
+btnCerrar.addEventListener("click",()=>{
+    ui.cerrarSesion()
+})
 iniciarPagina()
