@@ -10,7 +10,6 @@ const btnRanking = document.getElementById("btn-ranking")
 
 btnLogin.addEventListener("click",()=>{
     ui.showLoginModal()
-
 })
 
 

@@ -1,5 +1,6 @@
 const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
+const btnCloseSession = document.getElementById("cerrar")
 const selector = document.getElementById("select-categoria")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
@@ -19,6 +20,9 @@ input.addEventListener('change', () => {
     reader.readAsDataURL(file);
 });
 
+btnCloseSession.addEventListener("click",()=>{
+    ui.cerrarSesion()
+})
 async function llenarSelect() {
     let categorias = await traerCategorias()
     console.log(categorias[0])
@@ -34,30 +38,53 @@ btns.forEach(btn => {
     })
 });
 
-function CrearPregunta(){
-    let img = (base64Imagen === null) ? null : base64Imagen;
-    // const puntajes = [100, 200, 300, 400, 500];
-    // const numeroAleatorio = opciones[Math.floor(Math.random() * opciones.length)];
-    if(areaPregunta.value === "" ){
-        console.log("te falta la pregunta crack")
+async function CrearPregunta() {
+    let id_pregunta;
+    let algunaSeleccionada = false
+    const ultimaPregunta = await recuperarUltimaPregunta();
+    if (!ultimaPregunta || ultimaPregunta.id === undefined) {
+        id_pregunta = 1;
+    } else {
+        id_pregunta = ultimaPregunta.id + 1;
     }
-    else{
-        for(let x = 0; x<contenedores.length;x++){
-            if(contenedores[x].firstElementChild.value == "")
-            console.log("te falta completar una opcion")
+
+    let img = (base64Imagen === null) ? null : base64Imagen;
+
+    if (areaPregunta.value === "") {
+        console.log("te falta la pregunta crack");
+        return;
+    }
+
+    for (let x = 0; x < contenedores.length; x++) {
+        if (contenedores[x].firstElementChild.value == "") {
+            console.log("te falta completar una opción");
+            return;
+        }
+        if (contenedores[x].lastElementChild.checked) {
+            algunaSeleccionada = true
         }
     }
-    const id_categoria = selector.value
-    const contenido = areaPregunta.value
-    const puntaje = 100
-    const respuesta = null
-    const Question = new Pregunta(id_categoria,puntaje,contenido,img)
+    if(!algunaSeleccionada) {
+        console.log("te falta una respuesta correcta");
+        return;};
+
     const Options = [
-        new Opcion(contenedores[0].firstElementChild.value,contenedores[0].lastElementChild.checked),
-        new Opcion(contenedores[1].firstElementChild.value,contenedores[1].lastElementChild.checked),
-        new Opcion(contenedores[2].firstElementChild.value,contenedores[2].lastElementChild.checked),
-        new Opcion(contenedores[3].firstElementChild.value,contenedores[3].lastElementChild.checked),
-    ]
-    mandarPregunta(Question,Options)
+        new Opcion(contenedores[0].firstElementChild.value, id_pregunta, contenedores[0].lastElementChild.checked),
+        new Opcion(contenedores[1].firstElementChild.value, id_pregunta, contenedores[1].lastElementChild.checked),
+        new Opcion(contenedores[2].firstElementChild.value, id_pregunta, contenedores[2].lastElementChild.checked),
+        new Opcion(contenedores[3].firstElementChild.value, id_pregunta, contenedores[3].lastElementChild.checked),
+    ];
+
+    const id_categoria = selector.value;
+    const contenido = areaPregunta.value;
+
+    const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);
+
+    console.log("Llamando mandarPregunta");
+    await mandarPregunta(Question);
+    for(let x of Options){
+        await mandarOpciones(x)
+    }
 }
+
 

@@ -42,6 +42,11 @@ class Ui{
     changeScreen(page){
         location.href = `${page}.html`;
     }
+    async cerrarSesion(){
+        let usuario = await usuarioLog()
+        InOut(usuario)
+        ui.changeScreen("index")
+    }
 }
 
 const ui = new Ui();
