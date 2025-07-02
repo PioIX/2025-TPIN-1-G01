@@ -122,3 +122,12 @@ async function mandarOpciones(opcion) {
     const result = await response.json();
     console.log(result)
 }
+
+async function traerPreguntas() {
+    const preguntas = await fetch("http://localhost:4000/traerPreguntas", {
+        method: "GET",
+        headers: {"Content-type":"application/json"},
+    })
+    const response_pregunta = await preguntas.json()
+    console.log(response_pregunta)
+}

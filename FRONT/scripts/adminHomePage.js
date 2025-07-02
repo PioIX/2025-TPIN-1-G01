@@ -2,10 +2,13 @@ const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
 const btnCloseSession = document.getElementById("cerrar")
 const selector = document.getElementById("select-categoria")
+const selectEditarCategoria = document.getElementById("categorias")
+const selectPregunta = document.getElementById("editar-select-pregunta")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
 let base64Imagen = null;
 llenarSelect()
+llenarPreguntas()
 
 input.addEventListener('change', () => {
     const file = input.files[0];
@@ -29,7 +32,18 @@ async function llenarSelect() {
     for(let i = 0;i<categorias.length;i++){
         selector.innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
+}
 
+async function llenarPreguntas(){
+    let preguntas = await traerPreguntas()
+    console.log(preguntas)
+    console.log(1)
+    console.log(preguntas[0])
+    for(let i = 0; i < preguntas.length;i++){
+        selectPregunta.innerHTML += 
+        `<option value="${preguntas[i].id}" data-categoria="${preguntas.id_categoria}" >${preguntas[i].contenido}</option>`
+    }   
+    return 1
 }
 
 btns.forEach(btn => {
