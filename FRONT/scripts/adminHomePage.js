@@ -1,10 +1,11 @@
 const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
-const btnCloseSession = document.getElementById("cerrar")
+const btnCloseSession = document.getElementsByClassName("btn-cerrar")
 const selector = document.getElementsByClassName("select-categoria")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
 const selectPreguntas = document.getElementById("select-preguntas")
+const display = document.getElementById("display-pregunta")
 let base64Imagen = null;
 llenarSelectCat()
 
@@ -21,9 +22,6 @@ input.addEventListener('change', () => {
     reader.readAsDataURL(file);
 });
 
-btnCloseSession.addEventListener("click",()=>{
-    ui.cerrarSesion()
-})
 
 selector[1].addEventListener("change",()=>{
     llenarSelectPreguntas()
@@ -40,11 +38,25 @@ async function llenarSelectCat() {
 async function llenarSelectPreguntas() {
     let preguntas = await recuperarPreguntasCategoria(selector[1].value)
     selectPreguntas.innerHTML = null
+    selectPreguntas.innerHTML = `<option value="undefined">seleccionar una</option>`
     for(let i = 0;i<preguntas.length;i++){
         selectPreguntas.innerHTML += `<option value=${preguntas[i].id}>${preguntas[i].contenido}</option>`
     }
-
 }
+
+selectPreguntas.addEventListener("change",()=>{
+    for(let x=0;x<selectPreguntas.options.length;x++){
+        console.log(selectPreguntas.options[x])
+        console.log(selectPreguntas.value)
+        if(selectPreguntas.options[x].value===selectPreguntas.value){
+            if(selectPreguntas.options[x].value!=="undefined"){
+                display.innerText = selectPreguntas.options[x].innerText
+            } else {
+                display.innerText = null
+            }
+        }
+    }
+})
 
 btns.forEach(btn => {
     btn.addEventListener("click",()=>{
@@ -101,4 +113,11 @@ async function CrearPregunta() {
     }
 }
 
-
+function borrarPregunta(){
+    const datos = {
+        id: selectPreguntas.value
+    }
+    if(datos.id!=="undefined"){
+        deleteQuestion(datos)
+    }
+}

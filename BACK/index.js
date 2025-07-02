@@ -175,3 +175,12 @@ app.post('/crearOpciones',async function(req,res){
         res.send(error)
     }
 })
+app.delete('/borrarPregunta',async function (req,res) {
+    try {
+        await realizarQuery(`DELETE FROM Preguntas WHERE id=${req.body.id};`)
+        await realizarQuery(`DELETE FROM Opciones WHERE id_pregunta=${req.body.id};`)
+        res.send({message:"eliminado con exito"})
+    } catch (error) {
+        res.send({"error":error})
+    }
+})

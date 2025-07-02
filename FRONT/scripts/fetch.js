@@ -133,3 +133,15 @@ async function mandarOpciones(opcion) {
     const result = await response.json();
     console.log(result)
 }
+async function deleteQuestion(id) {
+    const response = await fetch("http://localhost:4000/borrarPregunta", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(id),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}

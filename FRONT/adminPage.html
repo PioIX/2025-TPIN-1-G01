@@ -45,8 +45,8 @@
                 </div>
             </section>
             <div id="save-btns">
-                <button id="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
-                <button id="cerrar">Cerrar</button>
+                <button class="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
+                <button class="btn-cerrar" onclick="ui.cerrarSesion()">Cerrar</button>
             </div>
         </div>
        <div id="modificar-pregunta">
@@ -61,12 +61,12 @@
             <select name="" id="select-preguntas"></select>
             <h3>tu pregunta</h3>
             <textarea name="" id="display-pregunta" readonly></textarea>
-            <div>
-                <button>Guardar pregunta</button>
-                <button>borrar pregunta</button>
-                <button>modificar pregunta </button>
+            <div id="botones">
+                <button class="btn-guardar">Guardar pregunta</button>
+                <button class="btn-modificar">modificar pregunta </button>
+                <button class="btn-borrar" onclick="borrarPregunta()">borrar pregunta</button>
             </div>
-            <button>cerrar</button>
+            <button class="btn-cerrar" onclick="ui.cerrarSesion()">cerrar</button>
        </div>
     </main>
     <script src="scripts/fetch.js"></script>
