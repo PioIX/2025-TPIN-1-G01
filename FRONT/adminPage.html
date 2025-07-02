@@ -11,42 +11,63 @@
 </head>
 <body>
     <main>
-        <h2>Categorias</h2>
-        <select name="" id="select-categoria"></select>
-        <h2>Crea tu Pregunta</h2>
-        <!-- <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p> -->
-        <h3>Tu Pregunta:</h3>
-        <!-- preguntar como arreglar -->
-        <div id="contenedor-file-input">
-            <input type="file" accept="image/*" id="imgInput">
-            <!-- areglar text area con css -->
-            <textarea name="" id="area-pregunta" resize="vertical" placeholder="escribe tu pregunta aqui...."></textarea>
+        <div id="agregar-pregunta">
+            <h2>Categorias</h2>
+            <select name="" class="select-categoria"></select>
+            <h2>Crea tu Pregunta</h2>
+            <!-- <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p> -->
+            <h3>Tu Pregunta:</h3>
+            <!-- preguntar como arreglar -->
+            <div id="contenedor-file-input">
+                <input type="file" accept="image/*" id="imgInput">
+                <!-- areglar text area con css -->
+                <textarea name="" id="area-pregunta" resize="vertical" placeholder="escribe tu pregunta aqui...."></textarea>
+            </div>
+            
+            <h3>Opciones:</h3>
+            <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
+            <section class="contenedor-preguntas">
+                <div class="contenedor-pregunta">
+                    <input type="text">
+                    <input name="opcion" type="radio" class="correct-btn">
+                </div>
+                <div class="contenedor-pregunta">
+                    <input type="text">
+                    <input name="opcion" type="radio" class="correct-btn">
+                </div>
+                <div class="contenedor-pregunta">
+                    <input type="text">
+                    <input name="opcion" type="radio" class="correct-btn">
+                </div>
+                <div class="contenedor-pregunta">
+                    <input type="text">
+                    <input name="opcion" type="radio" class="correct-btn">
+                </div>
+            </section>
+            <div id="save-btns">
+                <button id="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
+                <button id="cerrar">Cerrar</button>
+            </div>
         </div>
-        
-        <h3>Opciones:</h3>
-        <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
-        <section class="contenedor-preguntas">
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
+       <div id="modificar-pregunta">
+
+       </div>
+       <div id="delete-pregunta">
+            <h2>Categorias</h2>
+            <select name="" class="select-categoria">
+                <option value="0">seleccioname uno</option>
+            </select>
+            <h2>borrar pregunta</h2>
+            <select name="" id="select-preguntas"></select>
+            <h3>tu pregunta</h3>
+            <textarea name="" id="display-pregunta" readonly></textarea>
+            <div>
+                <button>Guardar pregunta</button>
+                <button>borrar pregunta</button>
+                <button>modificar pregunta </button>
             </div>
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
-            </div>
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
-            </div>
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
-            </div>
-        </section>
-        <div id="save-btns">
-            <button id="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
-            <button id="cerrar">Cerrar</button>
-        </div>
+            <button>cerrar</button>
+       </div>
     </main>
     <script src="scripts/fetch.js"></script>
     <script src="scripts/Clases/ui.js"></script>

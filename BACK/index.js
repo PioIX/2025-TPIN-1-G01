@@ -121,6 +121,15 @@ app.get('/traerUltimaPregunta',async function (req,res) {
         res.send(error)
     }
 })
+app.get('/buscarPreguntaCategoria',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery (`SELECT * FROM Preguntas where id_categoria=${req.query.id_categoria}`)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})
 function normalizarTexto(texto) {
   if (typeof texto !== 'string') return '';
   return texto

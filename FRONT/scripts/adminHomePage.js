@@ -1,11 +1,12 @@
 const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
 const btnCloseSession = document.getElementById("cerrar")
-const selector = document.getElementById("select-categoria")
+const selector = document.getElementsByClassName("select-categoria")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
+const selectPreguntas = document.getElementById("select-preguntas")
 let base64Imagen = null;
-llenarSelect()
+llenarSelectCat()
 
 input.addEventListener('change', () => {
     const file = input.files[0];
@@ -23,11 +24,24 @@ input.addEventListener('change', () => {
 btnCloseSession.addEventListener("click",()=>{
     ui.cerrarSesion()
 })
-async function llenarSelect() {
+
+selector[1].addEventListener("change",()=>{
+    llenarSelectPreguntas()
+})
+async function llenarSelectCat() {
     let categorias = await traerCategorias()
     console.log(categorias[0])
     for(let i = 0;i<categorias.length;i++){
-        selector.innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
+        selector[0].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
+        selector[1].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
+    }
+
+}
+async function llenarSelectPreguntas() {
+    let preguntas = await recuperarPreguntasCategoria(selector[1].value)
+    selectPreguntas.innerHTML = null
+    for(let i = 0;i<preguntas.length;i++){
+        selectPreguntas.innerHTML += `<option value=${preguntas[i].id}>${preguntas[i].contenido}</option>`
     }
 
 }
@@ -75,7 +89,7 @@ async function CrearPregunta() {
         new Opcion(contenedores[3].firstElementChild.value, id_pregunta, contenedores[3].lastElementChild.checked),
     ];
 
-    const id_categoria = selector.value;
+    const id_categoria = selector[0].value;
     const contenido = areaPregunta.value;
 
     const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);

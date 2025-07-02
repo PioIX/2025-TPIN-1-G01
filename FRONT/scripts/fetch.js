@@ -96,6 +96,17 @@ async function recuperarUltimaPregunta() {
     console.log(result)
     return result
 }
+async function recuperarPreguntasCategoria(id_categoria) {
+    const response = await fetch(`http://localhost:4000/buscarPreguntaCategoria?id_categoria=${id_categoria}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
 async function mandarPregunta(pregunta) {
     console.log(pregunta)
     const response = await fetch("http://localhost:4000/crearPregunta", {
