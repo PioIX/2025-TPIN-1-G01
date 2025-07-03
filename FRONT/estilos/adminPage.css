@@ -9,7 +9,7 @@ body {
     font-family: "Baloo 2", sans-serif;
 }
 
-main, #editar-pregunta {
+main {
     margin-top: 10vh;
     margin-right: auto;
     margin-left: auto;

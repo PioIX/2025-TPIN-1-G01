@@ -12,7 +12,7 @@
 <body>
     <main>
         <h2>Categorias</h2>
-        <select name="" class = "categorias" id="select-categoria"></select>
+        <select name="" id="select-categoria"></select>
         <h2>Crea tu Pregunta</h2>
         <!-- <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p> -->
         <h3>Tu Pregunta:</h3>
@@ -24,7 +24,7 @@
         </div>
         
         <h3>Opciones:</h3>
-        <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p> 
+        <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
         <section class="contenedor-preguntas">
             <div class="contenedor-pregunta">
                 <input type="text">
@@ -46,49 +46,6 @@
         <div id="save-btns">
             <button id="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
             <button id="cerrar">Cerrar</button>
-        </div>
-        <div id="editar-pregunta">
-            <h2>Categorias</h2>
-            <select name="" id="editar-select-categoria" class="editar-select">
-                <option value="placeholder" selected disabled hidden>seleccione una categria</option>
-            </select>
-            <h2>Edita tu pregunta</h2>
-            <div>
-                <h3>Tu Pregunta:</h3>
-                <select name="" id="editar-select-pregunta" class="editar-select">
-                    <option value="placeholder" selected disabled hidden>seleccione una categria</option>
-                </select>
-            </div>
-            <div id="editar-file-input">
-                <input type="file" accept="image/*" id="imgInput">
-                <textarea name="" id="area-pregunta" resize="vertical" placeholder="edita su pregunta...."></textarea>
-            </div>
-            
-            <h3>Opciones:</h3>
-            <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p> 
-            <section class="editar-contenedor-preguntas">
-                <div class="editar-contenedor-preguntas">
-                    <input type="text">
-                    <input name="opcion" type="radio" class="edit-correct-btn">
-                </div>
-                <div class="editar-contenedor-preguntas">
-                    <input type="text">
-                    <input name="opcion" type="radio" class="edit-correct-btn">
-                </div>
-                <div class="editar-contenedor-preguntas">
-                    <input type="text">
-                    <input name="opcion" type="radio" class="edit-correct-btn">
-                </div>
-                <div class="editar-contenedor-preguntas">
-                    <input type="text">
-                    <input name="opcion" type="radio" class="edit-correct-btn">
-                </div>
-            </section>
-            <div id="edit-btns">
-                <button id="btn-editar" onclick="CrearPregunta()">Editar Pregunta</button>
-                <button id="cerrar">Cerrar</button>
-            </div>
-            
         </div>
     </main>
     <script src="scripts/fetch.js"></script>
