@@ -46,8 +46,9 @@
             </section>
             <div class="botones">
                 <button class="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
-                <button class="btn-modificar">modificar pregunta </button>
-                <button class="btn-borrar" onclick="borrarPregunta()">borrar pregunta</button>
+                <button class="btn-modificar" onclick="mostrarDiv(2)">modificar pregunta </button>
+                <button class="btn-borrar" onclick="mostrarDiv(3)">borrar pregunta</button>
+                <button class="btn-puntaje" onclick="mostrarDiv(4)">puntaje</button>
             </div>
             <button class="btn-cerrar" onclick="ui.cerrarSesion()">Cerrar</button>
         </div>
@@ -64,9 +65,10 @@
             <h3>tu pregunta</h3>
             <textarea name="" id="display-pregunta" readonly></textarea>
             <div class="botones">
-                <button class="btn-guardar">Guardar pregunta</button>
-                <button class="btn-modificar">modificar pregunta </button>
+                <button class="btn-guardar" onclick="mostrarDiv(1)">Guardar pregunta</button>
+                <button class="btn-modificar"onclick="mostrarDiv(2)">modificar pregunta </button>
                 <button class="btn-borrar" onclick="borrarPregunta()">borrar pregunta</button>
+                <button class="btn-puntaje" onclick="mostrarDiv(4)">puntaje</button>
             </div>
             <button class="btn-cerrar" onclick="ui.cerrarSesion()">cerrar</button>
        </div>
@@ -80,6 +82,12 @@
                 <button onclick="modificarPuntaje('eliminar')">eliminar puntaje</button>
                 <button onclick="modificarPuntaje('actualizar')">modificar puntaje</button>
             </section>
+            <div class="botones">
+                <button class="btn-guardar" onclick="mostrarDiv(1)">Guardar pregunta</button>
+                <button class="btn-modificar"onclick="mostrarDiv(2)">modificar pregunta </button>
+                <button class="btn-borrar" onclick="mostrarDiv(3)">borrar pregunta</button>
+                <button class="btn-puntaje" onclick="mostrarDiv(4)">puntaje</button>
+            </div>
        </div>
     </main>
     <script src="scripts/fetch.js"></script>

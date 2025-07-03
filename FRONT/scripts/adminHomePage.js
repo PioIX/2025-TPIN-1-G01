@@ -3,14 +3,15 @@ const areaPregunta = document.getElementById("area-pregunta")
 const btnCloseSession = document.getElementsByClassName("btn-cerrar")
 const selector = document.getElementsByClassName("select-categoria")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
-const botonGuardar = document.getElementsByClassName("btn-guardar")
-const botonModificar = document.getElementsByClassName("btn-modificar")
-const botonBorrar = document.getElementsByClassName("btn-borrar")
 const input = document.getElementById('imgInput');
 const selectPreguntas = document.getElementById("select-preguntas")
 const display = document.getElementById("display-pregunta")
 const selectJugadores = document.getElementById("select-jugadores")
 const inputScore = document.getElementById("new-score")
+const divAgregarPregunta = document.getElementById("agregar-pregunta") 
+const divModificarPregunta = document.getElementById("modificar-pregunta") 
+const divBorrarPregunta= document.getElementById("delete-pregunta") 
+const divAreaJugador= document.getElementById("area-usuario") 
 let base64Imagen = null;
 llenarSelectCat()
 modificarJugadores()
@@ -166,3 +167,38 @@ function modificarPuntaje(act){
         modificarJugadores()
         inputScore.value = ""})
 }
+
+function mostrarDiv(seccion){
+    switch (seccion) {
+        case 1:
+            divAgregarPregunta.style.display = "block"
+            divModificarPregunta.style.display = "none"
+            divBorrarPregunta.style.display = "none"
+            divAreaJugador.style.display = "none"
+            break;
+        case 2:
+            divAgregarPregunta.style.display = "none"
+            divModificarPregunta.style.display = "block"
+            divBorrarPregunta.style.display = "none"
+            divAreaJugador.style.display = "none"
+            break;
+        case 3:
+            divAgregarPregunta.style.display = "none"
+            divModificarPregunta.style.display = "none"
+            divBorrarPregunta.style.display = "block"
+            divAreaJugador.style.display = "none"
+            break;
+        case 4:
+            divAgregarPregunta.style.display = "none"
+            divModificarPregunta.style.display = "none"
+            divBorrarPregunta.style.display = "none"
+            divAreaJugador.style.display = "block"
+            break;
+        default:
+            break;
+    }
+}
+// divAgregarPregunta
+// divModificarPregunta
+// divBorrarPregunta
+// divAreaJugador
