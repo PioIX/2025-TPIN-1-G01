@@ -3,12 +3,17 @@ const areaPregunta = document.getElementById("area-pregunta")
 const btnCloseSession = document.getElementsByClassName("btn-cerrar")
 const selector = document.getElementsByClassName("select-categoria")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
+const botonGuardar = document.getElementsByClassName("btn-guardar")
+const botonModificar = document.getElementsByClassName("btn-modificar")
+const botonBorrar = document.getElementsByClassName("btn-borrar")
 const input = document.getElementById('imgInput');
 const selectPreguntas = document.getElementById("select-preguntas")
 const display = document.getElementById("display-pregunta")
+const selectJugadores = document.getElementById("select-jugadores")
+const inputScore = document.getElementById("new-score")
 let base64Imagen = null;
 llenarSelectCat()
-
+modificarJugadores()
 input.addEventListener('change', () => {
     const file = input.files[0];
     if (!file) {
@@ -120,4 +125,44 @@ function borrarPregunta(){
     if(datos.id!=="undefined"){
         deleteQuestion(datos)
     }
+}
+
+async function modificarJugadores() {
+    const jugadores = await traerJugadores()
+    selectJugadores.innerHTML = ""
+    selectJugadores.innerHTML +=  `<option value="undefined">selecciona un jugador</option>`
+    for(let x=0;x<jugadores.length;x++){
+        selectJugadores.innerHTML += `<option value=${jugadores[x].id}>${jugadores[x].nombre} - puntaje maximo: ${jugadores[x].max_puntaje}</option>`
+    }
+    console.log("fin ejecucion")
+}
+
+function eliminarJugador(){
+    data = {
+        id:selectJugadores.value
+    }
+    if(data.id!="undefined"){
+        deletePlayer(data).then(()=>modificarJugadores())
+    } else {
+        console.log("seleccionar jugador")
+    }
+    
+}
+inputScore.addEventListener("keydown", (e) => {
+    if (e.key === "-" || e.key === "e" || e.key === "+") {
+        e.preventDefault();
+    }
+});
+
+function modificarPuntaje(act){
+    let indice = selectJugadores.options.selectedIndex
+    data = {
+        action: act,
+        id: parseInt(selectJugadores.options[indice].value),
+        new_highScore: parseInt(inputScore.value)
+    }
+    console.log(data)
+    updateHigScore(data).then(()=>{
+        modificarJugadores()
+        inputScore.value = ""})
 }

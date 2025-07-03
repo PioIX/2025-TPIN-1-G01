@@ -44,10 +44,12 @@
                     <input name="opcion" type="radio" class="correct-btn">
                 </div>
             </section>
-            <div id="save-btns">
+            <div class="botones">
                 <button class="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
-                <button class="btn-cerrar" onclick="ui.cerrarSesion()">Cerrar</button>
+                <button class="btn-modificar">modificar pregunta </button>
+                <button class="btn-borrar" onclick="borrarPregunta()">borrar pregunta</button>
             </div>
+            <button class="btn-cerrar" onclick="ui.cerrarSesion()">Cerrar</button>
         </div>
        <div id="modificar-pregunta">
 
@@ -61,12 +63,23 @@
             <select name="" id="select-preguntas"></select>
             <h3>tu pregunta</h3>
             <textarea name="" id="display-pregunta" readonly></textarea>
-            <div id="botones">
+            <div class="botones">
                 <button class="btn-guardar">Guardar pregunta</button>
                 <button class="btn-modificar">modificar pregunta </button>
                 <button class="btn-borrar" onclick="borrarPregunta()">borrar pregunta</button>
             </div>
             <button class="btn-cerrar" onclick="ui.cerrarSesion()">cerrar</button>
+       </div>
+       <div id="area-usuario">
+            <select name="" id="select-jugadores">
+                <option value="undefined">seleccione una opcion</option>
+            </select>
+            <button onclick="eliminarJugador()">eliminar Jugador</button>
+            <input type="number" placeholder="ingrese el puntaje" id="new-score" min="1">
+            <section>
+                <button onclick="modificarPuntaje('eliminar')">eliminar puntaje</button>
+                <button onclick="modificarPuntaje('actualizar')">modificar puntaje</button>
+            </section>
        </div>
     </main>
     <script src="scripts/fetch.js"></script>
