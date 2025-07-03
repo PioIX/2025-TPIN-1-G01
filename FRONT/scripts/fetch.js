@@ -130,4 +130,5 @@ async function traerPreguntas() {
     })
     const response_pregunta = await preguntas.json()
     console.log(response_pregunta)
+        return response_pregunta
 }
