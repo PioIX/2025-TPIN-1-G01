@@ -166,3 +166,13 @@ app.post('/crearOpciones',async function(req,res){
         res.send(error)
     }
 })
+app.get('/coloresCategoria',async function(req,res){
+    try {
+        let respuesta;
+        respuesta = await realizarQuery ("select nombre_categoria,color from Categorias")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})

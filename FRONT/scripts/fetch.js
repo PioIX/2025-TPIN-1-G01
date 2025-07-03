@@ -122,3 +122,15 @@ async function mandarOpciones(opcion) {
     const result = await response.json();
     console.log(result)
 }
+
+async function RecuperarColoresCategoria() {
+    const response = await fetch("http://localhost:4000/coloresCategoria",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
