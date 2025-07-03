@@ -2,6 +2,9 @@ const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
 const btnCloseSession = document.getElementsByClassName("btn-cerrar")
 const selector = document.getElementsByClassName("select-categoria")
+// const selector = document.getElementById("select-categoria")
+// const selectEditarCategoria = document.getElementById("editar-select-categoria")
+// const selectPregunta = document.getElementById("editar-select-pregunta")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
 const selectPreguntas = document.getElementById("select-preguntas")
@@ -36,10 +39,22 @@ async function llenarSelectCat() {
     let categorias = await traerCategorias()
     console.log(categorias[0])
     for(let i = 0;i<categorias.length;i++){
+
         selector[0].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
         selector[1].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
+}
 
+async function llenarPreguntas(){
+    let preguntas = await traerPreguntas()
+    console.log(preguntas)
+    console.log(1)
+    for(let i = 0; i < preguntas.length;i++){
+        selectPregunta.innerHTML += 
+        `<option value="${preguntas[i].id}" data-categoria="${preguntas.id_categoria}" >${preguntas[i].contenido}</option>`
+        console.log(i)
+    }   
+    return 1
 }
 async function llenarSelectPreguntas() {
     let preguntas = await recuperarPreguntasCategoria(selector[1].value)
@@ -63,6 +78,24 @@ selectPreguntas.addEventListener("change",()=>{
         }
     }
 })
+
+selectEditarCategoria.addEventListener('change', function() {
+    const categoria = this.value;
+    console.log(this.value)
+    if (categoria) {
+      Array.from(selectPregunta.options).forEach(option => {
+        if (!option.value) {
+          option.hidden = false; // Mantener el placeholder visible
+        } else {
+          option.hidden = option.getAttribute('data-categoria') !== categoria;
+        }
+      });
+  
+    } else {
+      select1.disabled = true;
+      select1.value = "";
+    }
+  });
 
 btns.forEach(btn => {
     btn.addEventListener("click",()=>{

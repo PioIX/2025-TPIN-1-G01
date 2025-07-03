@@ -55,6 +55,16 @@ app.get('/traerCategorias',async function(req,res){
     }
 })
 
+app.get('/traerPreguntas',async function (req,res){
+    try {
+        const respuesta = await realizarQuery(`SELECT * FROM Preguntas`)
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+}) 
+
 app.get('/verificarUsuario', async function (req, res) {
     try {
         let respuesta;
