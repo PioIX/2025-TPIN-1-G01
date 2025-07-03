@@ -1,20 +1,12 @@
 const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
-const btnCloseSession = document.getElementsByClassName("btn-cerrar")
-const selector = document.getElementsByClassName("select-categoria")
+const btnCloseSession = document.getElementById("cerrar")
+const selector = document.getElementById("select-categoria")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
-const selectPreguntas = document.getElementById("select-preguntas")
-const display = document.getElementById("display-pregunta")
-const selectJugadores = document.getElementById("select-jugadores")
-const inputScore = document.getElementById("new-score")
-const divAgregarPregunta = document.getElementById("agregar-pregunta") 
-const divModificarPregunta = document.getElementById("modificar-pregunta") 
-const divBorrarPregunta= document.getElementById("delete-pregunta") 
-const divAreaJugador= document.getElementById("area-usuario") 
 let base64Imagen = null;
-llenarSelectCat()
-modificarJugadores()
+llenarSelect()
+
 input.addEventListener('change', () => {
     const file = input.files[0];
     if (!file) {
@@ -28,41 +20,17 @@ input.addEventListener('change', () => {
     reader.readAsDataURL(file);
 });
 
-
-selector[1].addEventListener("change",()=>{
-    llenarSelectPreguntas()
+btnCloseSession.addEventListener("click",()=>{
+    ui.cerrarSesion()
 })
-async function llenarSelectCat() {
+async function llenarSelect() {
     let categorias = await traerCategorias()
     console.log(categorias[0])
     for(let i = 0;i<categorias.length;i++){
-        selector[0].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
-        selector[1].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
+        selector.innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
 
 }
-async function llenarSelectPreguntas() {
-    let preguntas = await recuperarPreguntasCategoria(selector[1].value)
-    selectPreguntas.innerHTML = null
-    selectPreguntas.innerHTML = `<option value="undefined">seleccionar una</option>`
-    for(let i = 0;i<preguntas.length;i++){
-        selectPreguntas.innerHTML += `<option value=${preguntas[i].id}>${preguntas[i].contenido}</option>`
-    }
-}
-
-selectPreguntas.addEventListener("change",()=>{
-    for(let x=0;x<selectPreguntas.options.length;x++){
-        console.log(selectPreguntas.options[x])
-        console.log(selectPreguntas.value)
-        if(selectPreguntas.options[x].value===selectPreguntas.value){
-            if(selectPreguntas.options[x].value!=="undefined"){
-                display.innerText = selectPreguntas.options[x].innerText
-            } else {
-                display.innerText = null
-            }
-        }
-    }
-})
 
 btns.forEach(btn => {
     btn.addEventListener("click",()=>{
@@ -107,7 +75,7 @@ async function CrearPregunta() {
         new Opcion(contenedores[3].firstElementChild.value, id_pregunta, contenedores[3].lastElementChild.checked),
     ];
 
-    const id_categoria = selector[0].value;
+    const id_categoria = selector.value;
     const contenido = areaPregunta.value;
 
     const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);
@@ -119,86 +87,4 @@ async function CrearPregunta() {
     }
 }
 
-function borrarPregunta(){
-    const datos = {
-        id: selectPreguntas.value
-    }
-    if(datos.id!=="undefined"){
-        deleteQuestion(datos)
-    }
-}
 
-async function modificarJugadores() {
-    const jugadores = await traerJugadores()
-    selectJugadores.innerHTML = ""
-    selectJugadores.innerHTML +=  `<option value="undefined">selecciona un jugador</option>`
-    for(let x=0;x<jugadores.length;x++){
-        selectJugadores.innerHTML += `<option value=${jugadores[x].id}>${jugadores[x].nombre} - puntaje maximo: ${jugadores[x].max_puntaje}</option>`
-    }
-    console.log("fin ejecucion")
-}
-
-function eliminarJugador(){
-    data = {
-        id:selectJugadores.value
-    }
-    if(data.id!="undefined"){
-        deletePlayer(data).then(()=>modificarJugadores())
-    } else {
-        console.log("seleccionar jugador")
-    }
-    
-}
-inputScore.addEventListener("keydown", (e) => {
-    if (e.key === "-" || e.key === "e" || e.key === "+") {
-        e.preventDefault();
-    }
-});
-
-function modificarPuntaje(act){
-    let indice = selectJugadores.options.selectedIndex
-    data = {
-        action: act,
-        id: parseInt(selectJugadores.options[indice].value),
-        new_highScore: parseInt(inputScore.value)
-    }
-    console.log(data)
-    updateHigScore(data).then(()=>{
-        modificarJugadores()
-        inputScore.value = ""})
-}
-
-function mostrarDiv(seccion){
-    switch (seccion) {
-        case 1:
-            divAgregarPregunta.style.display = "block"
-            divModificarPregunta.style.display = "none"
-            divBorrarPregunta.style.display = "none"
-            divAreaJugador.style.display = "none"
-            break;
-        case 2:
-            divAgregarPregunta.style.display = "none"
-            divModificarPregunta.style.display = "block"
-            divBorrarPregunta.style.display = "none"
-            divAreaJugador.style.display = "none"
-            break;
-        case 3:
-            divAgregarPregunta.style.display = "none"
-            divModificarPregunta.style.display = "none"
-            divBorrarPregunta.style.display = "block"
-            divAreaJugador.style.display = "none"
-            break;
-        case 4:
-            divAgregarPregunta.style.display = "none"
-            divModificarPregunta.style.display = "none"
-            divBorrarPregunta.style.display = "none"
-            divAreaJugador.style.display = "block"
-            break;
-        default:
-            break;
-    }
-}
-// divAgregarPregunta
-// divModificarPregunta
-// divBorrarPregunta
-// divAreaJugador
