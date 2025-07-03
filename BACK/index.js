@@ -34,7 +34,16 @@ app.get('/traerUsuarios',async function (req,res) {
         res.send(error)
     }
 })
-
+app.get('/traerJugadores',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery("SELECT * FROM Jugadores")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})
 app.get('/traerCategorias',async function(req,res){
     try {
         let respuesta;
@@ -131,6 +140,15 @@ app.get('/traerUltimaPregunta',async function (req,res) {
         res.send(error)
     }
 })
+app.get('/buscarPreguntaCategoria',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery (`SELECT * FROM Preguntas where id_categoria=${req.query.id_categoria}`)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})
 function normalizarTexto(texto) {
   if (typeof texto !== 'string') return '';
   return texto
@@ -172,6 +190,37 @@ app.post('/crearOpciones',async function(req,res){
     try {
         await realizarQuery(`INSERT INTO Opciones(opcion,id_pregunta,is_rta) VALUES ("${req.body.opcion}", ${req.body.id_pregunta},${req.body.isRta})`)
         res.send({message:"ok"})
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.delete('/borrarPregunta',async function (req,res) {
+    try {
+        await realizarQuery(`DELETE FROM Preguntas WHERE id=${req.body.id};`)
+        await realizarQuery(`DELETE FROM Opciones WHERE id_pregunta=${req.body.id};`)
+        res.send({message:"eliminado con exito"})
+    } catch (error) {
+        res.send({"error":error})
+    }
+})
+app.delete('/eliminarJugadorXid',async function (req,res) {
+    try {
+        await realizarQuery(`DELETE FROM Jugadores WHERE id=${req.body.id}`)
+        res.send({message:"jugador eliminado con exito"})
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.put('/actualizarPuntaje',async function(req,res){
+    console.log(req.body)
+    try {
+        if(req.body.action==="eliminar"){
+            await realizarQuery(`UPDATE Jugadores SET max_puntaje=0 WHERE id=${req.body.id}`)
+            res.send({message:"puntaje eliminado"})
+        } else{
+            await realizarQuery(`UPDATE Jugadores SET max_puntaje=${req.body.new_highScore} WHERE id=${req.body.id}`)
+            res.send({message:"puntaje actualizado"})
+        }
     } catch (error) {
         res.send(error)
     }

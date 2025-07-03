@@ -111,3 +111,15 @@ h3 {
     border-radius: 5px;
     font-size: 15px;
 }
+#agregar-pregunta{
+    display: block;
+}
+#modificar-pregunta{
+    display: none;
+}
+#delete-pregunta{
+    display: none;
+}
+#area-usuario{
+    display: none;
+}
