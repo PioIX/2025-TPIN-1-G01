@@ -2,10 +2,13 @@ const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
 const btnCloseSession = document.getElementById("cerrar")
 const selector = document.getElementById("select-categoria")
+const selectEditarCategoria = document.getElementById("editar-select-categoria")
+const selectPregunta = document.getElementById("editar-select-pregunta")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
 let base64Imagen = null;
 llenarSelect()
+llenarPreguntas()
 
 input.addEventListener('change', () => {
     const file = input.files[0];
@@ -28,9 +31,39 @@ async function llenarSelect() {
     console.log(categorias[0])
     for(let i = 0;i<categorias.length;i++){
         selector.innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
+        selectEditarCategoria.innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
-
 }
+
+async function llenarPreguntas(){
+    let preguntas = await traerPreguntas()
+    console.log(preguntas)
+    console.log(1)
+    for(let i = 0; i < preguntas.length;i++){
+        selectPregunta.innerHTML += 
+        `<option value="${preguntas[i].id}" data-categoria="${preguntas.id_categoria}" >${preguntas[i].contenido}</option>`
+        console.log(i)
+    }   
+    return 1
+}
+
+selectEditarCategoria.addEventListener('change', function() {
+    const categoria = this.value;
+    console.log(this.value)
+    if (categoria) {
+      Array.from(selectPregunta.options).forEach(option => {
+        if (!option.value) {
+          option.hidden = false; // Mantener el placeholder visible
+        } else {
+          option.hidden = option.getAttribute('data-categoria') !== categoria;
+        }
+      });
+  
+    } else {
+      select1.disabled = true;
+      select1.value = "";
+    }
+  });
 
 btns.forEach(btn => {
     btn.addEventListener("click",()=>{
