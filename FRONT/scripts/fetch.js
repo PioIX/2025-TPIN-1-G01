@@ -11,6 +11,19 @@ async function traerCategorias() {
     return result
 }
 
+async function traerJugadores() {
+    const response = await fetch(`http://localhost:4000/traerJugadores`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    console.log(response)
+    let result = await response.json()
+    console.log(result)
+    return result
+}
+
 async function verificarUsuario(usuario) {
     const response = await fetch(`http://localhost:4000/verificarUsuario?correo_electronico=${usuario.email}&contraseña=${usuario.password}`,{
         method: "GET",
@@ -96,6 +109,17 @@ async function recuperarUltimaPregunta() {
     console.log(result)
     return result
 }
+async function recuperarPreguntasCategoria(id_categoria) {
+    const response = await fetch(`http://localhost:4000/buscarPreguntaCategoria?id_categoria=${id_categoria}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
 async function mandarPregunta(pregunta) {
     console.log(pregunta)
     const response = await fetch("http://localhost:4000/crearPregunta", {
@@ -117,6 +141,43 @@ async function mandarOpciones(opcion) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(opcion),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}
+async function deleteQuestion(id) {
+    const response = await fetch("http://localhost:4000/borrarPregunta", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(id),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}
+async function deletePlayer(id) {
+    const response = await fetch("http://localhost:4000/eliminarJugadorXid", {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(id),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}
+async function updateHigScore(data) {
+    
+    const response = await fetch("http://localhost:4000/actualizarPuntaje", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
     });
 
     const result = await response.json();
