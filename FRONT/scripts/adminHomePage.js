@@ -6,6 +6,7 @@ const selector = document.getElementsByClassName("select-categoria")
 // const selectEditarCategoria = document.getElementById("editar-select-categoria")
 // const selectPregunta = document.getElementById("editar-select-pregunta")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
+const editar = document.getElementsByClassName("contenedor-editar")
 const input = document.getElementById('imgInput');
 const selectorPreguntas = document.getElementsByClassName("select-pregunta")
 const selectPregunta = document.getElementById("select-preguntas")
@@ -225,16 +226,20 @@ selectorPreguntas[0].addEventListener("change", () => {
 
 
 async function PreguntaAEditar() {
+    console.log('pepe')
     const id_pregunta = selectorPreguntas[0].value
     const pregunta = await traerPregunta(id_pregunta)
-    display.innerText = pregunta.contenido
+    display[0].innerText = pregunta.contenido
     let i=0;
     let opcion = await traerOpcion(pregunta.id)
-    while(i < contenedores.length){
-        contenedores[x].firstElementChild.value = opcion[i]
-        if(opcion[i].isRta){
-            contenedores[i].lastElementChild.checked = true
+    console.log(opcion)
+    while(i<editar.length){
+        console.log("entre")
+        editar[i].firstElementChild.value = opcion[i].opcion
+        if(opcion[i].is_rta){
+            editar[i].lastElementChild.checked = true
         }
+        i++;
     }
 
 }

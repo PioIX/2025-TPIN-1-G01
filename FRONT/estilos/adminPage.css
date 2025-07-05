@@ -48,6 +48,15 @@ h3 {
     margin-left: 10vw;
 }
 
+#editar-file-input{
+    display: flex;
+    flex-direction: column;
+}
+
+#imgInput{
+    align-self: center;
+}
+
 #contenedor-file-input input {
     align-self: center;
     max-width: 40vw;
@@ -123,3 +132,4 @@ h3 {
 #area-usuario{
     display: none;
 }
+

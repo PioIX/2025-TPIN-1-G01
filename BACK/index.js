@@ -226,22 +226,26 @@ app.put('/actualizarPuntaje',async function(req,res){
     }
 })
 
-app.get("/traerPregunta", async (req,res) => {
+app.get("/traerPregunta", async function(req,res){
     try {
         const pregunta = await realizarQuery(
             `Select * from Preguntas where id= ${req.query.id}`
         )    
-        res.send(pregunta)
+        res.send(pregunta[0])
     } catch (error) {
-        res.send({mensaje:error})
+        res.send(error)
     }
 })
 
 app.get("/traerOpcion", async (req,res) => {
     try {
-        const respuesta = realizarQuery(
+        const respuesta = await realizarQuery(
             `Select * from Opciones where id_pregunta = ${req.query.id_pregunta}`
         )
+        console.log(respuesta)
+        for(let i=0;i<respuesta[0].opcion.length;i++){
+            console.log(respuesta[i].opcion[i])
+        }
         res.send(respuesta)
     } catch (error) {
         res.send(error)

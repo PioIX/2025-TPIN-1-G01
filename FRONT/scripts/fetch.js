@@ -188,15 +188,17 @@ async function traerPregunta(id) {
 
     const response = await fetch(`http://localhost:4000/traerPregunta?id=${id}`, {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",},
     })
-    const result = response.json()    
-}
+    const result = await response.json()    
+    return result
+} 
 
 async function traerOpcion(id_pregunta) {
-    const response = await fetch(`http://localhost:4000//traerOpcion?id_pregunta=${id_pregunta}`, {
+    const response = await fetch(`http://localhost:4000/traerOpcion?id_pregunta=${id_pregunta}`, {
         method: "GET",
-        headers: {"Content-Type": "application/json"},
+        headers: {"Content-Type": "application/json",},
     })
-    const result = response.json()    
+    const result = await response.json()    
+    return result
 }
