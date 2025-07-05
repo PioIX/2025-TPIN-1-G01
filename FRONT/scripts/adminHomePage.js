@@ -17,6 +17,9 @@ const divAgregarPregunta = document.getElementById("agregar-pregunta")
 const divModificarPregunta = document.getElementById("modificar-pregunta") 
 const divBorrarPregunta= document.getElementById("delete-pregunta") 
 const divAreaJugador= document.getElementById("area-usuario") 
+const btnCargar = document.getElementById('btnCargar');
+const imgMostrar = document.getElementById('imgMostrar');
+
 let base64Imagen = null;
 llenarSelectCat()
 modificarJugadores()
@@ -221,18 +224,20 @@ function mostrarDiv(seccion){
 
 //editar pregunta
 selectorPreguntas[0].addEventListener("change", () => {
-    PreguntaAEditar()
+    preguntaAEditar()
 })
 
 
-async function PreguntaAEditar() {
+async function preguntaAEditar() {
     console.log('pepe')
     const id_pregunta = selectorPreguntas[0].value
     const pregunta = await traerPregunta(id_pregunta)
     display[0].innerText = pregunta.contenido
+
+    mostrarImagen()
+
     let i=0;
     let opcion = await traerOpcion(pregunta.id)
-    console.log(opcion)
     while(i<editar.length){
         console.log("entre")
         editar[i].firstElementChild.value = opcion[i].opcion
@@ -242,4 +247,50 @@ async function PreguntaAEditar() {
         i++;
     }
 
+}
+
+async function editarPregunta() {
+    let img = (base64Imagen === null) ? null : base64Imagen;
+    const datos = {
+        id: selectorPreguntas[0].value,
+        id_categoria: selector[1].value,
+        contenido: display[0].innerText,
+        imagen: img
+    }
+    await actualizarPregunta(datos)
+
+    const opciones = []
+    for(let x=0;x<editar.length;x++){
+        console.log(selectorPreguntas[0].value)
+        console.log(editar[x].lastElementChild.checked)
+
+        opciones.push(new Opcion(editar[x].firstElementChild.value, selectorPreguntas[0].value, editar[x].lastElementChild.checked))
+
+    }
+    await actualizarOpcion(opciones[0])
+    await actualizarOpcion(opciones[1])
+    await actualizarOpcion(opciones[2])
+    await actualizarOpcion(opciones[3])
+}
+
+
+
+
+async function mostrarImagen() {
+    fetch('http://localhost:4000/traerImagen')
+    .then(response => {
+        if (!response.ok) throw new Error('No se pudo cargar la imagen');
+        return response.json();
+    })
+    .then(data => {
+        if (data.imagenBase64) {
+        imgMostrar.src = data.imagenBase64;
+        } else {
+        alert('No se encontró imagen');
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Error al cargar la imagen');
+    });
 }

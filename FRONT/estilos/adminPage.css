@@ -74,6 +74,10 @@ h3 {
     height: 30px;
 }
 
+.select-pregunta{
+    width: 20vw;
+}
+
 .contedor-pregunta button {
     font-family: "Baloo 2", sans-serif;
     background-color: #fff;

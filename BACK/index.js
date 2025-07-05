@@ -251,3 +251,33 @@ app.get("/traerOpcion", async (req,res) => {
         res.send(error)
     }
 })
+
+app.put("/actualizarPregunta",async function(req,res){
+    try {
+        await realizarQuery(
+            `UPDATE Preguntas 
+            SET id_categoria=${req.body.id_categoria} 
+            and contenido="${req.body.contenido}" 
+            and imagen="${req.body.imagen}" 
+            WHERE id=${req.body.id}
+            `)
+        res.send({message:"pregunta actualizada"})
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.put("/actualizarOpcion",async function(req,res){
+    try {
+        await realizarQuery(
+            `UPDATE Opciones 
+            SET opcion="${req.body.opcion}"
+            and id_pregunta=${req.body.id_pregunta} 
+            and is_rta=${req.body.isRta} 
+            WHERE id=${req.body.id}
+            `)
+        res.send({message:"opcion actualizada"})
+    } catch (error) {
+        res.send(error)
+    }
+})

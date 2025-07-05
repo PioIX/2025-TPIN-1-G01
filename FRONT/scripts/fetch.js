@@ -202,3 +202,33 @@ async function traerOpcion(id_pregunta) {
     const result = await response.json()    
     return result
 }
+
+async function traerImagen(id_pregunta) {
+    const respoonse = await fetch(`http://localhost:4000/traerImagen?id_pregunta=${id_pregunta}`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json",},
+    })
+    const result = await respoonse.json()    
+    return result
+}
+
+async function actualizarPregunta(datos) {
+    const response = await fetch("http://localhost:4000/actualizarPregunta", {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(datos),
+    });
+    const result = await response.json();
+    console.log(result)
+}
+
+async function actualizarOpcion(datos) {
+    const response = await fetch("http://localhost:4000/actualizarOpcion", {
+        method: "PUT",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(datos),
+    });
+    const result = await response.json();
+    console.log(result)
+    
+}

@@ -67,6 +67,11 @@
                     <option value="undefined" disabled>todavia no seleccionaste una categoria</option>
                 </select>
             </div>
+            <div>
+                <h3>Última imagen guardada:</h3>
+                <button id="btnCargar">Cargar imagen</button>
+                <img id="imgMostrar" src="" alt="Imagen cargada" style="max-width: 400px; max-height: 400px; border: 1px solid #ccc;" />
+            </div>
             <div id="editar-file-input">
                 <input type="file" accept="image/*" id="imgInput">
                 <textarea name="" id="area-pregunta" class="cargar-display" resize="vertical" placeholder="edita su pregunta...."></textarea>
@@ -94,7 +99,7 @@
             </section>
             <div class="botones">
                 <button class="btn-guardar" onclick="mostrarDiv(1)">Guardar Pregunta</button>
-                <button class="btn-modificar" onclick="//aca va el codigo(2)">modificar pregunta </button>
+                <button class="btn-modificar" onclick="editarPregunta()">modificar pregunta </button>
                 <button class="btn-borrar" onclick="mostrarDiv(3)">borrar pregunta</button>
                 <button class="btn-puntaje" onclick="mostrarDiv(4)">puntaje</button>
             </div>
