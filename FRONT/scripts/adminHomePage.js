@@ -7,8 +7,9 @@ const selector = document.getElementsByClassName("select-categoria")
 // const selectPregunta = document.getElementById("editar-select-pregunta")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const input = document.getElementById('imgInput');
-const selectPreguntas = document.getElementById("select-preguntas")
-const display = document.getElementById("display-pregunta")
+const selectorPreguntas = document.getElementsByClassName("select-pregunta")
+const selectPregunta = document.getElementById("select-preguntas")
+const display = document.getElementsByClassName("cargar-display")
 const selectJugadores = document.getElementById("select-jugadores")
 const inputScore = document.getElementById("new-score")
 const divAgregarPregunta = document.getElementById("agregar-pregunta") 
@@ -31,71 +32,52 @@ input.addEventListener('change', () => {
     reader.readAsDataURL(file);
 });
 
-
 selector[1].addEventListener("change",()=>{
-    llenarSelectPreguntas()
+    llenarSelectPreguntas(0)
+})
+selector[2].addEventListener("change",()=>{
+    llenarSelectPreguntas(1)
 })
 async function llenarSelectCat() {
     let categorias = await traerCategorias()
     console.log(categorias[0])
     for(let i = 0;i<categorias.length;i++){
-
         selector[0].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
         selector[1].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
+        selector[2].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
 }
 
-async function llenarPreguntas(){
-    let preguntas = await traerPreguntas()
-    console.log(preguntas)
-    console.log(1)
-    for(let i = 0; i < preguntas.length;i++){
-        selectPregunta.innerHTML += 
-        `<option value="${preguntas[i].id}" data-categoria="${preguntas.id_categoria}" >${preguntas[i].contenido}</option>`
-        console.log(i)
-    }   
-    return 1
-}
-async function llenarSelectPreguntas() {
-    let preguntas = await recuperarPreguntasCategoria(selector[1].value)
-    selectPreguntas.innerHTML = null
-    selectPreguntas.innerHTML = `<option value="undefined">seleccionar una</option>`
+async function llenarSelectPreguntas(indice) {
+    console.log("pepe")
+    let preguntas = await recuperarPreguntasCategoria(selector[indice+1].value)
+    selectorPreguntas[indice].innerHTML = null
+    selectorPreguntas[indice].innerHTML = `<option value="undefined" selected disabled hidden>seleccione una pregunta</option>`
+    selectorPreguntas[indice].options[0].selected=1
     for(let i = 0;i<preguntas.length;i++){
-        selectPreguntas.innerHTML += `<option value=${preguntas[i].id}>${preguntas[i].contenido}</option>`
+        selectorPreguntas[indice].innerHTML += `<option value=${preguntas[i].id}>${preguntas[i].contenido}</option>`
     }
 }
 
-selectPreguntas.addEventListener("change",()=>{
-    for(let x=0;x<selectPreguntas.options.length;x++){
-        console.log(selectPreguntas.options[x])
-        console.log(selectPreguntas.value)
-        if(selectPreguntas.options[x].value===selectPreguntas.value){
-            if(selectPreguntas.options[x].value!=="undefined"){
-                display.innerText = selectPreguntas.options[x].innerText
+selectorPreguntas[0].addEventListener("change",()=>{
+   mostrarTexto(0)
+})
+
+selectorPreguntas[1].addEventListener("change",()=>{
+   mostrarTexto(1)
+})
+
+function mostrarTexto(y){
+    for(let x=0;x<selectorPreguntas[y].options.length;x++){
+        if(selectorPreguntas[y].options[x].value===selectorPreguntas[y].value){
+            if(selectorPreguntas[y].options[x].value!=="undefined"){
+                display[y].innerText = selectorPreguntas[y].options[x].innerText
             } else {
-                display.innerText = null
+                display[y].innerText = null
             }
         }
     }
-})
-
-selectEditarCategoria.addEventListener('change', function() {
-    const categoria = this.value;
-    console.log(this.value)
-    if (categoria) {
-      Array.from(selectPregunta.options).forEach(option => {
-        if (!option.value) {
-          option.hidden = false; // Mantener el placeholder visible
-        } else {
-          option.hidden = option.getAttribute('data-categoria') !== categoria;
-        }
-      });
-  
-    } else {
-      select1.disabled = true;
-      select1.value = "";
-    }
-  });
+}
 
 btns.forEach(btn => {
     btn.addEventListener("click",()=>{
@@ -106,20 +88,11 @@ btns.forEach(btn => {
 async function CrearPregunta() {
     let id_pregunta;
     let algunaSeleccionada = false
-    const ultimaPregunta = await recuperarUltimaPregunta();
-    if (!ultimaPregunta || ultimaPregunta.id === undefined) {
-        id_pregunta = 1;
-    } else {
-        id_pregunta = ultimaPregunta.id + 1;
-    }
-
     let img = (base64Imagen === null) ? null : base64Imagen;
-
     if (areaPregunta.value === "") {
         console.log("te falta la pregunta crack");
         return;
     }
-
     for (let x = 0; x < contenedores.length; x++) {
         if (contenedores[x].firstElementChild.value == "") {
             console.log("te falta completar una opción");
@@ -131,8 +104,22 @@ async function CrearPregunta() {
     }
     if(!algunaSeleccionada) {
         console.log("te falta una respuesta correcta");
-        return;};
+        return;
+    };
+    console.log("creando pregunta")
 
+    const id_categoria = selector[0].value;
+    const contenido = areaPregunta.value;
+    const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);
+    console.log("Llamando mandarPregunta");
+    await mandarPregunta(Question);
+
+    const ultimaPregunta = await recuperarUltimaPregunta();
+    if (!ultimaPregunta || ultimaPregunta.id === undefined) {
+        id_pregunta = 1;
+    } else {
+        id_pregunta = ultimaPregunta.id
+    }
     const Options = [
         new Opcion(contenedores[0].firstElementChild.value, id_pregunta, contenedores[0].lastElementChild.checked),
         new Opcion(contenedores[1].firstElementChild.value, id_pregunta, contenedores[1].lastElementChild.checked),
@@ -140,13 +127,6 @@ async function CrearPregunta() {
         new Opcion(contenedores[3].firstElementChild.value, id_pregunta, contenedores[3].lastElementChild.checked),
     ];
 
-    const id_categoria = selector[0].value;
-    const contenido = areaPregunta.value;
-
-    const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);
-
-    console.log("Llamando mandarPregunta");
-    await mandarPregunta(Question);
     for(let x of Options){
         await mandarOpciones(x)
     }
@@ -154,7 +134,7 @@ async function CrearPregunta() {
 
 function borrarPregunta(){
     const datos = {
-        id: selectPreguntas.value
+        id: selectorPreguntas[1].value
     }
     if(datos.id!=="undefined"){
         deleteQuestion(datos)
@@ -164,7 +144,8 @@ function borrarPregunta(){
 async function modificarJugadores() {
     const jugadores = await traerJugadores()
     selectJugadores.innerHTML = ""
-    selectJugadores.innerHTML +=  `<option value="undefined">selecciona un jugador</option>`
+    selectJugadores.innerHTML +=  `<option value="placeholder" selected disabled hidden>seleccione un jugador</option>
+`
     for(let x=0;x<jugadores.length;x++){
         selectJugadores.innerHTML += `<option value=${jugadores[x].id}>${jugadores[x].nombre} - puntaje maximo: ${jugadores[x].max_puntaje}</option>`
     }
@@ -198,7 +179,8 @@ function modificarPuntaje(act){
     console.log(data)
     updateHigScore(data).then(()=>{
         modificarJugadores()
-        inputScore.value = ""})
+        inputScore.value = ""
+    })
 }
 
 function mostrarDiv(seccion){
@@ -235,3 +217,24 @@ function mostrarDiv(seccion){
 // divModificarPregunta
 // divBorrarPregunta
 // divAreaJugador
+
+//editar pregunta
+selectorPreguntas[0].addEventListener("change", () => {
+    PreguntaAEditar()
+})
+
+
+async function PreguntaAEditar() {
+    const id_pregunta = selectorPreguntas[0].value
+    const pregunta = await traerPregunta(id_pregunta)
+    display.innerText = pregunta.contenido
+    let i=0;
+    let opcion = await traerOpcion(pregunta.id)
+    while(i < contenedores.length){
+        contenedores[x].firstElementChild.value = opcion[i]
+        if(opcion[i].isRta){
+            contenedores[i].lastElementChild.checked = true
+        }
+    }
+
+}

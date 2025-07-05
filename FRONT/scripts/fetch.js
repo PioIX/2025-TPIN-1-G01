@@ -182,12 +182,21 @@ async function updateHigScore(data) {
 
     const result = await response.json();
     console.log(result)
-// async function traerPreguntas() {
-//     const preguntas = await fetch("http://localhost:4000/traerPreguntas", {
-//         method: "GET",
-//         headers: {"Content-type":"application/json"},
-//     })
-//     const response_pregunta = await preguntas.json()
-//     console.log(response_pregunta)
-//         return response_pregunta
-// }
+}
+
+async function traerPregunta(id) {
+
+    const response = await fetch(`http://localhost:4000/traerPregunta?id=${id}`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    })
+    const result = response.json()    
+}
+
+async function traerOpcion(id_pregunta) {
+    const response = await fetch(`http://localhost:4000//traerOpcion?id_pregunta=${id_pregunta}`, {
+        method: "GET",
+        headers: {"Content-Type": "application/json"},
+    })
+    const result = response.json()    
+}

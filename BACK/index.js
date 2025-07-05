@@ -161,7 +161,7 @@ function normalizarTexto(texto) {
 
 app.post('/crearPregunta', async function (req, res) {
   try {
-    console.log(req.bodyimagen)
+    console.log("viene la imagen")
     const texto = req.body.contenido
     const textoNormalizado = normalizarTexto(texto);
 
@@ -221,6 +221,28 @@ app.put('/actualizarPuntaje',async function(req,res){
             await realizarQuery(`UPDATE Jugadores SET max_puntaje=${req.body.new_highScore} WHERE id=${req.body.id}`)
             res.send({message:"puntaje actualizado"})
         }
+    } catch (error) {
+        res.send(error)
+    }
+})
+
+app.get("/traerPregunta", async (req,res) => {
+    try {
+        const pregunta = await realizarQuery(
+            `Select * from Preguntas where id= ${req.query.id}`
+        )    
+        res.send(pregunta)
+    } catch (error) {
+        res.send({mensaje:error})
+    }
+})
+
+app.get("/traerOpcion", async (req,res) => {
+    try {
+        const respuesta = realizarQuery(
+            `Select * from Opciones where id_pregunta = ${req.query.id_pregunta}`
+        )
+        res.send(respuesta)
     } catch (error) {
         res.send(error)
     }
