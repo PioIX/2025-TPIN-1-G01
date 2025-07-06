@@ -1,32 +1,5 @@
 const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
-const btnCloseSession = document.getElementsByClassName("btn-cerrar")
-const selector = document.getElementsByClassName("select-categoria")
-const selector = document.getElementById("select-categoria")
-const selectEditarCategoria = document.getElementById("editar-select-categoria")
-const selectPregunta = document.getElementById("editar-select-pregunta")
-const contenedores = document.getElementsByClassName("contenedor-pregunta")
-const editar = document.getElementsByClassName("contenedor-editar")
-const input = document.getElementsByClassName('imgInput');
-const selectorPreguntas = document.getElementsByClassName("select-pregunta")
-const selectPregunta = document.getElementById("select-preguntas")
-const display = document.getElementsByClassName("cargar-display")
-const selectJugadores = document.getElementById("select-jugadores")
-const inputScore = document.getElementById("new-score")
-const divAgregarPregunta = document.getElementById("agregar-pregunta") 
-const divModificarPregunta = document.getElementById("modificar-pregunta") 
-const divBorrarPregunta= document.getElementById("delete-pregunta") 
-const divAreaJugador= document.getElementById("area-usuario") 
-const btnCargar = document.getElementById('btnCargar');
-const imgMostrar = document.getElementById('imgMostrar');
-const selectorCategoriaNuevo = document.getElementById("new-category")
-
-let base64Imagen = null;
-llenarSelectCat()
-modificarJugadores()
-input[0].addEventListener('change', () => {
-    const file = input[0].files[0];
-=======
 const btnCloseSession = document.getElementById("cerrar")
 const selector = document.getElementById("select-categoria")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
@@ -47,62 +20,17 @@ input.addEventListener('change', () => {
     reader.readAsDataURL(file);
 });
 
-
-selector[1].addEventListener("change", () => {
-    llenarSelectPreguntas(0);
-});
-selector[2].addEventListener("change", () => {
-    llenarSelectPreguntas(1);
-});
-
-
-btnCloseSession.addEventListener("click", () => {
-    ui.cerrarSesion();
-});
-
+btnCloseSession.addEventListener("click",()=>{
+    ui.cerrarSesion()
 })
 async function llenarSelect() {
     let categorias = await traerCategorias()
     console.log(categorias[0])
     for(let i = 0;i<categorias.length;i++){
-        selector[0].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
-        selector[1].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
-        selector[2].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
+        selector.innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
+
 }
-
-
-async function llenarSelectPreguntas(indice) {
-    console.log("pepe")
-    let preguntas = await recuperarPreguntasCategoria(selector[indice+1].value)
-    selectorPreguntas[indice].innerHTML = null
-    selectorPreguntas[indice].innerHTML = `<option value="undefined" selected disabled hidden>seleccione una pregunta</option>`
-    selectorPreguntas[indice].options[0].selected=1
-    for(let i = 0;i<preguntas.length;i++){
-        selectorPreguntas[indice].innerHTML += `<option value=${preguntas[i].id}>${preguntas[i].contenido}</option>`
-    }
-}
-
-selectorPreguntas[0].addEventListener("change",()=>{
-   mostrarTexto(0)
-})
-
-selectorPreguntas[1].addEventListener("change",()=>{
-   mostrarTexto(1)
-})
-
-function mostrarTexto(y){
-    for(let x=0;x<selectorPreguntas[y].options.length;x++){
-        if(selectorPreguntas[y].options[x].value===selectorPreguntas[y].value){
-            if(selectorPreguntas[y].options[x].value!=="undefined"){
-                display[y].innerText = selectorPreguntas[y].options[x].innerText
-            } else {
-                display[y].innerText = null
-            }
-        }
-    }
-}
-
 
 btns.forEach(btn => {
     btn.addEventListener("click",()=>{
@@ -112,7 +40,14 @@ btns.forEach(btn => {
 
 async function CrearPregunta() {
     let id_pregunta;
-    let algunaSeleccionada = false;
+    let algunaSeleccionada = false
+    const ultimaPregunta = await recuperarUltimaPregunta();
+    if (!ultimaPregunta || ultimaPregunta.id === undefined) {
+        id_pregunta = 1;
+    } else {
+        id_pregunta = ultimaPregunta.id + 1;
+    }
+
     let img = (base64Imagen === null) ? null : base64Imagen;
 
     if (areaPregunta.value === "") {
@@ -121,242 +56,35 @@ async function CrearPregunta() {
     }
 
     for (let x = 0; x < contenedores.length; x++) {
-        if (contenedores[x].firstElementChild.value === "") {
+        if (contenedores[x].firstElementChild.value == "") {
             console.log("te falta completar una opción");
             return;
         }
         if (contenedores[x].lastElementChild.checked) {
-            algunaSeleccionada = true;
+            algunaSeleccionada = true
         }
     }
-
-    if (!algunaSeleccionada) {
+    if(!algunaSeleccionada) {
         console.log("te falta una respuesta correcta");
-        return;
-    }
+        return;};
 
-    console.log("creando pregunta");
+    const Options = [
+        new Opcion(contenedores[0].firstElementChild.value, id_pregunta, contenedores[0].lastElementChild.checked),
+        new Opcion(contenedores[1].firstElementChild.value, id_pregunta, contenedores[1].lastElementChild.checked),
+        new Opcion(contenedores[2].firstElementChild.value, id_pregunta, contenedores[2].lastElementChild.checked),
+        new Opcion(contenedores[3].firstElementChild.value, id_pregunta, contenedores[3].lastElementChild.checked),
+    ];
 
     const id_categoria = selector.value;
     const contenido = areaPregunta.value;
 
-    const ultimaPregunta = await recuperarUltimaPregunta();
-    if (!ultimaPregunta || ultimaPregunta.id === undefined) {
-        id_pregunta = 1;
-    } else {
-        id_pregunta = ultimaPregunta.id + 1;
-    }
-
     const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);
+
+    console.log("Llamando mandarPregunta");
     await mandarPregunta(Question);
-
-    const ultimaOpcion = await recuperarUltimaOpcion();
-    let idOpcionInicial = (!ultimaOpcion || ultimaOpcion.id === undefined) ? 1 : ultimaOpcion.id + 1;
-
-    const Options = [];
-
-    for (let i = 0; i < 4; i++) {
-        const texto = contenedores[i].firstElementChild.value;
-        const esCorrecta = contenedores[i].lastElementChild.checked;
-
-        const nuevaOpcion = new Opcion(
-            idOpcionInicial + i, 
-            texto,
-            id_pregunta,
-            esCorrecta
-        );
-
-        Options.push(nuevaOpcion);
-    }
-
-    for (let opcion of Options) {
-        await mandarOpciones(opcion);
-    }
-    for(let i=1;i< 4;i++){
-        areaPregunta.value = ""
-        contenedores[i].firstElementChild.value = ""
-        contenedores[i].lastElementChild.checked = false
+    for(let x of Options){
+        await mandarOpciones(x)
     }
 }
 
-
-
-function borrarPregunta(){
-    const datos = {
-        id: selectorPreguntas[1].value
-    }
-    if(datos.id!=="undefined"){
-        deleteQuestion(datos)
-    }
-}
-
-async function modificarJugadores() {
-    const jugadores = await traerJugadores()
-    selectJugadores.innerHTML = ""
-    selectJugadores.innerHTML +=  `<option value="placeholder" selected disabled hidden>seleccione un jugador</option>
-`
-    for(let x=0;x<jugadores.length;x++){
-        selectJugadores.innerHTML += `<option value=${jugadores[x].id}>${jugadores[x].nombre} - puntaje maximo: ${jugadores[x].max_puntaje}</option>`
-    }
-    console.log("fin ejecucion")
-}
-
-function eliminarJugador(){
-    data = {
-        id:selectJugadores.value
-    }
-    if(data.id!="undefined"){
-        deletePlayer(data).then(()=>modificarJugadores())
-    } else {
-        console.log("seleccionar jugador")
-    }
-    
-}
-inputScore.addEventListener("keydown", (e) => {
-    if (e.key === "-" || e.key === "e" || e.key === "+") {
-        e.preventDefault();
-    }
-});
-
-function modificarPuntaje(act){
-    let indice = selectJugadores.options.selectedIndex
-    data = {
-        action: act,
-        id: parseInt(selectJugadores.options[indice].value),
-        new_highScore: parseInt(inputScore.value)
-    }
-    console.log(data)
-    updateHigScore(data).then(()=>{
-        modificarJugadores()
-        inputScore.value = ""
-    })
-}
-
-function mostrarDiv(seccion){
-    switch (seccion) {
-        case 1:
-            divAgregarPregunta.style.display = "block"
-            divModificarPregunta.style.display = "none"
-            divBorrarPregunta.style.display = "none"
-            divAreaJugador.style.display = "none"
-            break;
-        case 2:
-            divAgregarPregunta.style.display = "none"
-            divModificarPregunta.style.display = "block"
-            divBorrarPregunta.style.display = "none"
-            divAreaJugador.style.display = "none"
-            break;
-        case 3:
-            divAgregarPregunta.style.display = "none"
-            divModificarPregunta.style.display = "none"
-            divBorrarPregunta.style.display = "block"
-            divAreaJugador.style.display = "none"
-            break;
-        case 4:
-            divAgregarPregunta.style.display = "none"
-            divModificarPregunta.style.display = "none"
-            divBorrarPregunta.style.display = "none"
-            divAreaJugador.style.display = "block"
-            break;
-        default:
-            break;
-    }
-}
-
-
-selectorPreguntas[0].addEventListener("change", () => {
-    preguntaAEditar()
-})
-
-
-async function preguntaAEditar() {
-    console.log('pepe')
-    const id_pregunta = selectorPreguntas[0].value
-    const pregunta = await traerPregunta(id_pregunta)
-    display[0].innerText = pregunta.contenido
-
-    mostrarImagen(pregunta)
-
-    let i=0;
-    let opcion = await traerOpcion(pregunta.id)
-    while(i<editar.length){
-        console.log("entre")
-        editar[i].firstElementChild.value = opcion[i].opcion
-        editar[i].firstElementChild.setAttribute('id', opcion[i].id);
-        if(opcion[i].is_rta){
-            editar[i].lastElementChild.checked = true
-        }
-        i++;
-    }
-    const categorias  = await traerCategorias()
-    for(let x = 0;x<categorias.length;x++){
-        selectorCategoriaNuevo.innerHTML += `<option value=${categorias[x].id}>${categorias[x].nombre_categoria}</option>`
-    }
-    
-
-}
-
-async function editarPregunta() {
-    const inputFile = input[1]
-    let img = base64Imagen || null;
-
-    if (inputFile && inputFile.files.length > 0) {
-        const file = inputFile.files[0];
-        img = await new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = reject;
-            reader.readAsDataURL(file);
-        });
-
-        base64Imagen = img; 
-        imgMostrar.src = img; 
-    }
-
-    const datos = {
-        id: selectorPreguntas[0].value,
-        id_categoria: selectorCategoriaNuevo.value,
-        contenido: display[0].value,
-        imagen: img
-    };
-
-    await actualizarPregunta(datos);
-
-    for (let i = 0; i < editar.length; i++) {
-        const id = editar[i].firstElementChild.getAttribute("id");
-        const valor = editar[i].firstElementChild.value;
-        const esCorrecta = editar[i].lastElementChild.checked;
-
-        const opcion = new Opcion(id, valor, selectorPreguntas[0].value, esCorrecta);
-        await actualizarOpcion(opcion);
-    }
-
-    alert("Pregunta y opciones actualizadas correctamente");
-}
-
-
-
-
-
-
-
-
-
-async function mostrarImagen(data) {
-    try {
-        const response = await fetch(`http://localhost:4000/traerImg?id=${data.id}`);
-        if (!response.ok) throw new Error('No se pudo cargar la imagen');
-        
-        const resultado = await response.json();
-        console.log("Base64 recibido:", resultado.imagenBase64);
-        if (resultado.imagenBase64) {
-            imgMostrar.src = resultado.imagenBase64;
-        } else {
-            alert('No se encontró imagen');
-        }
-    } catch (err) {
-        console.error(err);
-        alert('Error al cargar la imagen');
-    }
-}
 
