@@ -8,9 +8,8 @@ const display = document.getElementsByClassName("cargar-display");
 
 const selectAgregarCategoria = document.getElementById("agregar-select-categoria");
 const selectModificarCategoria = document.getElementById("editar-select-categoria");
-const selectBorrarCategoria = document.getElementById("borrar-select-categoria");
-
 const selectModificarPregunta = document.getElementById("editar-select-pregunta");
+const selectBorrarCategoria = document.getElementById("borrar-select-categoria");
 const selectBorrarPregunta = document.getElementById("borrar-select-pregunta");
 
 const selectJugadores = document.getElementById("select-jugadores");
@@ -27,64 +26,76 @@ const selectorCategoriaNuevo = document.getElementById("new-category");
 
 let base64Imagen = null;
 
-document.addEventListener("DOMContentLoaded", () => {
-  cargarCategorias();
-  modificarJugadores();
-});
+cargarCategorias();
+modificarJugadores();
 
-input[0].addEventListener("change", () => {
-  const file = input[0].files[0];
-  if (!file) {
-    base64Imagen = null;
-    return;
+  input[0].addEventListener("change", () => {
+    const file = input[0].files[0];
+    if (!file) {
+      base64Imagen = null;
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      base64Imagen = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+
+  selectModificarCategoria.addEventListener("change", () => {
+    const categoriaId = selectModificarCategoria.value;
+    if (!categoriaId || categoriaId === "undefined") return;
+
+    recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
+      selectModificarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
+      preguntas.forEach(p => {
+        selectModificarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
+      });
+      display[0].innerText = "";
+      selectModificarPregunta.selectedIndex = 0;
+    });
+  });
+
+  selectBorrarCategoria.addEventListener("change", () => {
+    const categoriaId = selectBorrarCategoria.value;
+    if (!categoriaId || categoriaId === "undefined") return;
+
+    recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
+      selectBorrarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
+      preguntas.forEach(p => {
+        selectBorrarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
+      });
+      display[1].innerText = "";
+      selectBorrarPregunta.selectedIndex = 0;
+    });
+  });
+
+  selectModificarPregunta.addEventListener("change", () => {
+    preguntaAEditar();
+  });
+
+  selectBorrarPregunta.addEventListener("change", () => {
+    const opcion = selectBorrarPregunta.options[selectBorrarPregunta.selectedIndex];
+    display[1].innerText = opcion && opcion.value !== "undefined" ? opcion.text : "";
+  });
+
+
+  for (let btn of btnCloseSession) {
+    btn.addEventListener("click", () => {
+      ui.cerrarSesion();
+    });
   }
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    base64Imagen = event.target.result;
-  };
-  reader.readAsDataURL(file);
-});
 
-selectModificarCategoria.addEventListener("change", () => {
-  const categoriaId = selectModificarCategoria.value;
-  if (!categoriaId || categoriaId === "undefined") return;
-
-  recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
-    selectModificarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
-    preguntas.forEach(p => {
-      selectModificarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
+  btns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btn.innerText = btn.innerText === "cruz" ? "tick" : "cruz";
     });
-    display[0].innerText = "";
-    selectModificarPregunta.selectedIndex = 0;
   });
-});
 
-selectBorrarCategoria.addEventListener("change", () => {
-  const categoriaId = selectBorrarCategoria.value;
-  if (!categoriaId || categoriaId === "undefined") return;
 
-  recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
-    selectBorrarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
-    preguntas.forEach(p => {
-      selectBorrarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
-    });
-    display[1].innerText = "";
-    selectBorrarPregunta.selectedIndex = 0;
-  });
-});
-
-selectModificarPregunta.addEventListener("change", () => {
-  preguntaAEditar();
-});
-
-selectBorrarPregunta.addEventListener("change", () => {
-  const opcion = selectBorrarPregunta.options[selectBorrarPregunta.selectedIndex];
-  display[1].innerText = opcion && opcion.value !== "undefined" ? opcion.text : "";
-});
-
-btns.forEach((btn) => {
-  btn.addEventListener("click", () => {
-    btn.innerText = btn.innerText === "cruz" ? "tick" : "cruz";
+  inputScore.addEventListener("keydown", (e) => {
+    if (["-", "+", "e"].includes(e.key)) e.preventDefault();
   });
 });
 
@@ -101,14 +112,14 @@ function cargarCategorias() {
 
 function CrearPregunta() {
   if (areaPregunta.value.trim() === "") {
-    console.log("Falta la pregunta");
+    alert("Debe ingresar una pregunta");
     return;
   }
 
   let algunaSeleccionada = false;
   for (let x = 0; x < contenedores.length; x++) {
     if (contenedores[x].firstElementChild.value.trim() === "") {
-      console.log("Falta completar una opción");
+      alert("Debe completar todas las opciones");
       return;
     }
     if (contenedores[x].lastElementChild.checked) {
@@ -117,7 +128,7 @@ function CrearPregunta() {
   }
 
   if (!algunaSeleccionada) {
-    console.log("Falta marcar la respuesta correcta");
+    alert("Debe seleccionar la respuesta correcta");
     return;
   }
 
@@ -180,7 +191,7 @@ function borrarPregunta() {
 
 function modificarJugadores() {
   traerJugadores().then((jugadores) => {
-    selectJugadores.innerHTML = '<option value="placeholder" selected disabled hidden>Seleccione un jugador</option>';
+    selectJugadores.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione un jugador</option>';
     jugadores.forEach(j => {
       selectJugadores.innerHTML += `<option value="${j.id}">${j.nombre} - puntaje máximo: ${j.max_puntaje}</option>`;
     });
@@ -192,18 +203,12 @@ function eliminarJugador() {
   if (id && id !== "undefined") {
     deletePlayer({ id }).then(() => modificarJugadores());
   } else {
-    console.log("Seleccione un jugador");
+    alert("Seleccione un jugador");
   }
 }
 
-inputScore.addEventListener("keydown", (e) => {
-  if (["-", "+", "e"].includes(e.key)) {
-    e.preventDefault();
-  }
-});
-
 function modificarPuntaje(act) {
-  const indice = selectJugadores.options.selectedIndex;
+  const indice = selectJugadores.selectedIndex;
   if (indice < 0 || selectJugadores.options[indice].value === "undefined") {
     alert("Seleccione un jugador");
     return;
@@ -267,37 +272,30 @@ function preguntaAEditar() {
   });
 }
 
-function editarPregunta() {
+async function editarPregunta() {
   const inputFile = input[1];
-  let img = base64Imagen;
+  let img = base64Imagen || null;
 
   if (inputFile && inputFile.files.length > 0) {
     const file = inputFile.files[0];
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      img = evt.target.result;
-      base64Imagen = img;
-      imgMostrar.src = img;
-      continuarEditarPregunta();
-    };
-    reader.onerror = () => alert("Error al leer la imagen");
-    reader.readAsDataURL(file);
-  } else {
-    continuarEditarPregunta();
-  }
-
-  function continuarEditarPregunta() {
-    const datos = {
-      id: selectModificarPregunta.value,
-      id_categoria: selectorCategoriaNuevo.value,
-      contenido: display[0].value,
-      imagen: img
-    };
-
-    actualizarPregunta(datos).then(() => {
-      actualizarOpcionesSecuencial(0);
+    img = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
     });
   }
+
+  const datos = {
+    id: selectModificarPregunta.value,
+    id_categoria: selectorCategoriaNuevo.value,
+    contenido: display[0].value,
+    imagen: img
+  };
+
+  actualizarPregunta(datos).then(() => {
+    actualizarOpcionesSecuencial(0);
+  });
 
   function actualizarOpcionesSecuencial(i) {
     if (i >= editar.length) {
