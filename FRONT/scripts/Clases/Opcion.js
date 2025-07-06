@@ -1,11 +1,13 @@
 class Opcion{
     /**
      * 
-     * @param {string} opcion 
-     * @param {number} id_pregunta 
-     * @param {boolean} isRta 
+     * @param {*} id 
+     * @param {*} opcion 
+     * @param {*} id_pregunta 
+     * @param {*} isRta 
      */
-    constructor(opcion,id_pregunta,isRta){
+    constructor(id,opcion,id_pregunta,isRta){
+        this.id = id
         this.opcion = opcion;
         this.isRta = isRta;
         this.id_pregunta = id_pregunta;

@@ -140,6 +140,15 @@ app.get('/traerUltimaPregunta',async function (req,res) {
         res.send(error)
     }
 })
+app.get('/traerUltimaOpcion',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery (`SELECT * FROM Opciones ORDER BY  id desc limit 1`)
+        res.json(respuesta[0]||null)
+    } catch (error) {
+        res.send(error)
+    }
+})
 app.get('/buscarPreguntaCategoria',async function (req,res) {
     try {
         let respuesta;
@@ -252,32 +261,64 @@ app.get("/traerOpcion", async (req,res) => {
     }
 })
 
-app.put("/actualizarPregunta",async function(req,res){
-    try {
-        await realizarQuery(
-            `UPDATE Preguntas 
-            SET id_categoria=${req.body.id_categoria} 
-            and contenido="${req.body.contenido}" 
-            and imagen="${req.body.imagen}" 
-            WHERE id=${req.body.id}
-            `)
-        res.send({message:"pregunta actualizada"})
-    } catch (error) {
-        res.send(error)
-    }
-})
+app.put("/actualizarPregunta", async function(req, res) {
+    console.log("actualizando pregunta");
+    console.log("Imagen recibida:", req.body.imagen ? req.body.imagen.slice(0, 100) : "null");
 
-app.put("/actualizarOpcion",async function(req,res){
+    try {
+        await realizarQuery( `
+            UPDATE Preguntas
+            SET id_categoria = ${req.body.id_categoria},
+                contenido = "${req.body.contenido}",
+                imagen = "${req.body.imagen}"
+            WHERE id = ${req.body.id}
+        `)
+        
+        res.send({ message: "pregunta actualizada" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: "Error al actualizar la pregunta" });
+    }
+});
+
+
+app.put("/actualizarOpcion", async function(req, res) {
+    console.log(req.body)
     try {
         await realizarQuery(
             `UPDATE Opciones 
-            SET opcion="${req.body.opcion}"
-            and id_pregunta=${req.body.id_pregunta} 
-            and is_rta=${req.body.isRta} 
-            WHERE id=${req.body.id}
-            `)
-        res.send({message:"opcion actualizada"})
+            SET opcion="${req.body.opcion}", 
+                id_pregunta=${req.body.id_pregunta}, 
+                is_rta=${req.body.isRta} 
+            WHERE id=${req.body.id}`
+        );
+        res.send({ message: "opcion actualizada" });
     } catch (error) {
-        res.send(error)
+        res.send(error);
     }
-})
+});
+
+app.get('/traerImg', async function (req, res) {
+    try {
+        const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
+        if (resultado.length === 0 || !resultado[0].imagen) {
+            return res.json({ imagenBase64: null });
+        }
+        const imagen = resultado[0].imagen;
+        let imagenBase64;
+        if (Buffer.isBuffer(imagen)) {
+            imagenBase64 = `data:image/jpeg;base64,${imagen.toString('base64')}`;
+        } else if (typeof imagen === 'string' && imagen.startsWith('data:image/')) {
+            imagenBase64 = imagen;
+        } else {
+            imagenBase64 = `data:image/jpeg;base64,${imagen}`;
+        }
+        console.log("Enviando imagen base64:", imagenBase64.slice(0, 100));
+        res.json({ imagenBase64 });
+
+    } catch (error) {
+        console.error("Error al traer imagen:", error);
+        res.status(500).json({ error: 'Error al traer la imagen' });
+    }
+});
+

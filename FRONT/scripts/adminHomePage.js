@@ -7,7 +7,7 @@ const selector = document.getElementsByClassName("select-categoria")
 // const selectPregunta = document.getElementById("editar-select-pregunta")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const editar = document.getElementsByClassName("contenedor-editar")
-const input = document.getElementById('imgInput');
+const input = document.getElementsByClassName('imgInput');
 const selectorPreguntas = document.getElementsByClassName("select-pregunta")
 const selectPregunta = document.getElementById("select-preguntas")
 const display = document.getElementsByClassName("cargar-display")
@@ -19,12 +19,13 @@ const divBorrarPregunta= document.getElementById("delete-pregunta")
 const divAreaJugador= document.getElementById("area-usuario") 
 const btnCargar = document.getElementById('btnCargar');
 const imgMostrar = document.getElementById('imgMostrar');
+const selectorCategoriaNuevo = document.getElementById("new-category")
 
 let base64Imagen = null;
 llenarSelectCat()
 modificarJugadores()
-input.addEventListener('change', () => {
-    const file = input.files[0];
+input[0].addEventListener('change', () => {
+    const file = input[0].files[0];
     if (!file) {
         base64Imagen = null; 
         return;
@@ -91,50 +92,73 @@ btns.forEach(btn => {
 
 async function CrearPregunta() {
     let id_pregunta;
-    let algunaSeleccionada = false
+    let algunaSeleccionada = false;
     let img = (base64Imagen === null) ? null : base64Imagen;
+
     if (areaPregunta.value === "") {
         console.log("te falta la pregunta crack");
         return;
     }
+
     for (let x = 0; x < contenedores.length; x++) {
-        if (contenedores[x].firstElementChild.value == "") {
+        if (contenedores[x].firstElementChild.value === "") {
             console.log("te falta completar una opción");
             return;
         }
         if (contenedores[x].lastElementChild.checked) {
-            algunaSeleccionada = true
+            algunaSeleccionada = true;
         }
     }
-    if(!algunaSeleccionada) {
+
+    if (!algunaSeleccionada) {
         console.log("te falta una respuesta correcta");
         return;
-    };
-    console.log("creando pregunta")
+    }
+
+    console.log("creando pregunta");
 
     const id_categoria = selector[0].value;
     const contenido = areaPregunta.value;
-    const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);
-    console.log("Llamando mandarPregunta");
-    await mandarPregunta(Question);
 
     const ultimaPregunta = await recuperarUltimaPregunta();
     if (!ultimaPregunta || ultimaPregunta.id === undefined) {
         id_pregunta = 1;
     } else {
-        id_pregunta = ultimaPregunta.id
+        id_pregunta = ultimaPregunta.id + 1;
     }
-    const Options = [
-        new Opcion(contenedores[0].firstElementChild.value, id_pregunta, contenedores[0].lastElementChild.checked),
-        new Opcion(contenedores[1].firstElementChild.value, id_pregunta, contenedores[1].lastElementChild.checked),
-        new Opcion(contenedores[2].firstElementChild.value, id_pregunta, contenedores[2].lastElementChild.checked),
-        new Opcion(contenedores[3].firstElementChild.value, id_pregunta, contenedores[3].lastElementChild.checked),
-    ];
 
-    for(let x of Options){
-        await mandarOpciones(x)
+    const Question = new Pregunta(id_pregunta, id_categoria, contenido, img);
+    await mandarPregunta(Question);
+
+    const ultimaOpcion = await recuperarUltimaOpcion();
+    let idOpcionInicial = (!ultimaOpcion || ultimaOpcion.id === undefined) ? 1 : ultimaOpcion.id + 1;
+
+    const Options = [];
+
+    for (let i = 0; i < 4; i++) {
+        const texto = contenedores[i].firstElementChild.value;
+        const esCorrecta = contenedores[i].lastElementChild.checked;
+
+        const nuevaOpcion = new Opcion(
+            idOpcionInicial + i, 
+            texto,
+            id_pregunta,
+            esCorrecta
+        );
+
+        Options.push(nuevaOpcion);
+    }
+
+    for (let opcion of Options) {
+        await mandarOpciones(opcion);
+    }
+    for(let i=1;i< 4;i++){
+        areaPregunta.value = ""
+        contenedores[i].firstElementChild.value = ""
+        contenedores[i].lastElementChild.checked = false
     }
 }
+
 
 function borrarPregunta(){
     const datos = {
@@ -217,12 +241,8 @@ function mostrarDiv(seccion){
             break;
     }
 }
-// divAgregarPregunta
-// divModificarPregunta
-// divBorrarPregunta
-// divAreaJugador
 
-//editar pregunta
+
 selectorPreguntas[0].addEventListener("change", () => {
     preguntaAEditar()
 })
@@ -234,63 +254,88 @@ async function preguntaAEditar() {
     const pregunta = await traerPregunta(id_pregunta)
     display[0].innerText = pregunta.contenido
 
-    mostrarImagen()
+    mostrarImagen(pregunta)
 
     let i=0;
     let opcion = await traerOpcion(pregunta.id)
     while(i<editar.length){
         console.log("entre")
         editar[i].firstElementChild.value = opcion[i].opcion
+        editar[i].firstElementChild.setAttribute('id', opcion[i].id);
         if(opcion[i].is_rta){
             editar[i].lastElementChild.checked = true
         }
         i++;
     }
+    const categorias  = await traerCategorias()
+    for(let x = 0;x<categorias.length;x++){
+        selectorCategoriaNuevo.innerHTML += `<option value=${categorias[x].id}>${categorias[x].nombre_categoria}</option>`
+    }
+    
 
 }
 
 async function editarPregunta() {
-    let img = (base64Imagen === null) ? null : base64Imagen;
+    const inputFile = input[1]
+    let img = base64Imagen || null;
+
+    // Leer nueva imagen si fue seleccionada
+    if (inputFile && inputFile.files.length > 0) {
+        const file = inputFile.files[0];
+        img = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+
+        base64Imagen = img; 
+        imgMostrar.src = img; 
+    }
+
     const datos = {
         id: selectorPreguntas[0].value,
-        id_categoria: selector[1].value,
-        contenido: display[0].innerText,
+        id_categoria: selectorCategoriaNuevo.value,
+        contenido: display[0].value,
         imagen: img
+    };
+
+    await actualizarPregunta(datos);
+
+    for (let i = 0; i < editar.length; i++) {
+        const id = editar[i].firstElementChild.getAttribute("id");
+        const valor = editar[i].firstElementChild.value;
+        const esCorrecta = editar[i].lastElementChild.checked;
+
+        const opcion = new Opcion(id, valor, selectorPreguntas[0].value, esCorrecta);
+        await actualizarOpcion(opcion);
     }
-    await actualizarPregunta(datos)
 
-    const opciones = []
-    for(let x=0;x<editar.length;x++){
-        console.log(selectorPreguntas[0].value)
-        console.log(editar[x].lastElementChild.checked)
-
-        opciones.push(new Opcion(editar[x].firstElementChild.value, selectorPreguntas[0].value, editar[x].lastElementChild.checked))
-
-    }
-    await actualizarOpcion(opciones[0])
-    await actualizarOpcion(opciones[1])
-    await actualizarOpcion(opciones[2])
-    await actualizarOpcion(opciones[3])
+    alert("Pregunta y opciones actualizadas correctamente");
 }
 
 
 
 
-async function mostrarImagen() {
-    fetch('http://localhost:4000/traerImagen')
-    .then(response => {
+
+
+
+
+
+async function mostrarImagen(data) {
+    try {
+        const response = await fetch(`http://localhost:4000/traerImg?id=${data.id}`);
         if (!response.ok) throw new Error('No se pudo cargar la imagen');
-        return response.json();
-    })
-    .then(data => {
-        if (data.imagenBase64) {
-        imgMostrar.src = data.imagenBase64;
+        
+        const resultado = await response.json();
+        console.log("Base64 recibido:", resultado.imagenBase64);
+        if (resultado.imagenBase64) {
+            imgMostrar.src = resultado.imagenBase64;
         } else {
-        alert('No se encontró imagen');
+            alert('No se encontró imagen');
         }
-    })
-    .catch(err => {
+    } catch (err) {
         console.error(err);
         alert('Error al cargar la imagen');
-    });
+    }
 }

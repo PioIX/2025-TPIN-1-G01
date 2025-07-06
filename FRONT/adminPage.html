@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="estilos/adminPage.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -21,7 +22,7 @@
             <h3>Tu Pregunta:</h3>
             <!-- preguntar como arreglar -->
             <div id="contenedor-file-input">
-                <input type="file" accept="image/*" id="imgInput">
+                <input type="file" accept="image/*" class="imgInput">
                 <!-- areglar text area con css -->
                 <textarea name="" id="area-pregunta" resize="vertical" placeholder="escribe tu pregunta aqui...."></textarea>
             </div>
@@ -66,6 +67,10 @@
                     <option value="undefined" selected disabled hidden>seleccione una pregunta</option>
                     <option value="undefined" disabled>todavia no seleccionaste una categoria</option>
                 </select>
+                <h3>Elige una nueva categoria</h3>
+                <select name="" id="new-category">
+                    <option value="undefined" selected disabled hidden>seleccione una categria</option>
+                </select>
             </div>
             <div>
                 <h3>Última imagen guardada:</h3>
@@ -73,7 +78,7 @@
                 <img id="imgMostrar" src="" alt="Imagen cargada" style="max-width: 400px; max-height: 400px; border: 1px solid #ccc;" />
             </div>
             <div id="editar-file-input">
-                <input type="file" accept="image/*" id="imgInput">
+                <input type="file" accept="image/*" class="imgInput">
                 <textarea name="" id="area-pregunta" class="cargar-display" resize="vertical" placeholder="edita su pregunta...."></textarea>
             </div>
             
