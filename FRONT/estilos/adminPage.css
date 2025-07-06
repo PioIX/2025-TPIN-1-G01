@@ -191,11 +191,12 @@ input[type="radio"].edit-correct-btn {
     user-select: none;
 }
 
+
 .btn-cerrar:hover {
     background-color: rgb(200, 30, 30);
 }
 
-/* --------- Último div (#area-usuario) layout y colores mejorados --------- */
+
 
 #area-usuario {
     width: fit-content;

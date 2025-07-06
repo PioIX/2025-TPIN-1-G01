@@ -11,19 +11,6 @@ async function traerCategorias() {
     return result
 }
 
-async function traerJugadores() {
-    const response = await fetch(`http://localhost:4000/traerJugadores`,{
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    })
-    console.log(response)
-    let result = await response.json()
-    console.log(result)
-    return result
-}
-
 async function verificarUsuario(usuario) {
     const response = await fetch(`http://localhost:4000/verificarUsuario?correo_electronico=${usuario.email}&contraseña=${usuario.password}`,{
         method: "GET",
@@ -110,27 +97,29 @@ async function recuperarUltimaPregunta() {
     return result
 }
 async function recuperarUltimaOpcion() {
-    const response = await fetch("http://localhost:4000/traerUltimaOpcion",{
+    const response = await fetch("http://localhost:4000/traerUltimaOpcion", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
         }
-    })
-    const result = await response.json()
-    console.log(result)
-    return result
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
 }
+
 async function recuperarPreguntasCategoria(id_categoria) {
-    const response = await fetch(`http://localhost:4000/buscarPreguntaCategoria?id_categoria=${id_categoria}`,{
+    const response = await fetch(`http://localhost:4000/buscarPreguntaCategoria?id_categoria=${id_categoria}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
         }
-    })
-    const result = await response.json()
-    console.log(result)
-    return result
+    });
+    const result = await response.json();
+    console.log(result);
+    return result;
 }
+
 async function mandarPregunta(pregunta) {
     console.log(pregunta)
     const response = await fetch("http://localhost:4000/crearPregunta", {
@@ -156,33 +145,31 @@ async function mandarOpciones(opcion) {
 
     const result = await response.json();
     console.log(result)
-}
 async function deleteQuestion(id) {
     const response = await fetch("http://localhost:4000/borrarPregunta", {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(id),
+        body: JSON.stringify({ id }),
     });
-
     const result = await response.json();
-    console.log(result)
+    console.log(result);
 }
+
 async function deletePlayer(id) {
     const response = await fetch("http://localhost:4000/eliminarJugadorXid", {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(id),
+        body: JSON.stringify({ id }),
     });
-
     const result = await response.json();
-    console.log(result)
+    console.log(result);
 }
-async function updateHigScore(data) {
-    
+
+async function updateHighScore(data) {
     const response = await fetch("http://localhost:4000/actualizarPuntaje", {
         method: "PUT",
         headers: {
@@ -190,56 +177,54 @@ async function updateHigScore(data) {
         },
         body: JSON.stringify(data)
     });
-
     const result = await response.json();
-    console.log(result)
+    console.log(result);
 }
 
 async function traerPregunta(id) {
-
     const response = await fetch(`http://localhost:4000/traerPregunta?id=${id}`, {
         method: "GET",
-        headers: {"Content-Type": "application/json",},
-    })
-    const result = await response.json()    
-    return result
+        headers: { "Content-Type": "application/json" },
+    });
+    const result = await response.json();
+    return result;
 } 
 
 async function traerOpcion(id_pregunta) {
     const response = await fetch(`http://localhost:4000/traerOpcion?id_pregunta=${id_pregunta}`, {
         method: "GET",
-        headers: {"Content-Type": "application/json",},
-    })
-    const result = await response.json()    
-    return result
+        headers: { "Content-Type": "application/json" },
+    });
+    const result = await response.json();
+    return result;
 }
 
 async function traerImagen(id_pregunta) {
-    const respoonse = await fetch(`http://localhost:4000/traerImagen?id_pregunta=${id_pregunta}`, {
+    const response = await fetch(`http://localhost:4000/traerImg?id=${id_pregunta}`, {
         method: "GET",
-        headers: {"Content-Type": "application/json",},
-    })
-    const result = await respoonse.json()    
-    return result
+        headers: { "Content-Type": "application/json" },
+    });
+    const result = await response.json();
+    return result;
 }
 
 async function actualizarPregunta(datos) {
     const response = await fetch("http://localhost:4000/actualizarPregunta", {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos),
     });
     const result = await response.json();
-    console.log(result)
+    console.log(result);
 }
 
 async function actualizarOpcion(datos) {
     const response = await fetch("http://localhost:4000/actualizarOpcion", {
         method: "PUT",
-        headers: {"Content-Type": "application/json"},
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos),
     });
     const result = await response.json();
-    console.log(result)
-    
+    console.log(result);
 }
+

@@ -2,6 +2,9 @@ const btns = document.querySelectorAll(".correct-btn")
 const areaPregunta = document.getElementById("area-pregunta")
 const btnCloseSession = document.getElementsByClassName("btn-cerrar")
 const selector = document.getElementsByClassName("select-categoria")
+const selector = document.getElementById("select-categoria")
+const selectEditarCategoria = document.getElementById("editar-select-categoria")
+const selectPregunta = document.getElementById("editar-select-pregunta")
 const contenedores = document.getElementsByClassName("contenedor-pregunta")
 const editar = document.getElementsByClassName("contenedor-editar")
 const input = document.getElementsByClassName('imgInput');
@@ -23,6 +26,16 @@ llenarSelectCat()
 modificarJugadores()
 input[0].addEventListener('change', () => {
     const file = input[0].files[0];
+=======
+const btnCloseSession = document.getElementById("cerrar")
+const selector = document.getElementById("select-categoria")
+const contenedores = document.getElementsByClassName("contenedor-pregunta")
+const input = document.getElementById('imgInput');
+let base64Imagen = null;
+llenarSelect()
+
+input.addEventListener('change', () => {
+    const file = input.files[0];
     if (!file) {
         base64Imagen = null; 
         return;
@@ -34,13 +47,21 @@ input[0].addEventListener('change', () => {
     reader.readAsDataURL(file);
 });
 
-selector[1].addEventListener("change",()=>{
-    llenarSelectPreguntas(0)
+
+selector[1].addEventListener("change", () => {
+    llenarSelectPreguntas(0);
+});
+selector[2].addEventListener("change", () => {
+    llenarSelectPreguntas(1);
+});
+
+
+btnCloseSession.addEventListener("click", () => {
+    ui.cerrarSesion();
+});
+
 })
-selector[2].addEventListener("change",()=>{
-    llenarSelectPreguntas(1)
-})
-async function llenarSelectCat() {
+async function llenarSelect() {
     let categorias = await traerCategorias()
     console.log(categorias[0])
     for(let i = 0;i<categorias.length;i++){
@@ -49,6 +70,7 @@ async function llenarSelectCat() {
         selector[2].innerHTML += `<option value=${categorias[i].id}>${categorias[i].nombre_categoria}</option>`
     }
 }
+
 
 async function llenarSelectPreguntas(indice) {
     console.log("pepe")
@@ -80,6 +102,7 @@ function mostrarTexto(y){
         }
     }
 }
+
 
 btns.forEach(btn => {
     btn.addEventListener("click",()=>{
@@ -114,7 +137,7 @@ async function CrearPregunta() {
 
     console.log("creando pregunta");
 
-    const id_categoria = selector[0].value;
+    const id_categoria = selector.value;
     const contenido = areaPregunta.value;
 
     const ultimaPregunta = await recuperarUltimaPregunta();
@@ -155,6 +178,7 @@ async function CrearPregunta() {
         contenedores[i].lastElementChild.checked = false
     }
 }
+
 
 
 function borrarPregunta(){
@@ -276,7 +300,6 @@ async function editarPregunta() {
     const inputFile = input[1]
     let img = base64Imagen || null;
 
-    // Leer nueva imagen si fue seleccionada
     if (inputFile && inputFile.files.length > 0) {
         const file = inputFile.files[0];
         img = await new Promise((resolve, reject) => {
@@ -336,3 +359,4 @@ async function mostrarImagen(data) {
         alert('Error al cargar la imagen');
     }
 }
+

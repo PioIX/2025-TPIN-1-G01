@@ -34,16 +34,7 @@ app.get('/traerUsuarios',async function (req,res) {
         res.send(error)
     }
 })
-app.get('/traerJugadores',async function (req,res) {
-    try {
-        let respuesta;
-        respuesta = await realizarQuery("SELECT * FROM Jugadores")
-        console.log(respuesta)
-        res.send(respuesta)
-    } catch (error) {
-        res.send(error)
-    }
-})
+
 app.get('/traerCategorias',async function(req,res){
     try {
         let respuesta;
@@ -140,24 +131,28 @@ app.get('/traerUltimaPregunta',async function (req,res) {
         res.send(error)
     }
 })
-app.get('/traerUltimaOpcion',async function (req,res) {
+app.get('/traerUltimaOpcion', async function (req, res) {
     try {
-        let respuesta;
-        respuesta = await realizarQuery (`SELECT * FROM Opciones ORDER BY  id desc limit 1`)
-        res.json(respuesta[0]||null)
+        const respuesta = await realizarQuery(`SELECT * FROM Opciones ORDER BY id DESC LIMIT 1`);
+        res.json(respuesta[0] || null);
     } catch (error) {
-        res.send(error)
+        res.status(500).send(error.message || error);
     }
-})
-app.get('/buscarPreguntaCategoria',async function (req,res) {
+});
+
+app.get('/buscarPreguntaCategoria', async function (req, res) {
     try {
-        let respuesta;
-        respuesta = await realizarQuery (`SELECT * FROM Preguntas where id_categoria=${req.query.id_categoria}`)
-        res.send(respuesta)
+        const idCategoria = req.query.id_categoria;
+        if (!idCategoria) {
+            return res.status(400).send("Falta el parámetro 'id_categoria'");
+        }
+        const respuesta = await realizarQuery(`SELECT * FROM Preguntas WHERE id_categoria = ${idCategoria}`);
+        res.json(respuesta);
     } catch (error) {
-        res.send(error)
+        res.status(500).send(error.message || error);
     }
-})
+});
+
 function normalizarTexto(texto) {
   if (typeof texto !== 'string') return '';
   return texto
@@ -195,113 +190,100 @@ app.post('/crearPregunta', async function (req, res) {
   }
 });
 
-app.post('/crearOpciones',async function(req,res){
+app.post('/crearOpciones', async function(req,res){
     try {
         await realizarQuery(`INSERT INTO Opciones(opcion,id_pregunta,is_rta) VALUES ("${req.body.opcion}", ${req.body.id_pregunta},${req.body.isRta})`)
         res.send({message:"ok"})
     } catch (error) {
         res.send(error)
     }
-})
-app.delete('/borrarPregunta',async function (req,res) {
+});
+app.delete('/borrarPregunta', async function (req, res) {
     try {
-        await realizarQuery(`DELETE FROM Preguntas WHERE id=${req.body.id};`)
-        await realizarQuery(`DELETE FROM Opciones WHERE id_pregunta=${req.body.id};`)
-        res.send({message:"eliminado con exito"})
+        await realizarQuery(`DELETE FROM Preguntas WHERE id=${req.body.id};`);
+        await realizarQuery(`DELETE FROM Opciones WHERE id_pregunta=${req.body.id};`);
+        res.json({ message: "eliminado con exito" });
     } catch (error) {
-        res.send({"error":error})
+        res.status(500).json({ error: error.message || error });
     }
-})
-app.delete('/eliminarJugadorXid',async function (req,res) {
+});
+
+app.delete('/eliminarJugadorXid', async function (req, res) {
     try {
-        await realizarQuery(`DELETE FROM Jugadores WHERE id=${req.body.id}`)
-        res.send({message:"jugador eliminado con exito"})
+        await realizarQuery(`DELETE FROM Jugadores WHERE id=${req.body.id}`);
+        res.json({ message: "jugador eliminado con exito" });
     } catch (error) {
-        res.send(error)
+        res.status(500).json({ error: error.message || error });
     }
-})
-app.put('/actualizarPuntaje',async function(req,res){
-    console.log(req.body)
+});
+
+app.put('/actualizarPuntaje', async function(req, res){
     try {
-        if(req.body.action==="eliminar"){
-            await realizarQuery(`UPDATE Jugadores SET max_puntaje=0 WHERE id=${req.body.id}`)
-            res.send({message:"puntaje eliminado"})
-        } else{
-            await realizarQuery(`UPDATE Jugadores SET max_puntaje=${req.body.new_highScore} WHERE id=${req.body.id}`)
-            res.send({message:"puntaje actualizado"})
+        if(req.body.action === "eliminar"){
+            await realizarQuery(`UPDATE Jugadores SET max_puntaje=0 WHERE id=${req.body.id}`);
+            res.json({ message: "puntaje eliminado" });
+        } else {
+            await realizarQuery(`UPDATE Jugadores SET max_puntaje=${req.body.new_highScore} WHERE id=${req.body.id}`);
+            res.json({ message: "puntaje actualizado" });
         }
     } catch (error) {
-        res.send(error)
+        res.status(500).json({ error: error.message || error });
     }
-})
+});
 
-app.get("/traerPregunta", async function(req,res){
+app.get("/traerPregunta", async function(req, res){
     try {
-        const pregunta = await realizarQuery(
-            `Select * from Preguntas where id= ${req.query.id}`
-        )    
-        res.send(pregunta[0])
+        const pregunta = await realizarQuery(`SELECT * FROM Preguntas WHERE id=${req.query.id}`);
+        res.json(pregunta[0] || null);
     } catch (error) {
-        res.send(error)
+        res.status(500).json({ error: error.message || error });
     }
-})
+});
 
-app.get("/traerOpcion", async (req,res) => {
+app.get("/traerOpcion", async (req, res) => {
     try {
-        const respuesta = await realizarQuery(
-            `Select * from Opciones where id_pregunta = ${req.query.id_pregunta}`
-        )
-        console.log(respuesta)
-        for(let i=0;i<respuesta[0].opcion.length;i++){
-            console.log(respuesta[i].opcion[i])
-        }
-        res.send(respuesta)
+        const respuesta = await realizarQuery(`SELECT * FROM Opciones WHERE id_pregunta=${req.query.id_pregunta}`);
+        res.json(respuesta);
     } catch (error) {
-        res.send(error)
+        res.status(500).json({ error: error.message || error });
     }
-})
+});
 
 app.put("/actualizarPregunta", async function(req, res) {
-    console.log("actualizando pregunta");
-    console.log("Imagen recibida:", req.body.imagen ? req.body.imagen.slice(0, 100) : "null");
-
     try {
-        await realizarQuery( `
+        await realizarQuery(`
             UPDATE Preguntas
             SET id_categoria = ${req.body.id_categoria},
                 contenido = "${req.body.contenido}",
                 imagen = "${req.body.imagen}"
             WHERE id = ${req.body.id}
-        `)
-        
-        res.send({ message: "pregunta actualizada" });
+        `);
+        res.json({ message: "pregunta actualizada" });
     } catch (error) {
         console.error(error);
-        res.status(500).send({ error: "Error al actualizar la pregunta" });
+        res.status(500).json({ error: "Error al actualizar la pregunta" });
     }
 });
 
-
 app.put("/actualizarOpcion", async function(req, res) {
-    console.log(req.body)
     try {
-        await realizarQuery(
-            `UPDATE Opciones 
-            SET opcion="${req.body.opcion}", 
-                id_pregunta=${req.body.id_pregunta}, 
-                is_rta=${req.body.isRta} 
-            WHERE id=${req.body.id}`
-        );
-        res.send({ message: "opcion actualizada" });
+        await realizarQuery(`
+            UPDATE Opciones 
+            SET opcion = "${req.body.opcion}", 
+                id_pregunta = ${req.body.id_pregunta}, 
+                is_rta = ${req.body.isRta} 
+            WHERE id = ${req.body.id}
+        `);
+        res.json({ message: "opcion actualizada" });
     } catch (error) {
-        res.send(error);
+        res.status(500).json({ error: error.message || error });
     }
 });
 
 app.get('/traerImg', async function (req, res) {
     try {
         const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
-        if (resultado.length === 0 || !resultado[0].imagen) {
+        if (!resultado.length || !resultado[0].imagen) {
             return res.json({ imagenBase64: null });
         }
         const imagen = resultado[0].imagen;
@@ -313,9 +295,7 @@ app.get('/traerImg', async function (req, res) {
         } else {
             imagenBase64 = `data:image/jpeg;base64,${imagen}`;
         }
-        console.log("Enviando imagen base64:", imagenBase64.slice(0, 100));
         res.json({ imagenBase64 });
-
     } catch (error) {
         console.error("Error al traer imagen:", error);
         res.status(500).json({ error: 'Error al traer la imagen' });
