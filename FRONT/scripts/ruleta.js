@@ -5,6 +5,15 @@
     const b = Math.floor(Math.random() * 255);
     return { r, g, b };
 }
+async function traerColores(){
+    c = await RecuperarColoresCategoria()
+    a = []
+    for(let x=0;x<c.length;x++){
+        console.log(c[x].color.trim().split(","))
+        a.push(c[x].color.trim().split(","))    
+    }
+    return a
+}
 
 // Convierte grados a radianes, para uso en canvas
 function toRad(deg) {
@@ -187,3 +196,4 @@ function spin() {
 }
 
 draw(); // Dibuja la ruleta inicialmente al cargar la página
+traerColores()
