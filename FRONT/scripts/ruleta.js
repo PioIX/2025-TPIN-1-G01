@@ -7,12 +7,22 @@
 }
 async function traerColores(){
     c = await RecuperarColoresCategoria()
-    a = []
+    const a = []
+    const colorines=[]
+    let col = [];
     for(let x=0;x<c.length;x++){
-        console.log(c[x].color.trim().split(","))
         a.push(c[x].color.trim().split(","))    
     }
-    return a
+    for(let i=0;i<a.length;i++){
+        col.push({
+            r: a[i][0],
+            g: a[i][1],
+            b: a[i][2],
+
+        })
+        colorines.push(col[i])
+    }
+    return colorines
 }
 
 // Convierte grados a radianes, para uso en canvas
@@ -47,7 +57,7 @@ const centerY = height / 2;
 const radius = width / 2;
 
 // Categorías que forman las secciones de la ruleta
-let categorias = ["Artes", "Ciencia", "Deportes", "Entretenimiento", "Geografía", "Historia"];
+let categorias = ["Geografía", "Ciencia", "Historia", "Arte", "Deportes", "Entretenimiento"];
 
 // Ángulo que ocupa cada categoría (dividiendo 360° entre la cantidad de categorías)
 let step = 360 / categorias.length;
@@ -70,23 +80,34 @@ let maxRotation = randomRange(360 * 3, 360 * 6);
 let pause = false;
 
 // Inicializamos colores para cada sección al cargar la página
-for (let i = 0; i < categorias.length + 1; i++) {
-    colors.push(randomColor());
-}
+traerColores().then(data=>{for(let i=0;i<data.length;i++){
+    console.log(data[i])
+    colors.push(data[i])
+}})
+// for (let i = 0; i < categorias.length; i++) {
+//     colors.push(randomColor());
+//     console.log(colors[i])
+// }
 
 // Crea la ruleta y actualiza variables necesarias
 function createWheel() {
     step = 360 / categorias.length; // recalcula el paso en caso de cambiar categorías
     colors = [];
-    for (let i = 0; i < categorias.length + 1; i++) {
-        colors.push(randomColor());
-    }
+    // for (let i = 0; i < categorias.length + 1; i++) {
+    //     colors.push(randomColor());
+    // }
+    traerColores().then(data=>{for(let i=0;i<data.length;i++){
+        console.log(data[i])
+        colors.push(data[i])
+    }})
+
     draw(); // dibuja la ruleta con los nuevos colores
 }
 
 // Dibuja la ruleta en el canvas
-function draw() {
+async function draw() {
     // Fondo oscuro de la rueda
+    await traerColores()
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRad(0), toRad(360));
     ctx.fillStyle = `rgb(33,33,33)`;
@@ -195,5 +216,5 @@ function spin() {
     window.requestAnimationFrame(animate);
 }
 
-draw(); // Dibuja la ruleta inicialmente al cargar la página
 traerColores()
+draw(); // Dibuja la ruleta inicialmente al cargar la página
