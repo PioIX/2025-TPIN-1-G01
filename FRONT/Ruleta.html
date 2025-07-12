@@ -11,16 +11,21 @@
 
 <body>
     <div class="header">
-        <h1>GANADOR</h1>
-        <p id="winner">NINGUNO</p>
+        <h1>gira la ruleta</h1>
     </div>
-
+    <dialog id="modal-increible">
+        <h2 id="categoria"></h2>
+        <img src="" alt=""> 
+        <button onclick="ui.closeCatModal()">siguiente</button>
+    </dialog>
     <div class="wheel">
         <canvas id="canvas" width="500" height="500"></canvas>
         <div class="center-circle" onclick="spin()">
             <div class="triangle"></div>
         </div>
     </div>
+    <footer></footer>
+    <script src="scripts/Clases/ui.js"></script>
     <script src="scripts/fetch.js"></script>
     <script src="scripts/ruleta.js"></script>
 </body>
