@@ -1,7 +1,8 @@
 const modal = document.getElementById("modal-increible")
+let selected;
 // Trae los colores en formato {r, g, b}
 async function traerColores() {
-    const c = await RecuperarColoresCategoria();
+    const c = await traerCategorias();
     const colores = [];
     for (let x = 0; x < c.length; x++) {
         const partes = c[x].color.trim().split(",");
@@ -12,6 +13,15 @@ async function traerColores() {
         });
     }
     return colores;
+}
+
+async function generarCategorias(){
+    const c = await traerCategorias();
+    const categorias = []
+    for(let x=0;x<c.length;x++){
+        categorias.push(new Categoria(c[x].id,c[x].nombre_categoria))
+    }
+    return categorias
 }
 
 // Convierte grados a radianes
@@ -44,8 +54,8 @@ const centerY = height / 2;
 const radius = width / 2;
 
 // Categorías de la ruleta
-let categorias = ["Geografía", "Ciencia", "Historia", "Arte", "Deportes", "Entretenimiento"];
-let step = 360 / categorias.length;
+let categorias;
+let step;
 
 // Colores cargados dinámicamente
 let colors = [];
@@ -56,7 +66,7 @@ let maxRotation = randomRange(360 * 3, 360 * 6);
 let pause = false;
 
 // Dibuja la ruleta
-function draw() {
+async function draw() {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRad(0), toRad(360));
     ctx.fillStyle = `rgb(33,33,33)`;
@@ -95,10 +105,10 @@ function draw() {
         ctx.textAlign = "center";
         ctx.fillStyle = (color.r > 150 || color.g > 150 || color.b > 150) ? "#000" : "#fff";
         ctx.font = 'bold 20px sans-serif';
-        ctx.fillText(categorias[i], 130, 10);
+        ctx.fillText(categorias[i].nombre, 130, 10);
         ctx.restore();
 
-        itemDegs[categorias[i]] = {
+        itemDegs[categorias[i].nombre] = {
             startDeg: startDeg,
             endDeg: endDeg
         };
@@ -106,22 +116,24 @@ function draw() {
         // Muestra el ganador si está en la parte superior
         if (startDeg % 360 < 360 && startDeg % 360 > 270 && endDeg % 360 > 0 && endDeg % 360 < 90) {
             // document.getElementById("winner").innerText = categorias[i]; 
-            modal.firstElementChild.innerText = categorias[i]
+            modal.firstElementChild.innerText = categorias[i].nombre
         }
     }
 }
 
 // Crea la ruleta y carga colores
-function createWheel() {
-    step = 360 / categorias.length;
-    traerColores().then(data => {
-        colors = data;
-        draw();
-    });
-}
+// async function createWheel() {
+//     categorias = await generarCategorias()
+//     step = 360 / categorias.length;
+//     console.log(1)
+//     traerColores().then(data => {
+//         colors = data;
+//         draw();
+//     });
+// }
 
 // Anima el giro
-function animate() {
+async function animate() {
     if (pause) return;
 
     speed = easeOutSine(getPercent(currentDeg, maxRotation, 0)) * 20;
@@ -139,7 +151,7 @@ function animate() {
 }
 
 // Inicia el giro
-function spin() {
+async function spin() {
     if (speed !== 0) return;
 
     maxRotation = 0;
@@ -151,15 +163,16 @@ function spin() {
 
         // Selecciona aleatoriamente una categoría
         let randomIndex = Math.floor(Math.random() * categorias.length);
-        let selected = categorias[randomIndex];
-
+        selected = categorias[randomIndex];
+        console.log(`Selected ${selected.id}`)
+        
         // Asegura que itemDegs esté bien cargado
-        const degs = itemDegs[selected];
+        const degs = itemDegs[selected.nombre];
         if (!degs) {
             console.warn("Categoría no encontrada:", selected);
             return;
         }
-
+        
         maxRotation = (360 * 6) - degs.endDeg + 10;
         // document.getElementById("winner").innerText = "Girando...";
         pause = false;
@@ -168,11 +181,16 @@ function spin() {
 }
 
 // Al iniciar: carga colores y dibuja
-traerColores().then(data => {
-    colors = data;
-    draw();
-});
+generarCategorias().then(nombres=>{
+    categorias = nombres
+    step = 360 / categorias.length;
+    traerColores().then(colores => {
+        colors = colores;
+        draw();
+    });
+})
+
 
 modal.lastElementChild.addEventListener("click",()=>{
-    ui.changeScreen("juego")
+    location.href = `juego.html?id=${selected.id}`;
 })

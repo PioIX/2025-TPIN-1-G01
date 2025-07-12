@@ -134,3 +134,38 @@ async function RecuperarColoresCategoria() {
     // console.log(result)
     return result
 }
+
+async function recuperarPreguntasCat(id) {
+    const response = await fetch(`http://localhost:4000/traerPreguntasCategoria?id=${id}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
+async function recuperarOpcionesPreguntas(preguntaActual) {
+    console.log(preguntaActual)
+    const response = await fetch(`http://localhost:4000/traerOpciones?id_pregunta=${preguntaActual}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
+async function TraerJugadoresPuntajes() {
+    const response = await fetch("http://localhost:4000/TraerJugadoresPuntajes",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}

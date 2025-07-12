@@ -176,3 +176,34 @@ app.get('/coloresCategoria',async function(req,res){
         res.send(error)
     }
 })
+app.get('/TraerJugadoresPuntajes',async function(req,res){
+    try {
+        let jugadores;
+        jugadores = await realizarQuery("SELECT * FROM Jugadores")
+        console.log(jugadores)
+        res.send(jugadores)
+    } catch (error) {
+        res.send(jugadores)
+    }
+})
+app.get('/traerPreguntasCategoria',async function(req,res){
+    try {
+        let preguntas;
+        preguntas = await realizarQuery(`SELECT id,id_categoria,contenido FROM Preguntas WHERE id_categoria = ${req.query.id}`)
+        console.log({"preguntas":preguntas})
+        res.send(preguntas)
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.get('/traerOpciones',async function(req,res){
+    console.log(req.query.id_pregunta)
+    try {
+        let opciones;
+        opciones = await realizarQuery(`SELECT *  FROM Opciones WHERE id_pregunta =" ${req.query.id_pregunta}"`)
+        console.log({"opciones":opciones})
+            res.send(opciones)
+        } catch (error) {
+        res.send(error)
+    }
+})
