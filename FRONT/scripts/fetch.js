@@ -1,5 +1,18 @@
 async function traerCategorias() {
-    const response = await fetch(`http://localhost:4000/traerCategorias`,{
+    const response = await fetch(`http://localhost:4000/traerCategorias`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    console.log(response)
+    let result = await response.json()
+    console.log(result)
+    return result
+}
+
+async function traerMejoresJugadores() {
+    const response = await fetch(`http://localhost:4000/traerMejoresJugadores`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -12,7 +25,7 @@ async function traerCategorias() {
 }
 
 async function verificarUsuario(usuario) {
-    const response = await fetch(`http://localhost:4000/verificarUsuario?correo_electronico=${usuario.email}&contraseña=${usuario.password}`,{
+    const response = await fetch(`http://localhost:4000/verificarUsuario?correo_electronico=${usuario.email}&contraseña=${usuario.password}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -26,7 +39,7 @@ async function verificarUsuario(usuario) {
 }
 //preguntar porque se hacen dos request
 async function usuarioLog() {
-    const response = await fetch(`http://localhost:4000/usuarioLogeado`,{
+    const response = await fetch(`http://localhost:4000/usuarioLogeado`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -49,7 +62,7 @@ async function buscarUsuarioXNombre(nombre) {
 }
 async function InOut(datos) {
     console.log(datos)
-    const response = await fetch(`http://localhost:4000/InOut`,{
+    const response = await fetch(`http://localhost:4000/InOut`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -59,7 +72,7 @@ async function InOut(datos) {
     console.log(response)
     let result = await response.json()
     console.log(result)
-    usuario = await usuarioLog() 
+    usuario = await usuarioLog()
 
     return result
 }
@@ -86,7 +99,7 @@ async function registrarUsuario(usuario) {
 }
 
 async function recuperarUltimaPregunta() {
-    const response = await fetch("http://localhost:4000/traerUltimaPregunta",{
+    const response = await fetch("http://localhost:4000/traerUltimaPregunta", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -135,16 +148,16 @@ async function mandarPregunta(pregunta) {
 }
 
 async function mandarOpciones(opcion) {
-    const response = await fetch("http://localhost:4000/crearOpciones", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(opcion),
-    });
+const response = await fetch("http://localhost:4000/crearOpciones", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify(opcion),
+});
 
-    const result = await response.json();
-    console.log(result)
+const result = await response.json();
+console.log(result)
 async function deleteQuestion(id) {
     const response = await fetch("http://localhost:4000/borrarPregunta", {
         method: "DELETE",
@@ -188,7 +201,7 @@ async function traerPregunta(id) {
     });
     const result = await response.json();
     return result;
-} 
+}
 
 async function traerOpcion(id_pregunta) {
     const response = await fetch(`http://localhost:4000/traerOpcion?id_pregunta=${id_pregunta}`, {
@@ -217,7 +230,6 @@ async function actualizarPregunta(datos) {
     const result = await response.json();
     console.log(result);
 }
-
 async function actualizarOpcion(datos) {
     const response = await fetch("http://localhost:4000/actualizarOpcion", {
         method: "PUT",
@@ -227,4 +239,4 @@ async function actualizarOpcion(datos) {
     const result = await response.json();
     console.log(result);
 }
-
+}

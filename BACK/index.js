@@ -56,6 +56,17 @@ app.get('/traerPreguntas',async function (req,res){
     }
 }) 
 
+app.get("/traerMejoresJugadores", async function (req,res) {
+    try {
+        const respuesta = await realizarQuery(`SELECT * FROM Jugadores ORDER BY max_puntaje DESC`)
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+    
+})
+
 app.get('/verificarUsuario', async function (req, res) {
     try {
         let respuesta;
