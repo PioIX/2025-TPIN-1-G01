@@ -5,6 +5,9 @@
     <link rel="stylesheet" href="estilos/home.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <video autoplay muted loop id="myVideo">
@@ -16,13 +19,14 @@
             Tu Intelecto?</h3>
     </header>
     <main>
-        <button id="btn-jugar">jugar</button>
+        
+        <div id="container-btn">
+            <button id="btn-jugar">Jugar</button>
+            <button id="btn-table">Tabla</button>
+            <button id="cerrar-sesion">Cerrar Sesión</button>
+        </div>
     </main>
-    <div id="container-btn">
-        <button id="cerrar-sesion"></button>
-        <button id="btn-table">tabla</button>
-    </div>
-    <footer>creative license</footer>
+    <!-- <footer>creative license</footer> -->
     <script src="scripts/fetch.js"></script>
     <script src="scripts/home.js"></script>
     <script src="scripts/Clases/ui.js"></script>

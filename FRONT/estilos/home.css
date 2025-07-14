@@ -25,14 +25,82 @@ header, main, #container-btn{
 }
 
 header{
-    height:fit-content;
-    width: 80vw;
+    display: flex;
+    flex-flow: column nowrap;
+    text-align: center;
+    height:20vh;
+    width: 90vw;
+    margin: 0 auto;
+    font-family: "Baloo 2", sans-serif;
+    text-shadow:
+    -1.25px -1.25px 0 rgb(49, 49, 49),
+    -1.25px 1.25px 0 rgb(49, 49, 49),
+    1.25px 1.25px 0 rgb(49, 49, 49),
+    1.25px -1.25px 0 rgb(49, 49, 49);
+}
+
+header h2 {
+    font-size: 50px;
+}
+
+header h3 {
+    font-size: 30px;
+}
+
+main {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
 }
 
 #btn-jugar{
     background: #FEA314;
-    width: 50vw;
+    width: 40vw;
     height: fit-content;
-    padding: 5px;
+    padding: 10px;
+    color: #fff;
+    font-size: 25px;
+    font-family: "Baloo 2", sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 5vh;
 }
 
+#btn-table {
+    background: #FEA314;
+    width: 40vw;
+    height: fit-content;
+    padding: 10px;
+    color: #fff;
+    font-size: 25px;
+    font-family: "Baloo 2", sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 5vh;
+}
+
+#cerrar-sesion {
+    background: #e40d0d;
+    width: 25vw;
+    height: fit-content;
+    padding: 10px;
+    color: #fff;
+    font-size: 20px;
+    font-family: "Baloo 2", sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+}
+
+body{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-around;
+
+}
+
+#container-btn {
+    display: flex;
+    flex-direction: column;
+}
