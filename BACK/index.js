@@ -210,7 +210,7 @@ app.delete('/borrarPregunta', async function (req, res) {
 
 app.delete('/eliminarJugadorXid', async function (req, res) {
     try {
-        await realizarQuery(`DELETE FROM Jugadores WHERE id=${req.body.id}`);
+        await realizarQuery(`DELETE FROM Usuarios WHERE id=${req.body.id}`);
         res.json({ message: "jugador eliminado con exito" });
     } catch (error) {
         res.status(500).json({ error: error.message || error });
@@ -220,10 +220,10 @@ app.delete('/eliminarJugadorXid', async function (req, res) {
 app.put('/actualizarPuntaje', async function(req, res){
     try {
         if(req.body.action === "eliminar"){
-            await realizarQuery(`UPDATE Jugadores SET max_puntaje=0 WHERE id=${req.body.id}`);
+            await realizarQuery(`UPDATE Usuarios SET max_puntaje=0 WHERE id=${req.body.id}`);
             res.json({ message: "puntaje eliminado" });
         } else {
-            await realizarQuery(`UPDATE Jugadores SET max_puntaje=${req.body.new_highScore} WHERE id=${req.body.id}`);
+            await realizarQuery(`UPDATE Usuarios SET max_puntaje=${req.body.new_highScore} WHERE id=${req.body.id}`);
             res.json({ message: "puntaje actualizado" });
         }
     } catch (error) {
