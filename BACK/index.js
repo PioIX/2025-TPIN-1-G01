@@ -207,3 +207,14 @@ app.get('/traerOpciones',async function(req,res){
         res.send(error)
     }
 })
+app.get('/traerImg',async function(req,res){
+    console.log(req.query.id)
+    try {
+        let img;
+        img = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id =" ${req.query.id}"`)
+        console.log({"imagen":img}) 
+        res.send(img)
+    } catch (error) {
+        res.send(error)
+    }
+})

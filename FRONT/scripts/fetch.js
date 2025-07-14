@@ -158,6 +158,17 @@ async function recuperarOpcionesPreguntas(preguntaActual) {
     console.log(result)
     return result
 }
+async function traerImg(preguntaActual) {
+    console.log(preguntaActual.id)
+    const response = await fetch(`http://localhost:4000/traerImg?id=${preguntaActual.id}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    return result[0].imagen
+}
 async function TraerJugadoresPuntajes() {
     const response = await fetch("http://localhost:4000/TraerJugadoresPuntajes",{
         method: "GET",
