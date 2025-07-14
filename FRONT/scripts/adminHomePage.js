@@ -29,75 +29,75 @@ let base64Imagen = null;
 cargarCategorias();
 modificarJugadores();
 
-  input[0].addEventListener("change", () => {
-    const file = input[0].files[0];
-    if (!file) {
-      base64Imagen = null;
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      base64Imagen = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-
-
-  selectModificarCategoria.addEventListener("change", () => {
-    const categoriaId = selectModificarCategoria.value;
-    if (!categoriaId || categoriaId === "undefined") return;
-
-    recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
-      selectModificarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
-      preguntas.forEach(p => {
-        selectModificarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
-      });
-      display[0].innerText = "";
-      selectModificarPregunta.selectedIndex = 0;
-    });
-  });
-
-  selectBorrarCategoria.addEventListener("change", () => {
-    const categoriaId = selectBorrarCategoria.value;
-    if (!categoriaId || categoriaId === "undefined") return;
-
-    recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
-      selectBorrarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
-      preguntas.forEach(p => {
-        selectBorrarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
-      });
-      display[1].innerText = "";
-      selectBorrarPregunta.selectedIndex = 0;
-    });
-  });
-
-  selectModificarPregunta.addEventListener("change", () => {
-    preguntaAEditar();
-  });
-
-  selectBorrarPregunta.addEventListener("change", () => {
-    const opcion = selectBorrarPregunta.options[selectBorrarPregunta.selectedIndex];
-    display[1].innerText = opcion && opcion.value !== "undefined" ? opcion.text : "";
-  });
-
-
-  for (let btn of btnCloseSession) {
-    btn.addEventListener("click", () => {
-      ui.cerrarSesion();
-    });
+input[0].addEventListener("change", () => {
+  const file = input[0].files[0];
+  if (!file) {
+    base64Imagen = null;
+    return;
   }
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    base64Imagen = event.target.result;
+  };
+  reader.readAsDataURL(file);
+});
 
-  btns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      btn.innerText = btn.innerText === "cruz" ? "tick" : "cruz";
+
+selectModificarCategoria.addEventListener("change", () => {
+  const categoriaId = selectModificarCategoria.value;
+  if (!categoriaId || categoriaId === "undefined") return;
+
+  recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
+    selectModificarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
+    preguntas.forEach(p => {
+      selectModificarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
     });
-  });
-
-
-  inputScore.addEventListener("keydown", (e) => {
-    if (["-", "+", "e"].includes(e.key)) e.preventDefault();
+    display[0].innerText = "";
+    selectModificarPregunta.selectedIndex = 0;
   });
 });
+
+selectBorrarCategoria.addEventListener("change", () => {
+  const categoriaId = selectBorrarCategoria.value;
+  if (!categoriaId || categoriaId === "undefined") return;
+
+  recuperarPreguntasCategoria(categoriaId).then((preguntas) => {
+    selectBorrarPregunta.innerHTML = '<option value="undefined" selected disabled hidden>Seleccione una pregunta</option>';
+    preguntas.forEach(p => {
+      selectBorrarPregunta.innerHTML += `<option value="${p.id}">${p.contenido}</option>`;
+    });
+    display[1].innerText = "";
+    selectBorrarPregunta.selectedIndex = 0;
+  });
+});
+
+selectModificarPregunta.addEventListener("change", () => {
+  preguntaAEditar();
+});
+
+selectBorrarPregunta.addEventListener("change", () => {
+  const opcion = selectBorrarPregunta.options[selectBorrarPregunta.selectedIndex];
+  display[1].innerText = opcion && opcion.value !== "undefined" ? opcion.text : "";
+});
+
+
+for (let btn of btnCloseSession) {
+  btn.addEventListener("click", () => {
+    ui.cerrarSesion();
+  });
+}
+
+btns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    btn.innerText = btn.innerText === "cruz" ? "tick" : "cruz";
+  });
+});
+
+
+inputScore.addEventListener("keydown", (e) => {
+  if (["-", "+", "e"].includes(e.key)) e.preventDefault();
+});
+
 
 function cargarCategorias() {
   traerCategorias().then((categorias) => {
