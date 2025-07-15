@@ -239,17 +239,17 @@ app.get('/traerOpciones',async function(req,res){
         res.send(error)
     }
 })
-// app.get('/traerImg',async function(req,res){
-//     console.log(req.query.id)
-//     try {
-//         let img;
-//         img = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id =" ${req.query.id}"`)
-//         console.log({"imagen":img}) 
-//         res.send(img)
-//     } catch (error) {
-//         res.send(error)
-//     }
-// })
+app.get('/traerImg',async function(req,res){
+    console.log(req.query.id)
+    try {
+        let img;
+        img = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id =" ${req.query.id}"`)
+        console.log({"imagen":img}) 
+        res.send(img)
+    } catch (error) {
+        res.send(error)
+    }
+})
 app.get('/traerRecord',async function (req,res) {
     try {
         let record;
@@ -366,25 +366,25 @@ app.put("/actualizarOpcion", async function(req, res) {
     }
 });
 
-app.get('/traerImg', async function (req, res) {
-    try {
-        const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
-        if (!resultado.length || !resultado[0].imagen) {
-            return res.json({ imagenBase64: null });
-        }
-        const imagen = resultado[0].imagen;
-        let imagenBase64;
-        if (Buffer.isBuffer(imagen)) {
-            imagenBase64 = `data:image/jpeg;base64,${imagen.toString('base64')}`;
-        } else if (typeof imagen === 'string' && imagen.startsWith('data:image/')) {
-            imagenBase64 = imagen;
-        } else {
-            imagenBase64 = `data:image/jpeg;base64,${imagen}`;
-        }
-        res.json({ imagenBase64 });
-    } catch (error) {
-        console.error("Error al traer imagen:", error);
-        res.status(500).json({ error: 'Error al traer la imagen' });
-    }
-});
+// app.get('/traerImg', async function (req, res) {
+//     try {
+//         const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
+//         if (!resultado.length || !resultado[0].imagen) {
+//             return res.json({ imagenBase64: null });
+//         }
+//         const imagen = resultado[0].imagen;
+//         let imagenBase64;
+//         if (Buffer.isBuffer(imagen)) {
+//             imagenBase64 = `data:image/jpeg;base64,${imagen.toString('base64')}`;
+//         } else if (typeof imagen === 'string' && imagen.startsWith('data:image/')) {
+//             imagenBase64 = imagen;
+//         } else {
+//             imagenBase64 = `data:image/jpeg;base64,${imagen}`;
+//         }
+//         res.json({ imagenBase64 });
+//     } catch (error) {
+//         console.error("Error al traer imagen:", error);
+//         res.status(500).json({ error: 'Error al traer la imagen' });
+//     }
+// });
 
