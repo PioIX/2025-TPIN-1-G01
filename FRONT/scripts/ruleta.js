@@ -1,28 +1,6 @@
-const modal = document.getElementById("modal-increible")
+const modal = document.getElementById("modal-increible");
+const img = modal.children[1];
 let selected;
-// Trae los colores en formato {r, g, b}
-async function traerColores() {
-    const c = await traerCategorias();
-    const colores = [];
-    for (let x = 0; x < c.length; x++) {
-        const partes = c[x].color.trim().split(",");
-        colores.push({
-            r: parseInt(partes[0]),
-            g: parseInt(partes[1]),
-            b: parseInt(partes[2])
-        });
-    }
-    return colores;
-}
-
-async function generarCategorias(){
-    const c = await traerCategorias();
-    const categorias = []
-    for(let x=0;x<c.length;x++){
-        categorias.push(new Categoria(c[x].id,c[x].nombre_categoria))
-    }
-    return categorias
-}
 
 // Convierte grados a radianes
 function toRad(deg) {
@@ -53,20 +31,40 @@ const centerX = width / 2;
 const centerY = height / 2;
 const radius = width / 2;
 
-// Categorías de la ruleta
-let categorias;
+let categorias = [];
 let step;
-
-// Colores cargados dinámicamente
-let colors = [];
 let itemDegs = {};
 let currentDeg = 0;
 let speed = 0;
 let maxRotation = randomRange(360 * 3, 360 * 6);
 let pause = false;
 
-// Dibuja la ruleta
-async function draw() {
+async function traerCategoriasConColores() {
+    const c = await traerCategorias();
+    const categorias = [];
+
+    for (let x = 0; x < c.length; x++) {
+        const partes = c[x].color.trim().split(",");
+        const color = {
+            r: parseInt(partes[0]),
+            g: parseInt(partes[1]),
+            b: parseInt(partes[2])
+        };
+
+        const imagenBase64 = `data:image/png;base64,${c[x].img_categoria}`;
+
+        categorias.push(new Categoria(
+            c[x].id,
+            c[x].nombre_categoria,
+            imagenBase64,
+            color
+        ));
+    }
+
+    return categorias;
+}
+
+function draw() {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, toRad(0), toRad(360));
     ctx.fillStyle = `rgb(33,33,33)`;
@@ -77,10 +75,10 @@ async function draw() {
     itemDegs = {};
 
     for (let i = 0; i < categorias.length; i++, startDeg += step) {
-        if (!colors[i]) continue;
-
         const endDeg = startDeg + step;
-        const color = colors[i];
+        const color = categorias[i].color;
+        if (!color) continue;
+
         const colorStyle = `rgb(${color.r},${color.g},${color.b})`;
         const colorStyle2 = `rgb(${color.r - 30},${color.g - 30},${color.b - 30})`;
 
@@ -98,7 +96,7 @@ async function draw() {
         ctx.lineTo(centerX, centerY);
         ctx.fill();
 
-        // Texto rotado
+        // Texto
         ctx.save();
         ctx.translate(centerX, centerY);
         ctx.rotate(toRad((startDeg + endDeg) / 2));
@@ -113,35 +111,21 @@ async function draw() {
             endDeg: endDeg
         };
 
-        // Muestra el ganador si está en la parte superior
         if (startDeg % 360 < 360 && startDeg % 360 > 270 && endDeg % 360 > 0 && endDeg % 360 < 90) {
-            // document.getElementById("winner").innerText = categorias[i]; 
-            modal.firstElementChild.innerText = categorias[i].nombre
+            modal.firstElementChild.innerText = categorias[i].nombre;
+            img.src = categorias[i].imagen;
         }
     }
 }
 
-// Crea la ruleta y carga colores
-// async function createWheel() {
-//     categorias = await generarCategorias()
-//     step = 360 / categorias.length;
-//     console.log(1)
-//     traerColores().then(data => {
-//         colors = data;
-//         draw();
-//     });
-// }
-
-// Anima el giro
-async function animate() {
+function animate() {
     if (pause) return;
 
     speed = easeOutSine(getPercent(currentDeg, maxRotation, 0)) * 20;
     if (speed < 0.01) {
         speed = 0;
         pause = true;
-        // alert(document.getElementById("winner").innerText);
-        ui.showCatModal()
+        ui.showCatModal();
         return;
     }
 
@@ -150,47 +134,34 @@ async function animate() {
     window.requestAnimationFrame(animate);
 }
 
-// Inicia el giro
-async function spin() {
+function spin() {
     if (speed !== 0) return;
 
     maxRotation = 0;
     currentDeg = 0;
+    draw();
 
-    traerColores().then(data => {
-        colors = data;
-        draw();
+    const randomIndex = Math.floor(Math.random() * categorias.length);
+    selected = categorias[randomIndex];
+    console.log(`Selected ${selected.id}`);
 
-        // Selecciona aleatoriamente una categoría
-        let randomIndex = Math.floor(Math.random() * categorias.length);
-        selected = categorias[randomIndex];
-        console.log(`Selected ${selected.id}`)
-        
-        // Asegura que itemDegs esté bien cargado
-        const degs = itemDegs[selected.nombre];
-        if (!degs) {
-            console.warn("Categoría no encontrada:", selected);
-            return;
-        }
-        
-        maxRotation = (360 * 6) - degs.endDeg + 10;
-        // document.getElementById("winner").innerText = "Girando...";
-        pause = false;
-        window.requestAnimationFrame(animate);
-    });
+    const degs = itemDegs[selected.nombre];
+    if (!degs) {
+        console.warn("Categoría no encontrada:", selected);
+        return;
+    }
+
+    maxRotation = (360 * 6) - degs.endDeg + 10;
+    pause = false;
+    window.requestAnimationFrame(animate);
 }
 
-// Al iniciar: carga colores y dibuja
-generarCategorias().then(nombres=>{
-    categorias = nombres
+traerCategoriasConColores().then(data => {
+    categorias = data;
     step = 360 / categorias.length;
-    traerColores().then(colores => {
-        colors = colores;
-        draw();
-    });
-})
+    draw();
+});
 
-
-modal.lastElementChild.addEventListener("click",()=>{
+modal.lastElementChild.addEventListener("click", () => {
     location.href = `juego.html?id=${selected.id}`;
-})
+});

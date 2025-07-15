@@ -179,7 +179,7 @@ app.get('/coloresCategoria',async function(req,res){
 app.get('/TraerJugadoresPuntajes',async function(req,res){
     try {
         let jugadores;
-        jugadores = await realizarQuery("SELECT * FROM Jugadores")
+        jugadores = await realizarQuery("SELECT id,nombre,max_puntaje FROM Usuarios")
         console.log(jugadores)
         res.send(jugadores)
     } catch (error) {
@@ -214,6 +214,40 @@ app.get('/traerImg',async function(req,res){
         img = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id =" ${req.query.id}"`)
         console.log({"imagen":img}) 
         res.send(img)
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.get('/traerRecord',async function (req,res) {
+    try {
+        let record;
+        record = await realizarQuery(`SELECT max_puntaje FROM Usuarios WHERE esta_logeado = TRUE;`)
+        console.log({"record":record})
+        res.send(record[0].max_puntaje)
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.put('/modificarRecord',async function (req,res) {
+    try {
+        await realizarQuery(`UPDATE Usuarios set max_puntaje=${req.body.max_puntaje}`)
+        res.send("record actualizado con exito")
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.put('/modificarPuntajeActual',async function (req,res) {
+    try {
+        await realizarQuery(`UPDATE Usuarios set puntaje=${req.body.puntaje}`)
+        res.send("se ha a guardado el puntaje con exito")
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.put('/reiniciarPuntaje',async function (req,res) {
+    try {
+        await realizarQuery(`UPDATE Usuarios set puntaje=0`)
+        res.send("se ha a reiniciado el puntaje con exito")
     } catch (error) {
         res.send(error)
     }

@@ -1,7 +1,8 @@
 const contenedorPregunta = document.getElementById("contenedor-preguntas");
 const contenedorRespuesta = document.getElementById("contenedor-respuestas");
 const imgMostrar = document.getElementById("img-mostrar");
-
+const timer = document.getElementById("timer");
+let puntaje = 0
 function GetId() {
     const queryString = window.location.search;
     const param = new URLSearchParams(queryString);
@@ -28,17 +29,42 @@ function detectarTipoMimeDesdeBase64(base64) {
     return null;
 }
 
+function crearBtns(){
+    contenedorRespuesta.innerHTML = 
+        `<div>
+            <button>Cerrar</button>
+            <button>Continuar</button>
+        </div>`
+    const div = contenedorRespuesta.firstElementChild
+    div.firstElementChild.addEventListener("click",()=>{
+        ui.changeScreen("home")
+    })
+    div.lastElementChild.addEventListener("click",()=>{
+        ui.changeScreen("ruleta")
+    })
+}
+function mostrarBtns(){
+    return setTimeout(crearBtns, 3000)
+}
 async function pregunta() {
+    let maxPuntaje
+    let miniTimer;
+    const acierto = new Audio("Audios/unPuntito.m4a")
+    const equivocado = new Audio("Audios/muyMal.m4a")
+    let correctas
+    let tiempo = 30
+    let imagenBase64;
+    let Respondio;
+    let indiceRespuesta;
+    maxPuntaje = await traerRecordPuntaje()
     const preguntas = await recuperarPreguntasCat(GetId());
     const longitud = preguntas.length;
     const indice = generarNumeroAleatorio(longitud);
     const preguntaActual = preguntas[indice];
     const imagen = await traerImg(preguntaActual)
-    console.log(imagen)
-    console.log(preguntaActual)
     contenedorPregunta.firstElementChild.innerText = preguntaActual.contenido;
+    timer.innerText = tiempo
     const opciones = await recuperarOpcionesPreguntas(preguntaActual.id)
-    let imagenBase64;
 
     const tipoMime = detectarTipoMimeDesdeBase64(imagen);
     console.log(tipoMime)
@@ -58,22 +84,63 @@ async function pregunta() {
         console.warn("Tipo de imagen desconocido o no válido.");
         contenedorPregunta.removeChild(imgMostrar)
     }
-    // console.log(respuestas)
-    console.log(contenedorRespuesta)
+
+    const temporizador = setInterval(() => {
+        tiempo-- 
+        timer.innerText = tiempo
+    }, 1000);
     for(let x=0;x<opciones.length;x++){
-        contenedorRespuesta.innerHTML += `<div es-correcta=${opciones[x].is_rta}>${opciones[x].opcion}<div>`
+        contenedorRespuesta.innerHTML += `<div>${opciones[x].opcion}<div>`
     }
     const respuestas = contenedorRespuesta.children
-    for(let x=0;x<respuestas.length;x++){
-        respuestas[x].addEventListener("click",()=>{
-            if(respuestas[x].getAttribute("es-correcta")=="1")
-                console.log("bien")
-            else{
-                console.log("mal")
+        for(let x=0;x<respuestas.length;x++){
+            respuestas[x].addEventListener("click",(e)=>{
+                if (Respondio) return;
+                
+                const anser = e.target 
+                for(let i=0;i<respuestas.length;i++){
+                    if(anser.innerText == respuestas[i].innerText){
+                        indiceRespuesta = i
+                    }
+                }
+                if(opciones[indiceRespuesta].is_rta==1){
+                    acierto.play()
+                    Respondio = true
+                    clearInterval(temporizador)
+                    clearTimeout(defaultTimer)
+                    respuestas[indiceRespuesta].style.backgroundColor = "green"
+                    miniTimer = mostrarBtns()
+                } else {
+                    equivocado.play()
+                    clearInterval(temporizador)
+                    clearTimeout(defaultTimer)
+                    Respondio = true
+                    respuestas[indiceRespuesta].style.backgroundColor = "red"
+                    for(let z = 0; z<opciones.length;z++){
+                        if(opciones[z].is_rta == 1){
+                            respuestas[z].style.backgroundColor = "green"
+                        }
+                    }           
+                    miniTimer = mostrarBtns()
+                }
+            })
+        }
+        clearTimeout(miniTimer)
+    const defaultTimer = setTimeout(() => {
+        clearInterval(temporizador)
+        for(let i=0;i<opciones.length;i++){
+            if(opciones[i].is_rta=1){
+                indiceRespuesta = i
+            } else {
+                console.error("error, no hay una respuesta correcta")
             }
-        })
-    }
-    return indice;
+        }
+        respuestas[indiceRespuesta].style.backgroundColor = "green"
+        sumarPuntaje()
+    }, 30000);
 }
 
+async function sumarPuntaje() {
+    
+}
 pregunta();
