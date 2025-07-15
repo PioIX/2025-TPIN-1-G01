@@ -2,11 +2,17 @@ const contenedorPregunta = document.getElementById("contenedor-preguntas");
 const contenedorRespuesta = document.getElementById("contenedor-respuestas");
 const imgMostrar = document.getElementById("img-mostrar");
 const timer = document.getElementById("timer");
-let puntaje = 0
+let puntaje;
 function GetId() {
     const queryString = window.location.search;
     const param = new URLSearchParams(queryString);
     return parseInt(param.get('id'));
+}
+function getPuntaje() {
+    const queryString = window.location.search;
+    const param = new URLSearchParams(queryString);
+    puntaje = parseInt(param.get('puntaje')) +1
+    return puntaje;
 }
 
 function generarNumeroAleatorio(longitud) {
@@ -40,7 +46,8 @@ function crearBtns(){
         ui.changeScreen("home")
     })
     div.lastElementChild.addEventListener("click",()=>{
-        ui.changeScreen("ruleta")
+        console.log(puntaje)
+        location.href = `ruleta.html?puntaje=${puntaje}`;
     })
 }
 function mostrarBtns(){
@@ -105,6 +112,7 @@ async function pregunta() {
                 }
                 if(opciones[indiceRespuesta].is_rta==1){
                     acierto.play()
+                    puntaje+=1
                     Respondio = true
                     clearInterval(temporizador)
                     clearTimeout(defaultTimer)
@@ -136,7 +144,8 @@ async function pregunta() {
             }
         }
         respuestas[indiceRespuesta].style.backgroundColor = "green"
-        sumarPuntaje()
+        mostrarBtns()
+
     }, 30000);
 }
 
