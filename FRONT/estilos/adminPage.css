@@ -58,7 +58,8 @@ h3 {
 #select-jugadores,
 #select-preguntas,
 #editar-select-categoria,
-#editar-select-pregunta {
+#editar-select-pregunta,
+#borrar-select-pregunta {
     width: 20vw;
     max-width: 280px;
     padding: 6px 10px;

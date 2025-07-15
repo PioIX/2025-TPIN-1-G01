@@ -56,6 +56,17 @@ app.get('/traerPreguntas',async function (req,res){
     }
 }) 
 
+app.get('/traerJugadores',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery("SELECT * FROM Usuarios where es_admin = 0")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.get('/verificarUsuario', async function (req, res) {
     try {
         let respuesta;

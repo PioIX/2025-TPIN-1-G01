@@ -146,6 +146,17 @@ async function mandarOpciones(opcion) {
     const result = await response.json();
     console.log(result)
 }
+async function traerJugadores(){
+    const response = await fetch("http://localhost:4000/traerJugadores", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
+    const result = await response.json();
+    console.log(result);
+    return result
+}
 async function deleteQuestion(id) {
     const response = await fetch("http://localhost:4000/borrarPregunta", {
         method: "DELETE",
@@ -228,4 +239,3 @@ async function actualizarOpcion(datos) {
     const result = await response.json();
     console.log(result);
 }
-
