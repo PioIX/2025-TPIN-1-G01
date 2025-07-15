@@ -21,6 +21,12 @@ class Ui{
     closeLoginModal(){
         modalLogin.close()
     }
+    showCatModal(){
+        modal.showModal()
+    }
+    closeCatModal(){
+        modal.close()
+    }
     showSignInModal(){
         modalSignIn.showModal()
     }

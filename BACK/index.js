@@ -197,6 +197,92 @@ app.post('/crearOpciones', async function(req,res){
     } catch (error) {
         res.send(error)
     }
+})
+app.get('/coloresCategoria',async function(req,res){
+    try {
+        let respuesta;
+        respuesta = await realizarQuery ("select nombre_categoria,color from Categorias")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.get('/TraerJugadoresPuntajes',async function(req,res){
+    try {
+        let jugadores;
+        jugadores = await realizarQuery("SELECT id,nombre,max_puntaje FROM Usuarios")
+        console.log(jugadores)
+        res.send(jugadores)
+    } catch (error) {
+        res.send(jugadores)
+    }
+})
+app.get('/traerPreguntasCategoria',async function(req,res){
+    try {
+        let preguntas;
+        preguntas = await realizarQuery(`SELECT id,id_categoria,contenido FROM Preguntas WHERE id_categoria = ${req.query.id}`)
+        console.log({"preguntas":preguntas})
+        res.send(preguntas)
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.get('/traerOpciones',async function(req,res){
+    console.log(req.query.id_pregunta)
+    try {
+        let opciones;
+        opciones = await realizarQuery(`SELECT *  FROM Opciones WHERE id_pregunta =" ${req.query.id_pregunta}"`)
+        console.log({"opciones":opciones})
+            res.send(opciones)
+        } catch (error) {
+        res.send(error)
+    }
+})
+app.get('/traerImg',async function(req,res){
+    console.log(req.query.id)
+    try {
+        let img;
+        img = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id =" ${req.query.id}"`)
+        console.log({"imagen":img}) 
+        res.send(img)
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.get('/traerRecord',async function (req,res) {
+    try {
+        let record;
+        record = await realizarQuery(`SELECT max_puntaje FROM Usuarios WHERE esta_logeado = TRUE;`)
+        console.log({"record":record})
+        res.send(record[0].max_puntaje)
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.put('/modificarRecord',async function (req,res) {
+    try {
+        await realizarQuery(`UPDATE Usuarios set max_puntaje=${req.body.max_puntaje}`)
+        res.send("record actualizado con exito")
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.put('/modificarPuntajeActual',async function (req,res) {
+    try {
+        await realizarQuery(`UPDATE Usuarios set puntaje=${req.body.puntaje}`)
+        res.send("se ha a guardado el puntaje con exito")
+    } catch (error) {
+        res.send(error)
+    }
+})
+app.put('/reiniciarPuntaje',async function (req,res) {
+    try {
+        await realizarQuery(`UPDATE Usuarios set puntaje=0`)
+        res.send("se ha a reiniciado el puntaje con exito")
+    } catch (error) {
+        res.send(error)
+    }
 });
 app.delete('/borrarPregunta', async function (req, res) {
     try {
@@ -280,25 +366,25 @@ app.put("/actualizarOpcion", async function(req, res) {
     }
 });
 
-app.get('/traerImg', async function (req, res) {
-    try {
-        const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
-        if (!resultado.length || !resultado[0].imagen) {
-            return res.json({ imagenBase64: null });
-        }
-        const imagen = resultado[0].imagen;
-        let imagenBase64;
-        if (Buffer.isBuffer(imagen)) {
-            imagenBase64 = `data:image/jpeg;base64,${imagen.toString('base64')}`;
-        } else if (typeof imagen === 'string' && imagen.startsWith('data:image/')) {
-            imagenBase64 = imagen;
-        } else {
-            imagenBase64 = `data:image/jpeg;base64,${imagen}`;
-        }
-        res.json({ imagenBase64 });
-    } catch (error) {
-        console.error("Error al traer imagen:", error);
-        res.status(500).json({ error: 'Error al traer la imagen' });
-    }
-});
+// app.get('/traerImg', async function (req, res) {
+//     try {
+//         const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
+//         if (!resultado.length || !resultado[0].imagen) {
+//             return res.json({ imagenBase64: null });
+//         }
+//         const imagen = resultado[0].imagen;
+//         let imagenBase64;
+//         if (Buffer.isBuffer(imagen)) {
+//             imagenBase64 = `data:image/jpeg;base64,${imagen.toString('base64')}`;
+//         } else if (typeof imagen === 'string' && imagen.startsWith('data:image/')) {
+//             imagenBase64 = imagen;
+//         } else {
+//             imagenBase64 = `data:image/jpeg;base64,${imagen}`;
+//         }
+//         res.json({ imagenBase64 });
+//     } catch (error) {
+//         console.error("Error al traer imagen:", error);
+//         res.status(500).json({ error: 'Error al traer la imagen' });
+//     }
+// });
 

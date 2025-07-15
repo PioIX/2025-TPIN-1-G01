@@ -146,6 +146,91 @@ async function mandarOpciones(opcion) {
     const result = await response.json();
     console.log(result)
 }
+
+async function RecuperarColoresCategoria() {
+    const response = await fetch("http://localhost:4000/coloresCategoria",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    // console.log(result)
+    return result
+}
+
+async function recuperarPreguntasCat(id) {
+    const response = await fetch(`http://localhost:4000/traerPreguntasCategoria?id=${id}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
+async function recuperarOpcionesPreguntas(preguntaActual) {
+    console.log(preguntaActual)
+    const response = await fetch(`http://localhost:4000/traerOpciones?id_pregunta=${preguntaActual}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
+async function traerImg(preguntaActual) {
+    console.log(preguntaActual.id)
+    const response = await fetch(`http://localhost:4000/traerImg?id=${preguntaActual.id}`,{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    return result[0].imagen
+}
+async function TraerJugadoresPuntajes() {
+    const response = await fetch("http://localhost:4000/TraerJugadoresPuntajes",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
+/*-------------------------------------------------------------------*/
+async function traerRecordPuntaje() {
+     const response = await fetch("http://localhost:4000/traerRecord",{
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    const result = await response.json()
+    console.log(result)
+    return result
+}
+
+async function modificarPuntajeActual(puntaje) {
+    console.log(puntaje)
+    const response = await fetch("http://localhost:4000/modificarPuntajeActual", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(puntaje),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}
+
 async function deleteQuestion(id) {
     const response = await fetch("http://localhost:4000/borrarPregunta", {
         method: "DELETE",
@@ -176,10 +261,34 @@ async function updateHighScore(data) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(puntaje),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}
+async function modificarRecord(record) {
+    console.log(record)
+    const response = await fetch("http://localhost:4000/modificarRecord", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(record),
+    });
+
+    const result = await response.json();
+    console.log(result)
+}
+async function reiniciarPuntaje() {
+    const response = await fetch("http://localhost:4000/reiniciarPuntaje", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
     });
     const result = await response.json();
-    console.log(result);
+    console.log(result)
 }
 
 async function traerPregunta(id) {
