@@ -8,10 +8,16 @@ function GetId() {
     const param = new URLSearchParams(queryString);
     return parseInt(param.get('id'));
 }
-function getPuntaje() {
+function getScore() {
     const queryString = window.location.search;
     const param = new URLSearchParams(queryString);
-    puntaje = parseInt(param.get('puntaje')) +1
+    puntaje = parseInt(param.get('puntaje'))
+    console.log(puntaje)
+    return puntaje;
+}
+function resetScore() {
+    puntaje = 0;
+    console.log(puntaje)
     return puntaje;
 }
 
@@ -43,10 +49,10 @@ function crearBtns(){
         </div>`
     const div = contenedorRespuesta.firstElementChild
     div.firstElementChild.addEventListener("click",()=>{
+        resetScore()
         ui.changeScreen("home")
     })
     div.lastElementChild.addEventListener("click",()=>{
-        console.log(puntaje)
         location.href = `ruleta.html?puntaje=${puntaje}`;
     })
 }
@@ -58,7 +64,6 @@ async function pregunta() {
     let miniTimer;
     const acierto = new Audio("Audios/unPuntito.m4a")
     const equivocado = new Audio("Audios/muyMal.m4a")
-    let correctas
     let tiempo = 30
     let imagenBase64;
     let Respondio;
@@ -112,13 +117,14 @@ async function pregunta() {
                 }
                 if(opciones[indiceRespuesta].is_rta==1){
                     acierto.play()
-                    puntaje+=1
+                    sumarPuntaje()
                     Respondio = true
                     clearInterval(temporizador)
                     clearTimeout(defaultTimer)
                     respuestas[indiceRespuesta].style.backgroundColor = "green"
                     miniTimer = mostrarBtns()
                 } else {
+                    puntaje= 0
                     equivocado.play()
                     clearInterval(temporizador)
                     clearTimeout(defaultTimer)
@@ -149,7 +155,9 @@ async function pregunta() {
     }, 30000);
 }
 
-async function sumarPuntaje() {
-    
+function sumarPuntaje(){
+    puntaje = getScore();
+    puntaje+=1
+    return puntaje
 }
 pregunta();

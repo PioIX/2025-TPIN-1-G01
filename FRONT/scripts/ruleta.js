@@ -1,7 +1,16 @@
 const modal = document.getElementById("modal-increible");
 const img = modal.children[1];
 let selected;
-
+let puntaje; 
+function recuperarPuntaje(){
+    const queryString = window.location.search;
+    const param = new URLSearchParams(queryString);
+    puntaje = param.get('puntaje')
+    if(puntaje==="undefined"){
+        puntaje = 0 
+        return puntaje
+    } 
+}
 // Convierte grados a radianes
 function toRad(deg) {
     return deg * (Math.PI / 180.0);
@@ -157,11 +166,15 @@ function spin() {
 }
 
 traerCategoriasConColores().then(data => {
+    recuperarPuntaje()
     categorias = data;
     step = 360 / categorias.length;
     draw();
 });
 
 modal.lastElementChild.addEventListener("click", () => {
-    location.href = `juego.html?id=${selected.id}`;
+    if(puntaje ===null) {
+        puntaje = 0
+    }
+    location.href = `juego.html?id=${selected.id}&puntaje=${puntaje}`;
 });
