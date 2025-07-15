@@ -312,4 +312,3 @@ app.get('/traerImg', async function (req, res) {
         res.status(500).json({ error: 'Error al traer la imagen' });
     }
 });
-

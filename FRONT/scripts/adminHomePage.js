@@ -139,6 +139,7 @@ function CrearPregunta() {
   recuperarUltimaPregunta().then((ultimaPregunta) => {
     const id_pregunta = (ultimaPregunta && ultimaPregunta.id) ? ultimaPregunta.id + 1 : 1;
     const question = new Pregunta(id_pregunta, id_categoria, contenido, img);
+    console.log("imagen:", img.length)
 
     mandarPregunta(question).then(() => {
       recuperarUltimaOpcion().then((ultimaOpcion) => {
@@ -217,7 +218,7 @@ function modificarPuntaje(act) {
   const idJugador = parseInt(selectJugadores.options[indice].value);
 
   if (act === "eliminar") {
-    updateHigScore({ action: act, id: idJugador }).then(() => {
+    updateHighScore({ action: act, id: idJugador }).then(() => {
       modificarJugadores();
       inputScore.value = "";
       alert("Puntaje eliminado correctamente");
@@ -225,17 +226,19 @@ function modificarPuntaje(act) {
     return;
   }
 
-  const newScore = parseInt(inputScore.value);
-  if (isNaN(newScore) || newScore <= 0) {
-    alert("Ingrese un puntaje válido");
-    return;
+  if( act === "actualizar"){
+    const newScore = parseInt(inputScore.value);
+    if (isNaN(newScore) || newScore <= 0) {
+      alert("Ingrese un puntaje válido");
+      return;
+    }
+    updateHighScore({ action: act, id: idJugador, new_highScore: newScore }).then(() => {
+      modificarJugadores();
+      inputScore.value = "";
+      alert("Puntaje actualizado correctamente");
+    }).catch(() => alert("Error al actualizar el puntaje"));
   }
 
-  updateHigScore({ action: act, id: idJugador, new_highScore: newScore }).then(() => {
-    modificarJugadores();
-    inputScore.value = "";
-    alert("Puntaje actualizado correctamente");
-  }).catch(() => alert("Error al actualizar el puntaje"));
 }
 
 function mostrarDiv(seccion) {
