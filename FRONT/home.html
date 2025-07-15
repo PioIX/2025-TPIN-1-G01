@@ -2,15 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="estilos/home.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>home</title>
+    <link rel="icon" href="Imagenes/logoImpreguntables.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header><img src="" alt="logo"><h2>IMPREGUNTABLES</h2><button id="btn-cerrar">cerrar sesion</button></header>
-    <p id="texto">hola</p>
-    <button id="btn-table">tabla</button>
-    <button id="btn-jugar">jugar</button>
-    <footer>creative license</footer>
+    <video autoplay muted loop id="myVideo">
+        <source src="Videos/video_home.mp4" type="video/mp4">
+    </video>
+    <header>
+        <h2 class="titulo">Bienvenido <span id="nombre-usuario"></span></h2>
+        <h3 class="subtitulo">¿Listo Para Mostar
+            Tu Intelecto?</h3>
+    </header>
+    <main>
+        
+        <div id="container-btn">
+            <button id="btn-jugar">Jugar</button>
+            <button id="btn-table">Tabla</button>
+            <button id="cerrar-sesion">Cerrar Sesión</button>
+        </div>
+    </main>
+    <!-- <footer>creative license</footer> -->
     <script src="scripts/fetch.js"></script>
     <script src="scripts/home.js"></script>
     <script src="scripts/Clases/ui.js"></script>

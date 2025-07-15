@@ -4,50 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AdminPage</title>
+    <link rel="icon" href="Imagenes/logoImpreguntables.png">
     <link rel="stylesheet" href="estilos/adminPage.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <main>
-        <h2>Categorias</h2>
-        <select name="" id="select-categoria"></select>
-        <h2>Crea tu Pregunta</h2>
-        <!-- <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p> -->
-        <h3>Tu Pregunta:</h3>
-        <!-- preguntar como arreglar -->
-        <div id="contenedor-file-input">
-            <input type="file" accept="image/*" id="imgInput">
-            <!-- areglar text area con css -->
-            <textarea name="" id="area-pregunta" resize="vertical" placeholder="escribe tu pregunta aqui...."></textarea>
+        <!-- Agregar pregunta -->
+        <div id="agregar-pregunta">
+            <h2>Categorías</h2>
+            <select id="agregar-select-categoria">
+                <option value="undefined" selected disabled hidden>Seleccione una categoría</option>
+            </select>
+
+            <h2>Crea tu Pregunta</h2>
+            <h3>Tu Pregunta:</h3>
+            <div id="contenedor-file-input">
+                <input type="file" accept="image/*" class="imgInput">
+                <textarea id="area-pregunta" placeholder="Escribe tu pregunta aquí..."></textarea>
+            </div>
+
+            <h3>Opciones:</h3>
+            <p>Crea tu pregunta con múltiples opciones y marca la correcta</p>
+            <section class="contenedor-preguntas">
+                <div class="contenedor-pregunta"><input type="text"><input type="radio" name="opcion" class="correct-btn"></div>
+                <div class="contenedor-pregunta"><input type="text"><input type="radio" name="opcion" class="correct-btn"></div>
+                <div class="contenedor-pregunta"><input type="text"><input type="radio" name="opcion" class="correct-btn"></div>
+                <div class="contenedor-pregunta"><input type="text"><input type="radio" name="opcion" class="correct-btn"></div>
+            </section>
+
+            <div class="botones">
+                <button onclick="CrearPregunta()">Guardar Pregunta</button>
+                <button onclick="mostrarDiv(2)">Modificar Pregunta</button>
+                <button onclick="mostrarDiv(3)">Borrar Pregunta</button>
+                <button onclick="mostrarDiv(4)">Puntaje</button>
+            </div>
+            <button class="btn-cerrar" onclick="ui.cerrarSesion()">Cerrar</button>
         </div>
-        
-        <h3>Opciones:</h3>
-        <p>Crea tu pregunta con múltiples opciones y marca las respuestas correctas</p>
-        <section class="contenedor-preguntas">
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
+
+        <!-- Modificar pregunta -->
+        <div id="modificar-pregunta">
+            <h2>Categorías</h2>
+            <select id="editar-select-categoria">
+                <option value="undefined" selected disabled hidden>Seleccione una categoría</option>
+            </select>
+
+            <h2>Edita tu pregunta</h2>
+            <h3>Tu Pregunta:</h3>
+            <select id="editar-select-pregunta">
+                <option value="undefined" selected disabled hidden>Seleccione una pregunta</option>
+            </select>
+
+            <h3>Elige una nueva categoría</h3>
+            <select id="new-category">
+                <option value="undefined" selected disabled hidden>Seleccione una categoría</option>
+            </select>
+
+            <h3>Última imagen guardada:</h3>
+            <button id="btnCargar">Cargar imagen</button>
+            <img id="imgMostrar" src="" alt="Imagen cargada" style="max-width: 400px; max-height: 400px; border: 1px solid #ccc;">
+
+            <div id="editar-file-input">
+                <input type="file" accept="image/*" class="imgInput">
+                <textarea class="cargar-display" placeholder="Edita tu pregunta..."></textarea>
             </div>
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
+
+            <h3>Opciones:</h3>
+            <section>
+                <div class="contenedor-editar"><input type="text"><input type="radio" name="opcion-edit" class="edit-correct-btn"></div>
+                <div class="contenedor-editar"><input type="text"><input type="radio" name="opcion-edit" class="edit-correct-btn"></div>
+                <div class="contenedor-editar"><input type="text"><input type="radio" name="opcion-edit" class="edit-correct-btn"></div>
+                <div class="contenedor-editar"><input type="text"><input type="radio" name="opcion-edit" class="edit-correct-btn"></div>
+            </section>
+
+            <div class="botones">
+                <button onclick="mostrarDiv(1)">Volver</button>
+                <button onclick="editarPregunta()">Modificar Pregunta</button>
+                <button onclick="mostrarDiv(3)">Borrar Pregunta</button>
+                <button onclick="mostrarDiv(4)">Puntaje</button>
             </div>
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
+            <button class="btn-cerrar" onclick="ui.cerrarSesion()">Cerrar</button>
+        </div>
+
+        <!-- Borrar pregunta -->
+        <div id="delete-pregunta">
+            <h2>Categorías</h2>
+            <select id="borrar-select-categoria">
+                <option value="undefined" selected disabled hidden>Seleccione una categoría</option>
+            </select>
+
+            <h2>Borrar Pregunta</h2>
+            <select id="borrar-select-pregunta">
+                <option value="undefined" selected disabled hidden>Seleccione una pregunta</option>
+            </select>
+
+            <h3>Tu Pregunta</h3>
+            <textarea id="display-pregunta" class="cargar-display" readonly></textarea>
+
+            <div class="botones">
+                <button onclick="mostrarDiv(1)">Volver</button>
+                <button onclick="mostrarDiv(2)">Modificar Pregunta</button>
+                <button onclick="borrarPregunta()">Borrar Pregunta</button>
+                <button onclick="mostrarDiv(4)">Puntaje</button>
             </div>
-            <div class="contenedor-pregunta">
-                <input type="text">
-                <input name="opcion" type="radio" class="correct-btn">
+            <button class="btn-cerrar" onclick="ui.cerrarSesion()">Cerrar</button>
+        </div>
+
+        <!-- Área Jugador -->
+        <div id="area-usuario">
+            <select id="select-jugadores">
+                <option value="undefined" selected disabled hidden>Seleccione un jugador</option>
+            </select>
+            <button onclick="eliminarJugador()">Eliminar Jugador</button>
+            <input type="number" id="new-score" placeholder="Ingrese el puntaje" min="1">
+            <section>
+                <button onclick="modificarPuntaje('eliminar')">Eliminar Puntaje</button>
+                <button onclick="modificarPuntaje('actualizar')">Modificar Puntaje</button>
+            </section>
+            <div class="botones">
+                <button onclick="mostrarDiv(1)">Agregar Pregunta</button>
+                <button onclick="mostrarDiv(2)">Modificar Pregunta</button>
+                <button onclick="mostrarDiv(3)">Borrar Pregunta</button>
+                <button onclick="mostrarDiv(4)">Puntaje</button>
             </div>
-        </section>
-        <div id="save-btns">
-            <button id="btn-guardar" onclick="CrearPregunta()">Guardar Pregunta</button>
-            <button id="cerrar">Cerrar</button>
         </div>
     </main>
+
     <script src="scripts/fetch.js"></script>
     <script src="scripts/Clases/ui.js"></script>
     <script src="scripts/Clases/Pregunta.js"></script>
