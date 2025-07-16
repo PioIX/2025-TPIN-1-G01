@@ -32,8 +32,8 @@ async function usuarioLog() {
             "Content-Type": "application/json",
         }
     })
-    console.log(response)
     let result = await response.json()
+    console.log(result)
     return result
 }
 async function buscarUsuarioXNombre(nombre) {
@@ -61,6 +61,21 @@ async function InOut(datos) {
     console.log(result)
     usuario = await usuarioLog() 
 
+    return result
+}
+
+async function actualizarPuntajes(datos) {
+    console.log(datos)
+    const response = await fetch(`http://localhost:4000/actualizarPuntajes`,{
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos)
+    })
+    console.log(response)
+    let result = await response.json()
+    console.log(result)
     return result
 }
 

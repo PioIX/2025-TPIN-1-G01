@@ -110,6 +110,13 @@ app.get('/usuarioLogeado',async function(req,res){
     }
 })
 
+app.put('/actualizarPuntajes',async function(req, res) {
+    console.log(req.body)
+    respuesta = await realizarQuery(`UPDATE Usuarios SET puntajes=${req.body.puntajes}, max_puntaje=${req.body.max_puntaje} WHERE id=${req.body.id}`)
+    console.log("me deslogueo")
+    res.send({respuesta:"me ejecuto"})
+})
+
 app.put('/InOut',async function(req,res){
     console.log(req.body)
     if(req.body.esta_logeado == true){
