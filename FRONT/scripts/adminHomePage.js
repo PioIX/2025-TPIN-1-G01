@@ -139,13 +139,12 @@ function CrearPregunta() {
   recuperarUltimaPregunta().then((ultimaPregunta) => {
     const id_pregunta = (ultimaPregunta && ultimaPregunta.id) ? ultimaPregunta.id + 1 : 1;
     const question = new Pregunta(id_pregunta, id_categoria, contenido, img);
-    console.log("imagen:", img.length)
 
     mandarPregunta(question).then(() => {
       recuperarUltimaOpcion().then((ultimaOpcion) => {
         const idOpcionInicial = (ultimaOpcion && ultimaOpcion.id) ? ultimaOpcion.id + 1 : 1;
         const options = [];
-
+        console.log(id_pregunta)
         for (let i = 0; i < 4; i++) {
           const texto = contenedores[i].firstElementChild.value.trim();
           const esCorrecta = contenedores[i].lastElementChild.checked;

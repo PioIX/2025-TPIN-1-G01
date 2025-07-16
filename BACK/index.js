@@ -98,12 +98,16 @@ app.get('/buscarUsuarioXNombre',async function (req,res) {
 //arreglar
 app.post('/registrarUsuario', async function (req, res) {
     try {
+        console.log(req.body)
         const usuarioExiste = await realizarQuery(`SELECT * FROM Usuarios WHERE correo_electronico='${req.body.correo_electronico}'`)
         if (usuarioExiste.length > 0) {
             res.send({ mensaje: "El usuario ya existe" });
         } else {
             let respuesta;
-            respuesta = await realizarQuery(`INSERT INTO Usuarios(correo_electronico,contraseña,nombre,es_admin,esta_logeado) VALUES ('${req.body.correo_electronico}','${req.body.contraseña}','${req.body.nombre}',${req.body.es_admin},${req.body.esta_logeado})`)
+            respuesta = await realizarQuery(`
+            INSERT INTO Usuarios(correo_electronico, contraseña, nombre, es_admin, esta_logeado, puntajes, max_puntaje) 
+            VALUES ('${req.body.correo_electronico}', '${req.body.contraseña}', '${req.body.nombre}', ${req.body.es_admin}, ${req.body.esta_logeado}, ${req.body.puntaje}, ${req.body.max_puntaje})
+            `)
             res.send({mensaje : "ok"})
         }
     } catch (error) {
