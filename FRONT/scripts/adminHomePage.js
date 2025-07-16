@@ -20,7 +20,7 @@ const divModificarPregunta = document.getElementById("modificar-pregunta");
 const divBorrarPregunta = document.getElementById("delete-pregunta");
 const divAreaJugador = document.getElementById("area-usuario");
 
-const btnCargar = document.getElementById("btnCargar");
+// const btnCargar = document.getElementById("btnCargar");
 const imgMostrar = document.getElementById("imgMostrar");
 const selectorCategoriaNuevo = document.getElementById("new-category");
 
@@ -100,7 +100,7 @@ inputScore.addEventListener("keydown", (e) => {
 
 
 function cargarCategorias() {
-  traerCategorias().then((categorias) => {
+  RecuperarColoresCategoria().then((categorias) => {
     categorias.forEach(c => {
       const option = `<option value="${c.id}">${c.nombre_categoria}</option>`;
       selectAgregarCategoria.innerHTML += option;
@@ -144,7 +144,7 @@ function CrearPregunta() {
       recuperarUltimaOpcion().then((ultimaOpcion) => {
         const idOpcionInicial = (ultimaOpcion && ultimaOpcion.id) ? ultimaOpcion.id + 1 : 1;
         const options = [];
-
+        console.log(id_pregunta)
         for (let i = 0; i < 4; i++) {
           const texto = contenedores[i].firstElementChild.value.trim();
           const esCorrecta = contenedores[i].lastElementChild.checked;
@@ -217,7 +217,7 @@ function modificarPuntaje(act) {
   const idJugador = parseInt(selectJugadores.options[indice].value);
 
   if (act === "eliminar") {
-    updateHigScore({ action: act, id: idJugador }).then(() => {
+    updateHighScore({ action: act, id: idJugador }).then(() => {
       modificarJugadores();
       inputScore.value = "";
       alert("Puntaje eliminado correctamente");
@@ -225,17 +225,19 @@ function modificarPuntaje(act) {
     return;
   }
 
-  const newScore = parseInt(inputScore.value);
-  if (isNaN(newScore) || newScore <= 0) {
-    alert("Ingrese un puntaje válido");
-    return;
+  if( act === "actualizar"){
+    const newScore = parseInt(inputScore.value);
+    if (isNaN(newScore) || newScore <= 0) {
+      alert("Ingrese un puntaje válido");
+      return;
+    }
+    updateHighScore({ action: act, id: idJugador, new_highScore: newScore }).then(() => {
+      modificarJugadores();
+      inputScore.value = "";
+      alert("Puntaje actualizado correctamente");
+    }).catch(() => alert("Error al actualizar el puntaje"));
   }
 
-  updateHigScore({ action: act, id: idJugador, new_highScore: newScore }).then(() => {
-    modificarJugadores();
-    inputScore.value = "";
-    alert("Puntaje actualizado correctamente");
-  }).catch(() => alert("Error al actualizar el puntaje"));
 }
 
 function mostrarDiv(seccion) {
@@ -254,7 +256,6 @@ function preguntaAEditar() {
   traerPregunta(id_pregunta).then((pregunta) => {
     display[0].innerText = pregunta.contenido;
     mostrarImagen(pregunta);
-
     traerOpcion(pregunta.id).then((opciones) => {
       for (let i = 0; i < editar.length; i++) {
         editar[i].firstElementChild.value = opciones[i] ? opciones[i].opcion : "";
@@ -276,6 +277,16 @@ async function editarPregunta() {
   const inputFile = input[1];
   let img = base64Imagen || null;
 
+  if(selectModificarCategoria.value=="undefined"){
+    alert("Seleccione una categoría");
+    return 0;
+  }
+
+  if(selectModificarPregunta.value=="undefined"){
+    alert("Seleccione una pregunta");
+    return 0;
+  }
+
   if (inputFile && inputFile.files.length > 0) {
     const file = inputFile.files[0];
     img = await new Promise((resolve, reject) => {
@@ -288,7 +299,7 @@ async function editarPregunta() {
 
   const datos = {
     id: selectModificarPregunta.value,
-    id_categoria: selectorCategoriaNuevo.value,
+    id_categoria: selectorCategoriaNuevo.value!=="undefined"?selectorCategoriaNuevo.value:selectModificarCategoria.value,
     contenido: display[0].value,
     imagen: img
   };
@@ -313,21 +324,57 @@ async function editarPregunta() {
   }
 }
 
-function mostrarImagen(data) {
-  fetch("http://localhost:4000/traerImg?id=" + data.id)
-    .then(response => {
-      if (!response.ok) throw new Error("No se pudo cargar la imagen");
-      return response.json();
-    })
-    .then(resultado => {
-      if (resultado.imagenBase64) {
-        imgMostrar.src = resultado.imagenBase64;
-      } else {
-        alert("No se encontró imagen");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Error al cargar la imagen");
+// function mostrarImagen(data) {
+//   fetch("http://localhost:4000/traerImg?id=" + data.id)
+//     .then(response => {
+//       if (!response.ok) throw new Error("No se pudo cargar la imagen");
+//       return response.json();
+//     })
+//     .then(resultado => {
+//       if (resultado.imagenBase64) {
+//         imgMostrar.src = resultado.imagenBase64;
+//       } else {
+//         alert("No se encontró imagen");
+//       }
+//     })
+//     .catch(err => {
+//       console.error(err);
+//       alert("Error al cargar la imagen");
+//     });
+// }
+
+// async function traerImg(preguntaActual) {
+//   console.log(preguntaActual.id)
+//   const response = await fetch(`http://localhost:4000/traerImg?id=${preguntaActual.id}`,{
+//       method: "GET",
+//       headers: {
+//           "Content-Type": "application/json",
+//       }
+//   })
+//   const result = await response.json()
+//   return result[0].imagen
+// }
+async function mostrarImagen(data) {
+  try {
+    const response = await fetch(`http://localhost:4000/traerImg?id=${data.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+    console.log(response.ok)
+    const resultado = await response.json();
+    console.log(resultado[0])
+    if (resultado[0].imagen == null) throw new Error("No se pudo cargar la imagen");
+    imgMostrar.src = resultado[0].imagen
+    // if (resultado && resultado.imagenBase64) {
+    //   imgMostrar.src = resultado.imagenBase64;
+    // } else {
+    //   alert("No se encontró imagen");
+    // }
+  } catch (err) {
+    console.error(err);
+    alert("Error al cargar la imagen");
+  }
 }
+

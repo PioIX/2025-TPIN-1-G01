@@ -8,10 +8,11 @@ var app = express(); //Inicializo express
 var port = process.env.PORT || 4000; //Ejecuto el servidor en el puerto 3000
 
 // Convierte una petición recibida (POST-GET...) a objeto JSON
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
-
+app.use(express.json({limit:'1000mb'}))
+app.use(express.urlencoded({extended:true,limit:'1000mb'}))
 //Pongo el servidor a escuchar
 app.listen(port, function () {
     console.log(`Server running in http://localhost:${port}`);
@@ -56,6 +57,17 @@ app.get('/traerPreguntas',async function (req,res){
     }
 }) 
 
+app.get('/traerJugadores',async function (req,res) {
+    try {
+        let respuesta;
+        respuesta = await realizarQuery("SELECT * FROM Usuarios where es_admin = 0")
+        console.log(respuesta)
+        res.send(respuesta)
+    } catch (error) {
+        res.send(error)
+    }
+})
+
 app.get('/verificarUsuario', async function (req, res) {
     try {
         let respuesta;
@@ -83,14 +95,19 @@ app.get('/buscarUsuarioXNombre',async function (req,res) {
     }
 })
 
+//arreglar
 app.post('/registrarUsuario', async function (req, res) {
     try {
+        console.log(req.body)
         const usuarioExiste = await realizarQuery(`SELECT * FROM Usuarios WHERE correo_electronico='${req.body.correo_electronico}'`)
         if (usuarioExiste.length > 0) {
             res.send({ mensaje: "El usuario ya existe" });
         } else {
             let respuesta;
-            respuesta = await realizarQuery(`INSERT INTO Usuarios(correo_electronico,contraseña,nombre,es_admin,esta_logeado) VALUES ('${req.body.correo_electronico}','${req.body.contraseña}','${req.body.nombre}',${req.body.es_admin},${req.body.esta_logeado})`)
+            respuesta = await realizarQuery(`
+            INSERT INTO Usuarios(correo_electronico, contraseña, nombre, es_admin, esta_logeado, puntajes, max_puntaje) 
+            VALUES ('${req.body.correo_electronico}', '${req.body.contraseña}', '${req.body.nombre}', ${req.body.es_admin}, ${req.body.esta_logeado}, ${req.body.puntaje}, ${req.body.max_puntaje})
+            `)
             res.send({mensaje : "ok"})
         }
     } catch (error) {
@@ -208,7 +225,7 @@ app.post('/crearOpciones', async function(req,res){
 app.get('/coloresCategoria',async function(req,res){
     try {
         let respuesta;
-        respuesta = await realizarQuery ("select nombre_categoria,color from Categorias")
+        respuesta = await realizarQuery ("select id,nombre_categoria,color from Categorias")
         console.log(respuesta)
         res.send(respuesta)
     } catch (error) {
@@ -218,7 +235,7 @@ app.get('/coloresCategoria',async function(req,res){
 app.get('/TraerJugadoresPuntajes',async function(req,res){
     try {
         let jugadores;
-        jugadores = await realizarQuery("SELECT id,nombre,max_puntaje FROM Usuarios")
+        jugadores = await realizarQuery("SELECT id,nombre,max_puntaje FROM Usuarios Order by max_puntaje desc")
         console.log(jugadores)
         res.send(jugadores)
     } catch (error) {
@@ -292,6 +309,7 @@ app.put('/reiniciarPuntaje',async function (req,res) {
     }
 });
 app.delete('/borrarPregunta', async function (req, res) {
+    console.log(req.body)
     try {
         await realizarQuery(`DELETE FROM Preguntas WHERE id=${req.body.id};`);
         await realizarQuery(`DELETE FROM Opciones WHERE id_pregunta=${req.body.id};`);
@@ -312,6 +330,7 @@ app.delete('/eliminarJugadorXid', async function (req, res) {
 
 app.put('/actualizarPuntaje', async function(req, res){
     try {
+        console.log(req.body)
         if(req.body.action === "eliminar"){
             await realizarQuery(`UPDATE Usuarios SET max_puntaje=0 WHERE id=${req.body.id}`);
             res.json({ message: "puntaje eliminado" });
@@ -373,6 +392,7 @@ app.put("/actualizarOpcion", async function(req, res) {
     }
 });
 
+
 // app.get('/traerImg', async function (req, res) {
 //     try {
 //         const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
@@ -394,4 +414,5 @@ app.put("/actualizarOpcion", async function(req, res) {
 //         res.status(500).json({ error: 'Error al traer la imagen' });
 //     }
 // });
+
 
