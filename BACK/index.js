@@ -11,7 +11,8 @@ var port = process.env.PORT || 4000; //Ejecuto el servidor en el puerto 3000
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-
+app.use(express.json({limit:'1000mb'}))
+app.use(express.urlencoded({extended:true,limit:'1000mb'}))
 //Pongo el servidor a escuchar
 app.listen(port, function () {
     console.log(`Server running in http://localhost:${port}`);
@@ -94,6 +95,7 @@ app.get('/buscarUsuarioXNombre',async function (req,res) {
     }
 })
 
+//arreglar
 app.post('/registrarUsuario', async function (req, res) {
     try {
         const usuarioExiste = await realizarQuery(`SELECT * FROM Usuarios WHERE correo_electronico='${req.body.correo_electronico}'`)
@@ -219,7 +221,7 @@ app.post('/crearOpciones', async function(req,res){
 app.get('/coloresCategoria',async function(req,res){
     try {
         let respuesta;
-        respuesta = await realizarQuery ("select nombre_categoria,color from Categorias")
+        respuesta = await realizarQuery ("select id,nombre_categoria,color from Categorias")
         console.log(respuesta)
         res.send(respuesta)
     } catch (error) {
@@ -384,6 +386,7 @@ app.put("/actualizarOpcion", async function(req, res) {
     }
 });
 
+
 // app.get('/traerImg', async function (req, res) {
 //     try {
 //         const resultado = await realizarQuery(`SELECT imagen FROM Preguntas WHERE id = ${req.query.id}`);
@@ -405,4 +408,5 @@ app.put("/actualizarOpcion", async function(req, res) {
 //         res.status(500).json({ error: 'Error al traer la imagen' });
 //     }
 // });
+
 

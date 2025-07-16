@@ -100,7 +100,7 @@ inputScore.addEventListener("keydown", (e) => {
 
 
 function cargarCategorias() {
-  traerCategorias().then((categorias) => {
+  RecuperarColoresCategoria().then((categorias) => {
     categorias.forEach(c => {
       const option = `<option value="${c.id}">${c.nombre_categoria}</option>`;
       selectAgregarCategoria.innerHTML += option;
@@ -140,7 +140,7 @@ function CrearPregunta() {
     const id_pregunta = (ultimaPregunta && ultimaPregunta.id) ? ultimaPregunta.id + 1 : 1;
     const question = new Pregunta(id_pregunta, id_categoria, contenido, img);
     console.log("imagen:", img.length)
-
+    
     mandarPregunta(question).then(() => {
       recuperarUltimaOpcion().then((ultimaOpcion) => {
         const idOpcionInicial = (ultimaOpcion && ultimaOpcion.id) ? ultimaOpcion.id + 1 : 1;
