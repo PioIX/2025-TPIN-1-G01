@@ -20,7 +20,7 @@ const divModificarPregunta = document.getElementById("modificar-pregunta");
 const divBorrarPregunta = document.getElementById("delete-pregunta");
 const divAreaJugador = document.getElementById("area-usuario");
 
-const btnCargar = document.getElementById("btnCargar");
+// const btnCargar = document.getElementById("btnCargar");
 const imgMostrar = document.getElementById("imgMostrar");
 const selectorCategoriaNuevo = document.getElementById("new-category");
 
@@ -140,7 +140,7 @@ function CrearPregunta() {
     const id_pregunta = (ultimaPregunta && ultimaPregunta.id) ? ultimaPregunta.id + 1 : 1;
     const question = new Pregunta(id_pregunta, id_categoria, contenido, img);
     console.log("imagen:", img.length)
-    
+
     mandarPregunta(question).then(() => {
       recuperarUltimaOpcion().then((ultimaOpcion) => {
         const idOpcionInicial = (ultimaOpcion && ultimaOpcion.id) ? ultimaOpcion.id + 1 : 1;
@@ -257,7 +257,6 @@ function preguntaAEditar() {
   traerPregunta(id_pregunta).then((pregunta) => {
     display[0].innerText = pregunta.contenido;
     mostrarImagen(pregunta);
-
     traerOpcion(pregunta.id).then((opciones) => {
       for (let i = 0; i < editar.length; i++) {
         editar[i].firstElementChild.value = opciones[i] ? opciones[i].opcion : "";
@@ -326,21 +325,57 @@ async function editarPregunta() {
   }
 }
 
-function mostrarImagen(data) {
-  fetch("http://localhost:4000/traerImg?id=" + data.id)
-    .then(response => {
-      if (!response.ok) throw new Error("No se pudo cargar la imagen");
-      return response.json();
-    })
-    .then(resultado => {
-      if (resultado.imagenBase64) {
-        imgMostrar.src = resultado.imagenBase64;
-      } else {
-        alert("No se encontró imagen");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Error al cargar la imagen");
+// function mostrarImagen(data) {
+//   fetch("http://localhost:4000/traerImg?id=" + data.id)
+//     .then(response => {
+//       if (!response.ok) throw new Error("No se pudo cargar la imagen");
+//       return response.json();
+//     })
+//     .then(resultado => {
+//       if (resultado.imagenBase64) {
+//         imgMostrar.src = resultado.imagenBase64;
+//       } else {
+//         alert("No se encontró imagen");
+//       }
+//     })
+//     .catch(err => {
+//       console.error(err);
+//       alert("Error al cargar la imagen");
+//     });
+// }
+
+// async function traerImg(preguntaActual) {
+//   console.log(preguntaActual.id)
+//   const response = await fetch(`http://localhost:4000/traerImg?id=${preguntaActual.id}`,{
+//       method: "GET",
+//       headers: {
+//           "Content-Type": "application/json",
+//       }
+//   })
+//   const result = await response.json()
+//   return result[0].imagen
+// }
+async function mostrarImagen(data) {
+  try {
+    const response = await fetch(`http://localhost:4000/traerImg?id=${data.id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+    console.log(response.ok)
+    const resultado = await response.json();
+    console.log(resultado[0])
+    if (resultado[0].imagen == null) throw new Error("No se pudo cargar la imagen");
+    imgMostrar.src = resultado[0].imagen
+    // if (resultado && resultado.imagenBase64) {
+    //   imgMostrar.src = resultado.imagenBase64;
+    // } else {
+    //   alert("No se encontró imagen");
+    // }
+  } catch (err) {
+    console.error(err);
+    alert("Error al cargar la imagen");
+  }
 }
+

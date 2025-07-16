@@ -263,7 +263,7 @@ async function deleteQuestion(id) {
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id }),
+        body: JSON.stringify(id),
     });
     const result = await response.json();
     console.log(result);
@@ -282,12 +282,13 @@ async function deletePlayer(id) {
 }
 
 async function updateHighScore(data) {
+    console.log({"entro":data})
     const response = await fetch("http://localhost:4000/actualizarPuntaje", {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(puntaje),
+        body: JSON.stringify(data),
     });
 
     const result = await response.json();
