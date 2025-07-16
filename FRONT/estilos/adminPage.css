@@ -59,6 +59,8 @@ h3 {
 #select-preguntas,
 #editar-select-categoria,
 #editar-select-pregunta,
+#agregar-select-categoria,
+#borrar-select-categoria,
 #borrar-select-pregunta {
     width: 20vw;
     max-width: 280px;

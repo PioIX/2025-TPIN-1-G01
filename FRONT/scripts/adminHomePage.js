@@ -279,6 +279,16 @@ async function editarPregunta() {
   const inputFile = input[1];
   let img = base64Imagen || null;
 
+  if(selectModificarCategoria.value=="undefined"){
+    alert("Seleccione una categoría");
+    return 0;
+  }
+
+  if(selectModificarPregunta.value=="undefined"){
+    alert("Seleccione una pregunta");
+    return 0;
+  }
+
   if (inputFile && inputFile.files.length > 0) {
     const file = inputFile.files[0];
     img = await new Promise((resolve, reject) => {
@@ -291,7 +301,7 @@ async function editarPregunta() {
 
   const datos = {
     id: selectModificarPregunta.value,
-    id_categoria: selectorCategoriaNuevo.value,
+    id_categoria: selectorCategoriaNuevo.value!=="undefined"?selectorCategoriaNuevo.value:selectModificarCategoria.value,
     contenido: display[0].value,
     imagen: img
   };

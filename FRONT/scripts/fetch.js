@@ -221,6 +221,7 @@ async function traerImagen(id_pregunta) {
 }
 
 async function actualizarPregunta(datos) {
+    console.log(datos)
     const response = await fetch("http://localhost:4000/actualizarPregunta", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
