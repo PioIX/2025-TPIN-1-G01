@@ -43,9 +43,9 @@ function detectarTipoMimeDesdeBase64(base64) {
 
 function crearBtns(){
     contenedorRespuesta.innerHTML = 
-        `<div>
-            <button>Cerrar</button>
-            <button>Continuar</button>
+        `<div id="btns-cerrar-continuar">
+            <button class="btn-cerrar">Cerrar</button>
+            <button class="btn-continuar">Continuar</button>
         </div>`
     const div = contenedorRespuesta.firstElementChild
     div.firstElementChild.addEventListener("click",()=>{
