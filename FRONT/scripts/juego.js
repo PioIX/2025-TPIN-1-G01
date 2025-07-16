@@ -41,20 +41,37 @@ function detectarTipoMimeDesdeBase64(base64) {
     return null;
 }
 
-function crearBtns(){
+async function actualizarPuntos() {
+    let usuario = await usuarioLog()
+    await actualizarPuntajes(
+        {
+            id: usuario.id,
+            puntajes: puntaje,
+            max_puntaje: Math.max(usuario.max_puntaje, puntaje)
+        }
+    )
+}
+
+async function cerrarClicked() {
+    resetScore()
+    await actualizarPuntos()
+    ui.changeScreen("home")
+}
+
+async function continuarClicked() {
+    await actualizarPuntos()
+    location.href = `ruleta.html?puntaje=${puntaje}`;
+}
+
+async function crearBtns() {
+    let usuario = await usuarioLog()
     contenedorRespuesta.innerHTML = 
         `<div id="btns-cerrar-continuar">
-            <button class="btn-cerrar">Cerrar</button>
-            <button class="btn-continuar">Continuar</button>
+            <button class="btn-cerrar" onclick="cerrarClicked()">Cerrar</button>
+            <button class="btn-continuar" onclick="continuarClicked()">Continuar</button>
+            <div>Puntaje: <p id="parrafoPuntaje">${puntaje}</p></div>
+            <div>Record: <p id="parrafoRecord">${Math.max(puntaje,usuario.max_puntaje)}</p></div>
         </div>`
-    const div = contenedorRespuesta.firstElementChild
-    div.firstElementChild.addEventListener("click",()=>{
-        resetScore()
-        ui.changeScreen("home")
-    })
-    div.lastElementChild.addEventListener("click",()=>{
-        location.href = `ruleta.html?puntaje=${puntaje}`;
-    })
 }
 function mostrarBtns(){
     return setTimeout(crearBtns, 3000)
