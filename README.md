@@ -32,7 +32,7 @@ Armaremos un juego de conocimiento basado en el preguntados donde los jugadores 
 
 
 Bocetos de la interfaz de la aplicación
-Link al Canva
+Link al Canva: https://www.canva.com/design/DAGpYkAq3zw/GzH7kDfapcscrmC_woXlTQ/edit?utm_content=DAGpYkAq3zw&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 Alcance
 crear propuesta divertida de jugar
 diseño responsivo a distintas computadoras
@@ -60,7 +60,7 @@ nieloud
 nisenbom, nieloud, montivero, clur
 
 Diagrama Gantt
-
+<img width="1213" height="612" alt="image" src="https://github.com/user-attachments/assets/8768bd3b-7cd8-4054-9124-a8bd83c67938" />
 
 
 
