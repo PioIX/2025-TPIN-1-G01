@@ -18,6 +18,7 @@ Descripción de la propuesta
 
 Armaremos un juego de conocimiento basado en el preguntados donde los jugadores competiran entre si respondiendo preguntas de distintas categorias. buscando demostrar quien es el que lleva mas conocimiento
 
+<img width="840" height="445" alt="image" src="https://github.com/user-attachments/assets/c771f54d-197b-40cf-9678-a72503a0e6be" />
 
 
 
