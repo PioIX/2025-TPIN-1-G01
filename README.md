@@ -110,12 +110,3 @@ Diseño visual de la app
 Diseñar la página de preguntas y respuestas basándonos en los bocetos del canva y linekarlos con las etiquetas HTML y funciones del DOM de la interfaz del juego, junto con sus respectivos pedidos del front y back.
 Diseñar la página la ruleta basándonos en los bocetos del canva y linekarlos con las etiquetas HTML y funciones del DOM de la interfaz del juego, junto con sus respectivos pedidos del front y back.
 Implementar los diseños del boceto de la página de inicio con las etiquetas adecuadas del HTML y linkearlo adecuadamente con los pedidos del back y el front. Testear que los botones y eventos de la página se ejecuten adecuadamente
-
-
-
-
-
-Primer entregable 
-En este proyecto en particular, los entregables están definidos pero pueden aprovechar para poner como lo van a hacer en su proyecto en particular
-Segundo entregable
-Entrega final 
